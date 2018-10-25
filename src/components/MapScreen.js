@@ -201,7 +201,7 @@ export default connect(mapStateToProps, mapActionCreators)(MapScreen);
 */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, Text, TouchableHighlist } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import SearchBox from './SearchBox';
 
@@ -214,23 +214,12 @@ class MapScreen extends Component {
             region: {
                 latitude: 37.3382082,
                 longitude: -121.8863286,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.1
+                latitudeDelta: 0.05,
+                longitudeDelta: 0.05
             },
         };
         this.onRegionChange = this.onRegionChange.bind(this);
     }
-    //Sets the initial location that is loaded (currently set to San Jose)
-    /*getInitialState() {
-        return {
-            region: {
-                latitude: 37.3382082,
-                longitude: -121.8863286,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
-            },
-        };
-    }*/
 
     onRegionChange(region) {
         this.setState({ region });
@@ -242,63 +231,123 @@ class MapScreen extends Component {
     //will change to API called markers in future
     render() {
         return (
-            <View style={styles.container}>
-                <MapView
-                    style={styles.map}
-                    region={this.state.region}
-                    onRegionChange={this.onRegionChange}
-                > 
-                <MapView.Marker
-                    coordinate={{
-                        latitude: 37.339222,
-                        longitude: -121.880724,
-                    }}
-                    //Can later pull title and description from API when implemented
-                    title={'SJSU North Parking Garage'}
-                    description={'The best parking garage! Sample: Spots Filled: 977/1490'}
-                />
-                <MapView.Marker
-                    coordinate={{
-                        latitude: 37.332303,
-                        longitude: -121.882986,
-                    }}
-                    //Can later pull title and description from API when implemented
-                    title={'SJSU West Parking Garage'}
-                    description={'Spots Filled: 827/1135'}
-                />
 
-                <MapView.Marker
-                    coordinate={{
-                        latitude: 37.333088,
-                        longitude: -121.880797,
-                    }}
-                    //Can later pull title and description from API when implemented
-                    title={'SJSU South Parking Garage'}
-                    description={'Spots Filled: 1377/1500'}
-                />
-                </MapView>
-            </View>
+          <View style={styles.outerContainer}>
+              <View style={styles.navigationBar}>
+                <Text style={styles.companyText}>SpotMeSolutions</Text>
+              </View>
+
+              <View style={styles.container}>
+                  <MapView
+                      style={styles.map}
+                      region={this.state.region}
+                      onRegionChange={this.onRegionChange}
+                  > 
+
+                  <SearchBox />
+
+                  <MapView.Marker
+                      coordinate={{
+                          latitude: 37.339222,
+                          longitude: -121.880724,
+                      }}
+                      //Can later pull title and description from API when implemented
+                      title={'SJSU North Parking Garage'}
+                      description={'The best parking garage! Sample: Spots Filled: 977/1490'}
+                  />
+                  <MapView.Marker
+                      coordinate={{
+                          latitude: 37.332303,
+                          longitude: -121.882986,
+                      }}
+                      //Can later pull title and description from API when implemented
+                      title={'SJSU West Parking Garage'}
+                      description={'Spots Filled: 827/1135'}
+                  />
+                  <MapView.Marker
+                      coordinate={{
+                          latitude: 37.333088,
+                          longitude: -121.880797,
+                      }}
+                      //Can later pull title and description from API when implemented
+                      title={'SJSU South Parking Garage'}
+                      description={'Spots Filled: 1377/1500'}
+                  />
+                  </MapView>
+              </View>
+          </View>
         );
     }
 }
 
-const styles = StyleSheet.create({
+  const styles = {
     container: {
-     position: 'absolute',
-      top: 0,
-      left: 0,
-      bottom: 0,
-      right: 0,
-      justifyContent: 'flex-end',
-      alignItems: 'center'
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center"
     },
     map: {
-      position: 'absolute',
+      ...StyleSheet.absoluteFillObject
+    },
+    outerContainer: {
+      flex: 1,
+      flexDirection: "column",
+      justifyContent: "center"
+    },
+    companyText: {
+      fontSize: 30,
+      color: "#42b8ba",
+      fontWeight: "900",
+      alignItems: "center",
+      width: 380,
+      textAlign: "center"
+    },
+    navigationBar: {
+      marginTop: 20,
+      alignItems: "center",
+      flexDirection: "row",
+      justifyContent: "space-between"
+    },
+    mapAndSearchBarContainer: {
+      alignItems: "center",
+  
+      height: "90%",
+      width: "100%"
+    },
+    mapContainer: {
+      position: "absolute",
       top: 0,
       left: 0,
+      right: 0,
       bottom: 0,
-      right: 0
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between"
+    },
+    inputContainer: {
+      height: 40,
+      elevation: 1,
+      backgroundColor: "white",
+      width: "90%",
+      height: "10%",
+      top: 40,
+      borderRadius: 3,
+      shadowOpacity: 0.75,
+      shadowRadius: 1,
+      shadowColor: "gray",
+      shadowOffset: { height: 0, width: 0 },
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    inputStyle: {
+      color: "#000",
+      padding: 10,
+      height: 50,
+      fontSize: 18,
+      lineHeight: 23,
+      flex: 2
     }
-  });
+  };
 
 export default MapScreen;
