@@ -1,19 +1,12 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 
-
-
 //provider use to connect react to redux
 // connect() methods in components use provider
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import reducers from "./reducers";
 import thunk from "redux-thunk";
-
-
-
-
-
 
 //Components
 import Payment from "./components/Payment";
@@ -23,7 +16,6 @@ import MapScreen from "./components/MapScreen";
 
 //Router for navigating screens
 import Router from "./Router";
-
 import firebase from "firebase";
 
 

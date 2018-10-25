@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+/*import React, { Component } from "react";
 import {
   Text,
   Image,
@@ -109,7 +109,7 @@ class MapScreen extends Component {
         </View>
       </View>
     );
-  } */
+  }  * /ADD A CLOSE here
 }
 
 const styles = {
@@ -198,3 +198,107 @@ const mapActionCreators = {
   fetchSanJoseAPI
 };
 export default connect(mapStateToProps, mapActionCreators)(MapScreen);
+*/
+
+import React, { Component } from 'react';
+import { StyleSheet, View, Dimensions } from 'react-native';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import SearchBox from './SearchBox';
+
+class MapScreen extends Component {
+    //Need constructor to initialize state and regionChange,
+    //otherwise will get type errors(not a function) 
+    constructor() {
+        super();
+        this.state = {
+            region: {
+                latitude: 37.3382082,
+                longitude: -121.8863286,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1
+            },
+        };
+        this.onRegionChange = this.onRegionChange.bind(this);
+    }
+    //Sets the initial location that is loaded (currently set to San Jose)
+    /*getInitialState() {
+        return {
+            region: {
+                latitude: 37.3382082,
+                longitude: -121.8863286,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421
+            },
+        };
+    }*/
+
+    onRegionChange(region) {
+        this.setState({ region });
+    }
+
+    //renders the map view
+    //renders markers in map view
+    //hard coded markers for now (proof of concept)
+    //will change to API called markers in future
+    render() {
+        return (
+            <View style={styles.container}>
+                <MapView
+                    style={styles.map}
+                    region={this.state.region}
+                    onRegionChange={this.onRegionChange}
+                > 
+                <MapView.Marker
+                    coordinate={{
+                        latitude: 37.339222,
+                        longitude: -121.880724,
+                    }}
+                    //Can later pull title and description from API when implemented
+                    title={'SJSU North Parking Garage'}
+                    description={'The best parking garage! Sample: Spots Filled: 977/1490'}
+                />
+                <MapView.Marker
+                    coordinate={{
+                        latitude: 37.332303,
+                        longitude: -121.882986,
+                    }}
+                    //Can later pull title and description from API when implemented
+                    title={'SJSU West Parking Garage'}
+                    description={'Spots Filled: 827/1135'}
+                />
+
+                <MapView.Marker
+                    coordinate={{
+                        latitude: 37.333088,
+                        longitude: -121.880797,
+                    }}
+                    //Can later pull title and description from API when implemented
+                    title={'SJSU South Parking Garage'}
+                    description={'Spots Filled: 1377/1500'}
+                />
+                </MapView>
+            </View>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+     position: 'absolute',
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      justifyContent: 'flex-end',
+      alignItems: 'center'
+    },
+    map: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0
+    }
+  });
+
+export default MapScreen;
