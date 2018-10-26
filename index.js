@@ -1,6 +1,6 @@
-import { AppRegistry } from 'react-native';
+//import { AppRegistry } from 'react-native';
 import App from './src/App';
-import {StyleSheet, Text, View} from 'react-native';
+//import {StyleSheet, Text, View} from 'react-native';
 
 
 //import React from 'react';

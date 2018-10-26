@@ -5,12 +5,12 @@ import {
   GET_ADDRESS_PREDICTIONS,
   GET_SELECTED_ADDRESS,
   GET_SJ_API
-} from "../actions/types";
+} from '../actions/types';
 
 const INITIAL_STATE = {
-  location: "",
+  location: '',
   currentLocation: {},
-  inputData: "",
+  inputData: '',
   predictions: {},
   sanjose: {},
 };
@@ -52,7 +52,7 @@ export default (state = INITIAL_STATE, action) => {
           latitudeDelta: 0.1,
           longitudeDelta: 0.1
         },
-        inputData: ""
+        inputData: ''
       };
     default:
       return state;

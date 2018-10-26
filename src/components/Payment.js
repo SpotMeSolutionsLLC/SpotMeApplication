@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Text, View, Image, Button, Dimensions } from "react-native";
+import React, { Component } from 'react';
+import { Text, View, Image, Button, Dimensions } from 'react-native';
 
 class Payment extends Component {
   render() {
@@ -8,13 +8,13 @@ class Payment extends Component {
         <View style={styles.imageStyle}>
           <Button
             onPress={() => this.props.navigation.openDrawer()}
-            title="Back"
+            title='Back'
           />
 
           <Text style={styles.headerText}>Santa Clara Garage </Text>
 
           <Image
-            source={require("../images/icon.jpg")}
+            source={require('../images/icon.jpg')}
           />
         </View>
 
@@ -51,8 +51,8 @@ class Payment extends Component {
         </View>
         <View style={styles.payStyle}>
           <Button
-          title = "confirm"
-          onPress= {() => {}}
+          title='confirm'
+          onPress={() => {}}
           />
         </View>
       </View>
@@ -63,11 +63,11 @@ class Payment extends Component {
 const styles = {
   containerStyle: {
     flex: 1,
-    backgroundColor: "#fff",
-    flexDirection: "column",
-    justifyContent: "flex-start",
+    backgroundColor: '#fff',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
     marginTop: 15,
-    width:Dimensions.get('window').width,
+    width: Dimensions.get('window').width,
     height: Dimensions.get('window').height
   },
   headerStyle: {
@@ -81,21 +81,21 @@ const styles = {
     marginLeft: 130
   },
   imageStyle: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   headerText: {
     fontSize: 30,
-      color: "#379b8c",
-      fontWeight: "900"
+      color: '#379b8c',
+      fontWeight: '900'
   },
   detailText: {
     fontSize: 20
   },
   detailTextTitle: {
     fontSize: 20,
-    textDecorationLine: "underline"
+    textDecorationLine: 'underline'
   }
 };
 export default Payment;

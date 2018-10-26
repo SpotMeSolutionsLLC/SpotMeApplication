@@ -1,144 +1,136 @@
-import {
-  LOCATION_CHANGED,
-  CURRENT_LOCATION,
-  GET_INPUT,
-  GET_ADDRESS_PREDICTIONS,
-  GET_SELECTED_ADDRESS,
-  GET_SJ_API
-} from "./types";
-import firebase from 'firebase';
-
 // NOTE: need to be enabled in google api for places
-import RNGooglePlaces from "react-native-google-places";
+import RNGooglePlaces from 'react-native-google-places';
 
-export const locationChanged = text => {
-  return {
-    type: LOCATION_CHANGED,
-    payload: text
-  };
+import {
+    LOCATION_CHANGED,
+    CURRENT_LOCATION,
+    GET_INPUT,
+    GET_ADDRESS_PREDICTIONS,
+    GET_SELECTED_ADDRESS,
+    GET_SJ_API
+  } from './types';
+
+export const locationChange = text => {
+    return {
+        type: LOCATION_CHANGED,
+        payload: text
+    };
 };
 
-// get current gps location of the user
-//NOTE: if doesnt work , go to: simulator menu -> debug -> location -> apple 
+//Gets current gps location of the user
+// NOTE: if doesnt work , go to: simulator menu -> debug -> location -> apple
 export function getCurrentLocation() {
-  return dispatch => {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        dispatch({
-          type: CURRENT_LOCATION,
-          payload: position
-        });
-      },
-      error => console.log(error.message), {
-        enableHighAccuracy: true,
-        maximumAge: 60000,
-        timeout: 15000
-      }
-    );
-  };
+    return dispatch => {
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                dispatch({
+                    type: CURRENT_LOCATION,
+                    payload: position
+                });
+            },
+            error => console.log(error.message), {
+                enableHighAccuracy: true,
+                maximumAge: 60000,
+                timeout: 15000
+            }
+        );
+    };
 }
 
 export function getInputData(payload) {
-  return {
-    type: GET_INPUT,
-    payload: payload
-  };
+    return {
+        type: GET_INPUT,
+        payload
+    };
 }
 
-// get places prediction from google place API
+//Gets the place predictions from Google Places API
 export function getAddressPredictions(text) {
-  return dispatch => {
-    RNGooglePlaces.getAutocompletePredictions(text, {
-        country: "USA"
-      })
-      .then(results =>
-        dispatch({
-          type: GET_ADDRESS_PREDICTIONS,
-          payload: results
-        })
-      )
-      .catch(error => console.log(error.message));
-  };
+    return dispatch => {
+        RNGooglePlaces.getAutocompletePredictions(text, { country: 'USA' })
+        .then(results => dispatch({
+            type: GET_ADDRESS_PREDICTIONS,
+            payload: results
+        })).catch(error => console.log(error.message));
+    };
 }
 
-// get user-selected place from google place API and translate it into gps coordinate 
+//Gets the User-Selected place from the Google Places API and translates it into GPS coordinates
 export function getSelectedAddress(payload) {
-
-  return (dispatch) => {
-
-    RNGooglePlaces.lookUpPlaceByID(payload)
-      .then(results => {
-        dispatch({
-          type: GET_SELECTED_ADDRESS,
-          payload: results
-        });
-      })
-      .catch(error => console.log(error.message));
-  };
+    return (dispatch) => {
+        RNGooglePlaces.lookUpPlaceByID(payload)
+        .then(results => {
+            dispatch({
+                type: GET_SELECTED_ADDRESS,
+                payload: results
+            });
+        }).catch(error => console.log(error.message));
+    };
 }
 
-//get realtime San Jose Public Garage Information from their public API
+//Gets realtime data from San Jose Public Garage APIs
 export function fetchSanJoseAPI(garageNameFullText) {
-
-  return (dispatch) => {
-    fetch('http://api.data.sanjoseca.gov/api/v2/datastreams/PARKI-GARAG-DATA/data.json/?auth_key=974e8db20c97825c8fe806dcbeaa3889c7b8c921&limit=50')
-      .then((response) => response.json())
-      .then((responseJson) => {
-        dispatch({
-          type: GET_SJ_API,
-          payload: sjAPIFilter(responseJson.result.fArray, garageNameFullText)
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+    return (dispatch) => {
+        fetch('http://api.data.sanjoseca.gov/api/v2/datastreams/PARKI-GARAG-DATA/data.json/?auth_key=974e8db20c97825c8fe806dcbeaa3889c7b8c921&limit=50')
+        .then((response) => response.json())
+        .then((responseJson) => {
+            dispatch({
+                type: GET_SJ_API,
+                payload: sjAPIFilter(responseJson.result.fArray, garageNameFullText)
+            });
+        }).catch(error => console.log(error.message));
+    };
 }
 
-// sjData :  SJ API array of data object 
-// garageNameFullText : google search garage name 
-//  sjAPIFilter() : funtion will return garage detail object if match with google search
+// sjData :  SJ API array of data objects
+// garageNameFullText : google search garage names
+// sjAPIFilter() : function will return garage detail objects if the name matches with google search
 const sjAPIFilter = (sjData, garageNameFullText) => {
-  var stripHeaderArr = sjData.slice(4); // array of objects from san jose api garage
-  var arrOfString = garageNameFullText.split(',');
-  var garageName = arrOfString[0]; // garage name got from google api
+    const stripHeaderArr = sjData.slice(4); //array of objects from San Jose Garage API
+    const arrOfString = garageNameFullText.split(',');
+    const garageName = arrOfString[0];  //Garage name taken from google API
 
-  var garageDetail = { // initialize garage detail object for each search
-    garageName: 'no information',
-    garageStatus: 'no information',
-    garageAvailable: 'no information',
-  };
+    //initializes garage detail object for search
+    const garageDetail = {
+        garageName: 'no information',
+        garageStatus: 'no information',
+        garageAvailable: 'no information',
+    };
 
-  for (var i = 0; i < stripHeaderArr.length; i++) {
-    if (isSameName(stripHeaderArr[i].fStr, garageName)) { // if google search name match the name of sj api garage name => it is the correct data
-      garageDetail.garageName = stripHeaderArr[i].fStr;
-      garageDetail.garageStatus = stripHeaderArr[i + 1].fStr;
-      garageDetail.garageAvailable = stripHeaderArr[i + 2].fStr + '/' + stripHeaderArr[i + 3].fStr;
+    //If google search matches the name of the SJ API garage name => it is the correct data
+    //Gets the garage details by breaking down the string and then displaying specific chunks of data
+    for (let i = 0; i < stripHeaderArr.length(); i++) {
+        if (isSameName(stripHeaderArr[i].fStr, garageName)) {
+            garageDetail.garageName = stripHeaderArr[i].fStr;
+            garageDetail.garageStatus = stripHeaderArr[i + 1].fStr;
+            garageDetail.garageAvailable = stripHeaderArr[i + 2].fStr + '/' + stripHeaderArr[i + 3].fStr;
+        }
     }
-  }
-  return garageDetail; // return object to reducer
+    //returns object to reducer
+    return garageDetail;
 };
 
-// function to compare san jose garage name vs google garage name
-// RULE: if google garage name can match every word to san jose api => then it is TRUE
+//Function to compare San Jose API garage name to Google Search garage name 
+// RULE : if google garage name can match every word to SJ API => then it is TRUE
 const isSameName = (sjAPIName, googleMapName) => {
-  var isSame = 0;
-  var count = 0;
-  var arrOfsjAPIName = sjAPIName.split(' '); // split string to array to compare
-  var arrOfgoogleMapName = googleMapName.split(' '); // split string to array to compare
-  var lengOfsjAPIName = arrOfsjAPIName.length;
-  var lengOfgoogleMapName = arrOfgoogleMapName.length;
+    let isSame = 0;
+    let count = 0;
+    //Splits string of array to compare
+    const arrOfsjAPIName = sjAPIName.split(' ');
+    const arrOfgoogleMapName = googleMapName.split(' ');
+    const lengthOfsjAPIName = arrOfsjAPIName.length;
+    const lengthOfgoogleMapName = arrOfgoogleMapName.length;
 
-  for (var i = 0; i < lengOfsjAPIName; i++) {
-    var tempOfsjAPIName = arrOfsjAPIName[i];
-    for (var j = 0; j < lengOfgoogleMapName; j++) {
-      if (tempOfsjAPIName === arrOfgoogleMapName[j]) {
-        count++;
-      }
+    for (let i = 0; i < lengthOfsjAPIName; i++) {
+        const tempOfsjAPIName = arrOfgoogleMapName[i];
+        for (let j = 0; j < lengthOfgoogleMapName; j++) {
+            if (tempOfsjAPIName === arrOfgoogleMapName[j]) {
+                count++;
+            }
+        }
     }
-  }
-  if (count === lengOfsjAPIName) {
-    isSame = 1;
-  }
-  return isSame;
+    if (count === lengthOfsjAPIName) {
+        isSame = 1;
+    }
+    return isSame;
 };

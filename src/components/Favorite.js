@@ -1,15 +1,15 @@
-import React,{Component} from "react";
-import { Text, View, Image, Button, Dimensions } from "react-native";
+import React, { Component } from 'react';
+import { Text, View, Image, Button, Dimensions } from 'react-native';
 
-class Favorite extends Component{
-render(){
+class Favorite extends Component {
+render() {
   return (
     <View style={styles.containerStyle}>
 
     <View style={styles.imageStyle}>
     <Button
     onPress={() => this.props.navigation.openDrawer()}
-    title="Back"
+    title='Back'
     />
     <Text 
     style={styles.headerText}
@@ -17,7 +17,7 @@ render(){
     Favorite </Text>
 
       <Image
-        source={require("../images/icon.jpg")}
+        source={require('../images/icon.jpg')}
       />
     </View>
 
@@ -69,9 +69,9 @@ const styles = {
   containerStyle: {
     flex: 1,
     backgroundColor: '#fff',
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    width:Dimensions.get('window').width,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    width: Dimensions.get('window').width,
     height: Dimensions.get('window').height
 
   },
@@ -79,15 +79,15 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop:15
+    marginTop: 15
   },
   garageNameStyle: {
     flex: 0,
-    flexDirection: "row"
+    flexDirection: 'row'
   },
   headerStyle: {
     margin: 30,
-    flexDirection: "row"
+    flexDirection: 'row'
   },
   detailStyleLeftColumn: {
     width: 150,
@@ -102,8 +102,8 @@ const styles = {
   },
   headerText: {
       fontSize: 30,
-      color: "#379b8c",
-      fontWeight: "900"
+      color: '#379b8c',
+      fontWeight: '900'
   
   },
   detailText: {
@@ -111,7 +111,7 @@ const styles = {
   },
   subHeaderText: {
     fontSize: 25,
-    textDecorationLine: "underline"
+    textDecorationLine: 'underline'
   }
 };
 export default Favorite;

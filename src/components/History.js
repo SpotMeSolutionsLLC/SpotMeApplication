@@ -1,10 +1,9 @@
-import React, {Component} from "react";
-import { Text, View, Image, Button } from "react-native";
-class History extends Component {
-  render(){
+import React, { Component } from 'react';
+import { Text, View, Image, Button } from 'react-native';
 
+class History extends Component {
+  render() {
   return (
-    
     <View style={styles.containerStyle}>
     <View style={styles.imageStyle}>
     <Button
@@ -14,7 +13,7 @@ class History extends Component {
     <Text style={styles.headerText}>Recently Searched </Text>
 
       <Image
-        source={require("../images/icon.jpg")}
+        source={require('../images/icon.jpg')}
       />
     </View>
 
@@ -80,21 +79,21 @@ const styles = {
   containerStyle: {
     flex: 1,
     backgroundColor: '#fff',    
-    flexDirection: "column",
-    justifyContent: "flex-start",
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
   },
   garageNameStyle: {
-    flexDirection: "row"
+    flexDirection: 'row'
   },
   imageStyle: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginTop: 15
   },
   headerStyle: {
     margin: 10,
-    flexDirection: "row"
+    flexDirection: 'row'
   },
   detailStyleLeftColumn: {
     width: 110,
@@ -109,8 +108,8 @@ const styles = {
   },
   headerText: {
     fontSize: 30,
-    color: "#379b8c",
-    fontWeight: "900"
+    color: '#379b8c',
+    fontWeight: '900'
   },
   detailText: {
     fontSize: 20
@@ -118,7 +117,7 @@ const styles = {
   },
   subHeaderText: {
     fontSize: 25,
-    textDecorationLine: "underline"
+    textDecorationLine: 'underline'
   }
 };
 export default History;
