@@ -116,6 +116,7 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { connect } from 'react-redux';
 import SearchBox from './SearchBox';
 import DarkMapStyles from '../mapstyles/DarkMapStyles';
+import MidnightCommander from '../mapstyles/MidnightCommander';
 import {
   locationChanged,
   getCurrentLocation,
@@ -126,7 +127,7 @@ import {
 } from '../actions';
 
 import garageMarker from '../images/garage.png';
-import carMarker from '../images/carlocation.png';
+import carMarker from '../images/car.png';
 
 class MapScreen extends Component {
     componentWillMount() {
@@ -158,7 +159,8 @@ class MapScreen extends Component {
                 provider={PROVIDER_GOOGLE}
                 style={styles.map}
                 region={this.props.currentLocation}
-                customMapStyle={DarkMapStyles}
+                customMapStyle={MidnightCommander}
+                //customMapStyle={DarkMapStyles}
               >
                   <MapView.Marker 
                   coordinate={this.props.currentLocation}
@@ -171,7 +173,7 @@ class MapScreen extends Component {
                         coordinate={{ latitude: 37.339222, longitude: -121.880724, }}
                         //Can later pull coord, title, descrip from API when implemented
                         title={'SJSU North Parking Garage'}
-                        description={'The best parking garage! Sample: Spots Filled: 977/1490'}
+                        description={'Spots Filled: 977/1490'}
                         image={garageMarker}
                   />
                   <MapView.Marker
