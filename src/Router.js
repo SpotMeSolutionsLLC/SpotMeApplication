@@ -39,7 +39,6 @@ const RouterComponent = createDrawerNavigator({
   //drawerBackgroundColor: '#b2eae2',
   contentOptions: {
     activeBackgroundColor: '#b2eae2',
-
   }
 });
 

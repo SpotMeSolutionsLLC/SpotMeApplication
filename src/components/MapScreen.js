@@ -125,87 +125,13 @@ import {
   fetchSanJoseAPI
 } from '../actions';
 
-class MapScreen extends Component {
-    //Need constructor to initialize state and regionChange,
-    //otherwise will get type errors(not a function) 
-    /*constructor() {
-        super();
-        this.state = {
-            region: {
-                latitude: 37.3382082,
-                longitude: -121.8863286,
-                latitudeDelta: 0.05,
-                longitudeDelta: 0.05
-            },
-        };
-        this.onRegionChange = this.onRegionChange.bind(this);
-    }*/
+import garageMarker from '../images/garage.png';
+import carMarker from '../images/carlocation.png';
 
+class MapScreen extends Component {
     componentWillMount() {
       this.props.getCurrentLocation();
     }
-
-    /*onRegionChange(region) {
-        this.setState({ region });
-    }*/
-
-    //renders the map view
-    //renders markers in map view
-    //hard coded markers for now (proof of concept)
-    //will change to API called markers in future
-    /*render() {
-        return (
-
-          <View style={styles.outerContainer}>
-              <View style={styles.navigationBar}>
-                <Text style={styles.companyText}>SpotMeSolutions</Text>
-              </View>
-
-              <View style={styles.container}>
-                  <MapView
-                      style={styles.map}
-                      region={this.state.region}
-                      onRegionChange={this.onRegionChange}
-                  > 
-
-                  <SearchBox 
-                    getInputData={this.props.getInputData}
-                    getAddressPredictions={this.props.getAddressPredictions}
-                    inputData={this.props.inputData}
-                  />
-
-                  <MapView.Marker
-                      coordinate={{
-                          latitude: 37.339222,
-                          longitude: -121.880724,
-                      }}
-                      //Can later pull title and description from API when implemented
-                      title={'SJSU North Parking Garage'}
-                      description={'The best parking garage! Sample: Spots Filled: 977/1490'}
-                  />
-                  <MapView.Marker
-                      coordinate={{
-                          latitude: 37.332303,
-                          longitude: -121.882986,
-                      }}
-                      //Can later pull title and description from API when implemented
-                      title={'SJSU West Parking Garage'}
-                      description={'Spots Filled: 827/1135'}
-                  />
-                  <MapView.Marker
-                      coordinate={{
-                          latitude: 37.333088,
-                          longitude: -121.880797,
-                      }}
-                      //Can later pull title and description from API when implemented
-                      title={'SJSU South Parking Garage'}
-                      description={'Spots Filled: 1377/1500'}
-                  />
-                  </MapView>
-              </View>
-          </View>
-        );
-    }*/
 
     render() {
       return (
@@ -236,24 +162,29 @@ class MapScreen extends Component {
               >
                   <MapView.Marker 
                   coordinate={this.props.currentLocation}
-                  title={this.props.sanjose.garageName}
-                  description={this.props.sanjose.garageAvailable}
+                  //title={this.props.sanjose.garageName}
+                  description={'Current location'}
+                  image={carMarker}
+                  //description={this.props.sanjose.garageAvailable}
                   />
                   <MapView.Marker
                         coordinate={{ latitude: 37.339222, longitude: -121.880724, }}
                         //Can later pull coord, title, descrip from API when implemented
                         title={'SJSU North Parking Garage'}
                         description={'The best parking garage! Sample: Spots Filled: 977/1490'}
+                        image={garageMarker}
                   />
                   <MapView.Marker
                       coordinate={{ latitude: 37.332303, longitude: -121.882986, }}
                       title={'SJSU West Parking Garage'}
                       description={'Spots Filled: 827/1135'}
+                      image={garageMarker}
                   />
                   <MapView.Marker
                       coordinate={{ latitude: 37.333088, longitude: -121.880797, }}
                       title={'SJSU South Parking Garage'}
                       description={'Spots Filled: 1377/1500'}
+                      image={garageMarker}
                   />
               </MapView>
             )}
@@ -337,6 +268,26 @@ class MapScreen extends Component {
       fontSize: 18,
       lineHeight: 23,
       flex: 2
+    },
+    locationRadiusMarker: {
+      height: 50,
+      width: 50,
+      borderRadius: 50 / 2,
+      overflow: 'hidden',
+      backgroundColor: 'rgba(0, 112, 255, 0.3)',
+      borderWidth: 1,
+      borderColor: 'rgba(0, 122, 255, 0.3',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    locationMarker: {
+      height: 20,
+      width: 20,
+      borderWidth: 3,
+      borderColor: 'white',
+      borderRadius: 20 / 2,
+      overflow: 'hidden',
+      backgroundColor: '#007AFF'
     }
   };
 
@@ -356,7 +307,7 @@ class MapScreen extends Component {
     getInputData,
     getAddressPredictions,
     getSelectedAddress,
-    fetchSanJoseAPI
+    fetchSanJoseAPI,
   };
 
 //export default MapScreen;
