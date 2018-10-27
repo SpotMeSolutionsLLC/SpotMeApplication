@@ -115,7 +115,7 @@ import { StyleSheet, View, Text, TouchableHighlight, Image } from 'react-native'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { connect } from 'react-redux';
 import SearchBox from './SearchBox';
-import DarkMapStyles from '../mapstyles/DarkMapStyles';
+//import DarkMapStyles from '../mapstyles/DarkMapStyles';
 import MidnightCommander from '../mapstyles/MidnightCommander';
 import {
   locationChanged,
@@ -127,6 +127,7 @@ import {
 } from '../actions';
 
 import garageMarker from '../images/garage.png';
+//import carMarker from '../images/car_icon.png';
 import carMarker from '../images/car.png';
 
 class MapScreen extends Component {
@@ -190,13 +191,11 @@ class MapScreen extends Component {
                   />
               </MapView>
             )}
-
             <SearchBox
               getInputData={this.props.getInputData}
               getAddressPredictions={this.props.getAddressPredictions}
               inputData={this.props.inputData}
             />
-            
           </View>
         </View>
       );
@@ -270,26 +269,6 @@ class MapScreen extends Component {
       fontSize: 18,
       lineHeight: 23,
       flex: 2
-    },
-    locationRadiusMarker: {
-      height: 50,
-      width: 50,
-      borderRadius: 50 / 2,
-      overflow: 'hidden',
-      backgroundColor: 'rgba(0, 112, 255, 0.3)',
-      borderWidth: 1,
-      borderColor: 'rgba(0, 122, 255, 0.3',
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-    locationMarker: {
-      height: 20,
-      width: 20,
-      borderWidth: 3,
-      borderColor: 'white',
-      borderRadius: 20 / 2,
-      overflow: 'hidden',
-      backgroundColor: '#007AFF'
     }
   };
 
