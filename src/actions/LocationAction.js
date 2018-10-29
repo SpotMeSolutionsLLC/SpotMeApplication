@@ -1,5 +1,5 @@
 // NOTE: need to be enabled in google api for places
-import RNGooglePlaces from 'react-native-google-places';
+//import RNGooglePlaces from 'react-native-google-places';
 
 import {
     LOCATION_CHANGED,
@@ -10,12 +10,18 @@ import {
     GET_SJ_API
   } from './types';
 
+  import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+  import React from 'react';
+  
+  const places = <GooglePlacesAutocomplete query={{ key: 'AIzaSyDrm8FcLd_izqNH7fYeG3RQs_tuswHtUrM' }} />;  
+
 export const locationChange = text => {
     return {
         type: LOCATION_CHANGED,
         payload: text
     };
 };
+
 
 //Gets current gps location of the user
 // NOTE: if doesnt work , go to: simulator menu -> debug -> location -> apple
@@ -44,6 +50,7 @@ export function getInputData(payload) {
     };
 }
 
+/*
 //Gets the place predictions from Google Places API
 export function getAddressPredictions(text) {
     return dispatch => {
@@ -66,7 +73,7 @@ export function getSelectedAddress(payload) {
             });
         }).catch(error => console.log(error.message));
     };
-}
+}*/
 
 //Gets realtime data from San Jose Public Garage APIs
 export function fetchSanJoseAPI(garageNameFullText) {
