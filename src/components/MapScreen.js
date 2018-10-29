@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableHighlight, Image, TextInput } from 'react-native';
+import { Alert, StyleSheet, View, Text, TouchableHighlight, Image } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { connect } from 'react-redux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -76,8 +76,7 @@ class MapScreen extends Component {
                       description={'Spots Filled: 1377/1500'}
                       image={garageMarker}
                   />
-              </MapView>
-            )}
+
 
               <GooglePlacesAutocomplete
                 placeholder='Search a location or garage!' 
@@ -85,11 +84,17 @@ class MapScreen extends Component {
                 autoFocus={false}
                 listViewDisplayed='auto'
                 returnKeyType={'default'}
-                fetchDetails={true}
+                fetchDetails
                 renderDescription={row => row.description}
                 onPress={(data, details = null) => {
                   console.log(data, details);
+                  console.log(details.address_components);
+                  console.log(details.geometry.location);
+                  console.log(details.geometry.location.lat);
+                  console.log(details.geometry.location.lng);
+                  return details;
                 }}
+
                 getDefaultValue={() => ''}
                 query={{ key: 'AIzaSyDrm8FcLd_izqNH7fYeG3RQs_tuswHtUrM' }}
                 styles={{
@@ -108,9 +113,11 @@ class MapScreen extends Component {
                     fontSize: 18,
                     //color: 'white'
                   },
-                  
                 }}
               />
+              </MapView>
+            )}
+
               
           </View>
         </View>
