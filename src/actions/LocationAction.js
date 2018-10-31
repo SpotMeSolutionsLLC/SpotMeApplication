@@ -13,7 +13,7 @@ import {
   import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
   import React from 'react';
   
-  const places = <GooglePlacesAutocomplete query={{ key: 'AIzaSyDrm8FcLd_izqNH7fYeG3RQs_tuswHtUrM' }} />;  
+const places = <GooglePlacesAutocomplete query={{ key: 'AIzaSyDrm8FcLd_izqNH7fYeG3RQs_tuswHtUrM' }} />;  
 
 export const locationChange = text => {
     return {
@@ -49,6 +49,28 @@ export function getInputData(payload) {
         payload
     };
 }
+
+//New functions with React Native Google Places Autocomplete
+export function getAddressPredictions(query) {
+    return dispatch => {
+        places.fetchDetails(query)
+        .then(results => dispatch({
+            type: GET_ADDRESS_PREDICTIONS,
+            payload: results
+        })).catch(error => console.log(error.message));
+    };
+}
+
+export function getSelectedAddress(payload) {
+    return dispatch => {
+        places.fetchDetails(payload)
+        .then(results => dispatch({
+            type: GET_SELECTED_ADDRESS,
+            payload: results
+        })).catch(error => console.log(error.message));
+    };
+}
+
 
 /*
 //Gets the place predictions from Google Places API

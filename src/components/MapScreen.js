@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Alert, StyleSheet, View, Text, TouchableHighlight, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableHighlight, Image } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { connect } from 'react-redux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-//import SearchBox from './SearchBox';
+import SearchBox from './SearchBox';
 //import DarkMapStyles from '../mapstyles/DarkMapStyles';
 import MidnightCommander from '../mapstyles/MidnightCommander';
 import {
@@ -19,12 +19,27 @@ import garageMarker from '../images/garage.png';
 //import carMarker from '../images/car_icon.png';
 import carMarker from '../images/car.png';
 
+
 class MapScreen extends Component {
+    constructor(props) {
+      super(props);
+      
+      this.state = {
+        lat: this.currentLocation.lat,
+        long: this.currentLocation.long
+      };
+    }
+
     componentWillMount() {
       this.props.getCurrentLocation();
     }
 
+    componentDidMount() {
+      console.log(this.state);
+    }
+
     render() {
+      const currentInstance = this;
       return (
         <View style={styles.outerContainer}>
           <View style={styles.navigationBar}>
@@ -46,17 +61,23 @@ class MapScreen extends Component {
               <MapView
                 provider={PROVIDER_GOOGLE}
                 style={styles.map}
-                region={this.props.currentLocation}
+                region={{
+                  latitude: currentInstance.state.lat,
+                  longitude: currentInstance.state.long,
+                  latitudeDelta: 0.0112,
+                  longitudeDelta: 0.01412
+                }}
                 customMapStyle={MidnightCommander}
                 //customMapStyle={DarkMapStyles}
               > 
+
                   <MapView.Marker 
-                  coordinate={this.props.currentLocation}
-                  //title={this.props.sanjose.garageName}
-                  description={'Current location'}
-                  image={carMarker}
+                  coordinate={{ latitude: currentInstance.state.lat, longitude: currentInstance.state.long }}
+                  description={currentInstance.state.description}
+                  //image={carMarker}
                   //description={this.props.sanjose.garageAvailable}
                   />
+
                   <MapView.Marker
                         coordinate={{ latitude: 37.339222, longitude: -121.880724, }}
                         //Can later pull coord, title, descrip from API when implemented
@@ -77,26 +98,37 @@ class MapScreen extends Component {
                       image={garageMarker}
                   />
 
-
               <GooglePlacesAutocomplete
                 placeholder='Search a location or garage!' 
                 minLength={2} //Minimum length of text entered for autocomplete results
                 autoFocus={false}
-                listViewDisplayed='auto'
+                listViewDisplayed='false'
                 returnKeyType={'default'}
                 fetchDetails
                 renderDescription={row => row.description}
                 onPress={(data, details = null) => {
                   console.log(data, details);
-                  console.log(details.address_components);
-                  console.log(details.geometry.location);
-                  console.log(details.geometry.location.lat);
-                  console.log(details.geometry.location.lng);
+                  //console.log(details.address_components);
+                  //console.log(details.geometry.location);
+                  //console.log(details.geometry.location.lat);
+                  //console.log(details.geometry.location.lng);
+                  //console.log(data.description);
+                  //console.log('Reached');
+              
+                  currentInstance.setState({
+                    //Latitude and Longitude
+                    lat: details.geometry.location.lat,
+                    long: details.geometry.location.lng,
+                    //Title
+                    description: data.description
+                  });
+
+                  // console.log("Lat" + currentInstance.state.lat);
+
                   return details;
                 }}
-
                 getDefaultValue={() => ''}
-                query={{ key: 'AIzaSyDrm8FcLd_izqNH7fYeG3RQs_tuswHtUrM' }}
+                query={{ key: 'AIzaSyAknyin7pzbkZ89IRg6QeQ0gC2sVjSKRpY' }}
                 styles={{
                   textInputContainer: {
                     width: '100%',
@@ -115,10 +147,9 @@ class MapScreen extends Component {
                   },
                 }}
               />
+
               </MapView>
             )}
-
-              
           </View>
         </View>
       );
