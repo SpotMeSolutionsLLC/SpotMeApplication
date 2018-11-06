@@ -158,7 +158,7 @@ class MapScreen extends Component {
               //props error on region, expected number but got object
               //error doesnt have big effect/matter but gives a warning
               region={this.state.screenCoord}
-             // customMapStyle={MidnightCommander}
+             //  customMapStyle={MidnightCommander}
               onLayout={this.onMapLayout}
               ref={(instance) => {
                 this.mapRef = instance;
