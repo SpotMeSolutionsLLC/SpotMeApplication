@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, View, Text, TouchableHighlight, Image } from 'react-native';
-import MapView, { PROVIDER_GOOGLE , Marker, AnimatedRegion, Region} from 'react-native-maps';
+import { 
+  Dimensions, 
+  StyleSheet, 
+  View, 
+  Text, 
+  TouchableHighlight, 
+  Image,
+  Platform 
+} from 'react-native';
+import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion } from 'react-native-maps';
+import { Constants, Location, Permissions } from 'expo';
 import { connect } from 'react-redux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 //import DarkMapStyles from '../mapstyles/DarkMapStyles';
@@ -14,83 +23,93 @@ import {
   fetchSanJoseAPI
 } from '../actions';
 
-import garageMarker from '../images/garage.png';
+import MapContainer from "./MapContainer";
+
+//import garageMarker from '../images/garage.png';
 //import carMarker from '../images/car_icon.png';
 import carMarker from '../images/car.png';
 import banana from '../images/banana.png';
 import spotMarker from '../images/spotmarker.png';
-
-// Can not access coord outside of render
-//let coord = this.props.currentLocation;
 
 class MapScreen extends Component {
   constructor(props) {
       super(props);
       this.state = {
         isMapReady: false,
+        //Initial map region
         coordinate: new AnimatedRegion({
-          latitude: 37.339222,
-          longitude: -121.880724,
+          latitude: 0,
+          longitude: 0,
         }),
+        //Updated map region based on search
         screenCoord: new AnimatedRegion({
           latitude: 37.339222,
           longitude: -121.880724,
-          latitudeDelta: 1,
-          longitudeDelta: 1
-        })
+          latitudeDelta: 0.00112,
+          longitudeDelta: 0.001412
+        }),
       };
+      // this.getLocationAsync();
+
     }
 
+    //Calls the function to get current location
+    // componentDidMount() {
+    //   if (Platform.OS === 'android' && !Constants.isDevice) {
+    //     this.setState({
+    //       errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
+    //     });
+    //   } else {
+    //     this.getLocationAsync();
+    //   }
+    // }
+    
 
-    // componentWillMount() {
-    //   this.props.getCurrentLocation();
+    //If the map ready boolean is true, the state of the map is changed (Redirected)
+    onMapLayout = () => {
+      this.setState({ isMapReady: true });
+    }
 
+    //Gets the current location and changes the state of current location
+    // getLocationAsync = async () => {
+    //   const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    //   if (status !== 'granted') {
+    //     this.setState({
+    //       errorMessage: 'Permission to access location was denied',
+    //     });
+    //   }
+  
+    //   let location = await Location.getCurrentPositionAsync({});
+    //   console.log(location);
+
+    //   this.state.currentLocation = location;
+
+    //   this.changeLoc(location.coords.latitude, location.coords.longitude);
+      
+    // };
+
+    //Set to change the location based on the new coordinates that are held
+    // changeLoc(lat, lng) {
+    //   const newCoord = {
+    //     latitude: lat,
+    //     longitude: lng
+    //   };
+
+    //   this.state.screenCoord = new AnimatedRegion({
+    //       latitude: lat,
+    //       longitude: lng,
+    //       latitudeDelta: 0.0312,
+    //       longitudeDelta: 0.03412
+    //   });
+    //   //Used for holding latitude and longitude of a loaded location
+
+    //   //Redirects map to new location (animated load)
+    //   this.state.coordinate.timing(newCoord).start();
+    //   this.mapRef.animateToRegion(this.state.screenCoord, 500);
     // }
 
-    componentDidMount() {
-      console.log(this.state);
-    }
-
-    onMapLayout = () => {
-      this.setState({isMapReady: true});
-    }
-
-    changeLoc(lat, lng){
-      var newCoord = {
-        latitude: lat,
-        longitude: lng
-      };
-
-      var reg = new AnimatedRegion({
-        latitude: lat,
-        longitude: lng,
-        latitudeDelta: 1,
-        longitudeDelta: 1
-      });
-
-      this.state.coordinate.timing(newCoord).start();
-      this.mapRef.animateToRegion(reg, 500);
-    }
-
     render() {
-      //console.log(coord);
-      const coord = this.props.currentLocation;
-      console.log(coord);
-      //console.log(coord.latitude);
-      //console.log(coord.longitude);
-      /*
-
-      //Try to set state based on current location coords
-      //TypeError:
-      //coord.setState is not a function, coord.setState is undefined 
-
-      coord.setState({
-        //Latitude and Longitude
-        lat: coord.latitude,
-        long: coord.longitude
-      });
-      */
-      const currentInstance = this;
+      
       return (
         <View style={styles.outerContainer}>
           <View style={styles.navigationBar}>
@@ -106,53 +125,69 @@ class MapScreen extends Component {
   
             <Image source={require('../images/icon.jpg')} />
           </View>
-          {console.log("test")}
-          <View style={styles.container}>
 
-            <MapView
+          <View style={styles.container}>
+            {/* <MapView
               provider={PROVIDER_GOOGLE}
               style={styles.map}
+              //props error on region, expected number but got object
+              //error doesnt have big effect/matter but gives a warning
               region={this.state.screenCoord}
               // customMapStyle={MidnightCommander}
-              onLayout = {this.onMapLayout}
-              ref = {(instance) => {
-                this.mapRef = instance;
-              }}
-              //customMapStyle={DarkMapStyles}
+              // onLayout={this.onMapLayout}
+              // ref={(instance) => {
+              //   this.mapRef = instance;
+              // }}
+
             >
+            {console.log(this.state.description)}
               { this.state.isMapReady && 
                 <View >
                   <Marker.Animated 
                     coordinate={this.state.coordinate}
-                    description={this.state.description}
-                    
+                    //Description is not being displayed
+                    //description={this.state.description}
+                    description={'Your Destination'}
+                    image={banana}
+                    style={styles.markerStyle}
+                  />
+                  <Marker 
+                    coordinate={this.state.currentLocation.coords}
+                    description={'Current Location'}
+                    image={carMarker}
+                    style={styles.locationStyle}
                   />
                   <Marker
                     coordinate={{ latitude: 37.339222, longitude: -121.880724, }}
                     //Can later pull coord, title, descrip from API when implemented
                     title={'SJSU North Parking Garage'}
                     description={'Spots Filled: 977/1490'}
-                    image={garageMarker}
+                    image={spotMarker}
+                    style={styles.markerStyle}
                   />
                   <Marker
                     coordinate={{ latitude: 37.332303, longitude: -121.882986, }}
                     title={'SJSU West Parking Garage'}
                     description={'Spots Filled: 827/1135'}
-                    image={garageMarker}
+                    image={spotMarker}
+                    style={styles.markerStyle}
                   />
                   <Marker
                     coordinate={{ latitude: 37.333088, longitude: -121.880797, }}
                     title={'SJSU South Parking Garage'}
                     description={'Spots Filled: 1377/1500'}
-                    image={garageMarker}
+                    image={spotMarker}
+                    style={styles.markerStyle}
                   />
-                    
-                </View>
-                  
+                </View> 
               }
-              
-            </MapView>
+            </MapView> */}
 
+            <MapContainer ref={ instance => {
+              this.mapRef = instance;
+            }} />
+            
+            
             <GooglePlacesAutocomplete 
               placeholder='Search a location or garage!' 
               minLength={2} //Minimum length of text entered for autocomplete results
@@ -162,9 +197,7 @@ class MapScreen extends Component {
               fetchDetails
               renderDescription={row => row.description}
               onPress={(data, details = null) => {
-
-                this.changeLoc(details.geometry.location.lat,details.geometry.location.lng);
-
+                this.mapRef.changeLocation(details.geometry.location.lat, details.geometry.location.lng);
                 return details;
               }}
               getDefaultValue={() => ''}
@@ -177,11 +210,11 @@ class MapScreen extends Component {
                   zIndex: 99
                 },
                 listView: {
-                  position:"absolute",
+                  position: 'absolute',
                   backgroundColor: 'white',
                   //backgroundColor: 'transparent',
-                  // height: Dimensions.get("window").height,
-                  zIndex:99,
+                  // height: Dimensions.get('window').height,
+                  zIndex: 99,
                   top: 40
                 },
                 description: {
@@ -191,15 +224,22 @@ class MapScreen extends Component {
                   //color: 'white'
                 },
               }}
-            />
-
-            
-            
+            /> 
           </View>
-
-
         </View>
       );
+      // return(
+      //   <MapView
+      //       provider={PROVIDER_GOOGLE}
+      //       style={{
+      //         ...StyleSheet.absoluteFillObject
+      //       }}
+      //       region={this.state.screenCoord}
+
+
+      //       >
+      //   </MapView>
+      // )
     }
 }
 
@@ -212,8 +252,9 @@ class MapScreen extends Component {
     map: {
       ...StyleSheet.absoluteFillObject,
       flex: 1,
-      width: Dimensions.get("window").width,
-      height: Dimensions.get("window").height
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height,
+      zIndex: 99,
     },
     outerContainer: {
       flex: 1,
@@ -221,7 +262,7 @@ class MapScreen extends Component {
       justifyContent: 'flex-start',
       borderRadius: 2,
       borderWidth: 2,
-      borderColor: "#d6d7da"
+      borderColor: '#d6d7da'
     },
     companyText: {
       fontSize: 30,
@@ -267,6 +308,12 @@ class MapScreen extends Component {
       lineHeight: 23,
       flex: 2
     },
+    locationStyle: {
+      zIndex: 99
+    },
+    markerStyle: {
+      zIndex: 98
+    }
   };
 
   const mapStateToProps = ({ loc }) => {
@@ -288,5 +335,4 @@ class MapScreen extends Component {
     fetchSanJoseAPI,
   };
 
-//export default MapScreen;
 export default connect(mapStateToProps, mapActionCreators)(MapScreen);
