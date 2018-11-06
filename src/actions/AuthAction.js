@@ -7,7 +7,7 @@ import {
   LOGIN_USER_FAIL,
   LOGIN_USER
  } from './types';
- //import { MapScreen } from '../components/MapScreen';
+ //import { MadsadaspScreen } from '../components/MapScreen';
  // npm install --save redux-thunk
  export const emailChanged = (text) => {
   return {
