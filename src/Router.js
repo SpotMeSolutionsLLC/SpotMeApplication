@@ -5,7 +5,7 @@ import Favorite from './components/Favorite';
 import History from './components/History';
 import MapScreen from './components/MapScreen';
 import MenuScreen from './components/MenuScreen';
-
+//import Testing from './components/SearchResults';
 
 const RouterComponent = createDrawerNavigator({
   Home: {
@@ -32,6 +32,10 @@ const RouterComponent = createDrawerNavigator({
     path: '/sent',
     screen: MenuScreen
   },
+  /*Testing: {
+    path: '/sent',
+    screen: Testing
+  },*/
 }, {
   initialRouteName: 'Home',
   drawerPosition: 'left',

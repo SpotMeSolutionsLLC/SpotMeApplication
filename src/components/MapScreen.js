@@ -8,12 +8,14 @@ import {
   Image,
   Platform 
 } from 'react-native';
+import axios from 'axios';
 import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion } from 'react-native-maps';
 import { Constants, Location, Permissions } from 'expo';
 import { connect } from 'react-redux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-//import DarkMapStyles from '../mapstyles/DarkMapStyles';
+import DarkMapStyles from '../mapstyles/DarkMapStyles';
 import MidnightCommander from '../mapstyles/MidnightCommander';
+
 import {
   locationChanged,
   getCurrentLocation,
@@ -46,6 +48,21 @@ class MapScreen extends Component {
           latitudeDelta: 0.01412,
           longitudeDelta: 0.013412
         }),
+        garageInfo: {
+          fourthStreetGarageName: '',
+          //fourthStreetGarageStatus: '',
+          fourthStreetGarageSpaces: '',
+          cityHallGarageName: '',
+          cityHallGarageSpaces: '',
+          thirdStreetGarageName: '',
+          thirdStreetGarageSpaces: '',
+          marketSanPedroSquareGarageName: '',
+          marketSanPedroSquareGarageSpaces: '',
+          conventionCenterGarageName: '',
+          conventionCenterGarageSpaces: '',
+          secondSanCarlosGarageName: '',
+          secondSanCarlosGarageSpaces: ''
+        }
       };
     }
     //The state of current location
@@ -63,6 +80,29 @@ class MapScreen extends Component {
       } else {
         this.getLocationAsync();
       }
+
+      //Gets the data for SJ Garages from SJ API
+      axios.get('http://api.data.sanjoseca.gov/api/v2/datastreams/PARKI-GARAG-DATA/data.json/?auth_key=974e8db20c97825c8fe806dcbeaa3889c7b8c921&limit=50').then(instance => {
+        //console.log(instance.data.result.fArray);
+        this.setState({
+          garageInfo: {
+            fourthStreetGarageName: instance.data.result.fArray[4].fStr,
+            //fourthStreetGarageStatus: 'Status: ' + instance.data.result.fArray[5].fStr,
+            fourthStreetGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[6].fStr + '/' + instance.data.result.fArray[7].fStr,
+            cityHallGarageName: instance.data.result.fArray[8].fStr,
+            cityHallGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[6].fStr + '/' + instance.data.result.fArray[7].fStr,
+            thirdStreetGarageName: instance.data.result.fArray[12].fStr,
+            thirdStreetGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[14].fStr + '/' + instance.data.result.fArray[15].fStr,
+            marketSanPedroSquareGarageName: instance.data.result.fArray[16].fStr,
+            marketSanPedroSquareGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[18].fStr + '/' + instance.data.result.fArray[19].fStr,
+            conventionCenterGarageName: instance.data.result.fArray[20].fStr,
+            conventionCenterGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[22].fStr + '/' + instance.data.result.fArray[23].fStr,
+            secondSanCarlosGarageName: instance.data.result.fArray[24].fStr,
+            secondSanCarlosGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[26].fStr + '/' + instance.data.result.fArray[27].fStr
+          }
+        });
+        this.markerInstace.setState();
+      });
     }
     
 
@@ -118,7 +158,11 @@ class MapScreen extends Component {
       this.mapRef.animateToRegion(this.state.screenCoord, 500);
     }
 
+    
     render() {
+      //Pulls data directly from San Jose Garage API
+      
+
       let longitude = 'Waiting..';
       let latitude = 'Waiting..';
       if (this.state.errorMessage) {
@@ -134,7 +178,7 @@ class MapScreen extends Component {
         //int long = parseInt(longitude);
         //int lat = parseInt(latitude);
       }
-
+      
       return (
         <View style={styles.outerContainer}>
           <View style={styles.navigationBar}>
@@ -158,6 +202,7 @@ class MapScreen extends Component {
               //props error on region, expected number but got object
               //error doesnt have big effect/matter but gives a warning
               region={this.state.screenCoord}
+              //customMapStyle={DarkMapStyles}
               customMapStyle={MidnightCommander}
               onLayout={this.onMapLayout}
               ref={(instance) => {
@@ -175,12 +220,14 @@ class MapScreen extends Component {
                     image={banana}
                     style={styles.markerStyle}
                   />
+
                   <Marker 
                     coordinate={{ latitude, longitude }}
                     description={'Current Location'}
                     image={carMarker}
                     style={styles.locationStyle}
                   />
+
                   <Marker
                     coordinate={{ latitude: 37.339222, longitude: -121.880724, }}
                     //Can later pull coord, title, descrip from API when implemented
@@ -203,6 +250,51 @@ class MapScreen extends Component {
                     image={spotMarker}
                     style={styles.markerStyle}
                   />
+
+
+                  <Marker 
+                    coordinate={{ latitude: 37.336537, longitude: -121.886143 }}
+                    title={this.state.garageInfo.fourthStreetGarageName}
+                    description={this.state.garageInfo.fourthStreetGarageSpaces}
+                    image={spotMarker}
+                    style={styles.markerStyle}
+                  />
+                  <Marker 
+                    coordinate={{ latitude: 37.337845, longitude: -121.884707 }}
+                    title={this.state.garageInfo.cityHallGarageName}
+                    description={this.state.garageInfo.cityHallGarageSpaces}
+                    image={spotMarker}
+                    style={styles.markerStyle}
+                  />
+                  <Marker 
+                    coordinate={{ latitude: 37.336572, longitude: -121.888315 }}
+                    title={this.state.garageInfo.thirdStreetGarageName}
+                    description={this.state.garageInfo.thirdStreetGarageSpaces}
+                    image={spotMarker}
+                    style={styles.markerStyle}
+                  />
+                  <Marker 
+                    coordinate={{ latitude: 37.336345, longitude: -121.892787 }}
+                    title={this.state.garageInfo.marketSanPedroSquareGarageName}
+                    description={this.state.garageInfo.marketSanPedroSquareGarageSpaces}
+                    image={spotMarker}
+                    style={styles.markerStyle}
+                  />
+                  <Marker 
+                    coordinate={{ latitude: 37.329989, longitude: -121.887033 }}
+                    title={this.state.garageInfo.conventionCenterGarageName}
+                    description={this.state.garageInfo.conventionCenterGarageSpaces}
+                    image={spotMarker}
+                    style={styles.markerStyle}
+                  />
+                  <Marker 
+                    coordinate={{ latitude: 37.331803, longitude: -121.884765 }}
+                    title={this.state.garageInfo.secondSanCarlosGarageName}
+                    description={this.state.garageInfo.secondSanCarlosGarageSpaces}
+                    image={spotMarker}
+                    style={styles.markerStyle}
+                  />
+                  
                 </View> 
               }
             </MapView>
