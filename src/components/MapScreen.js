@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { 
-  Dimensions, 
-  StyleSheet, 
-  View, 
-  Text, 
-  TouchableHighlight, 
+import {
+  Dimensions,
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
   Image,
-  Platform 
+  Platform
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion } from 'react-native-maps';
 import { Constants, Location, Permissions } from 'expo';
@@ -64,7 +64,7 @@ class MapScreen extends Component {
         this.getLocationAsync();
       }
     }
-    
+
 
     //If the map ready boolean is true, the state of the map is changed (Redirected)
     onMapLayout = () => {
@@ -79,7 +79,7 @@ class MapScreen extends Component {
           errorMessage: 'Permission to access location was denied',
         });
       }
-  
+
       //Changes the location to be current location
       const location = await Location.getCurrentPositionAsync({});
       console.log(location);
@@ -143,11 +143,11 @@ class MapScreen extends Component {
               underlayColor={'white'}
             >
               <Image source={require('../images/menu.png')} />
-            
+
             </TouchableHighlight>
-  
+
             <Text style={styles.companyText}>SpotMeSolutions</Text>
-  
+
             <Image source={require('../images/icon.jpg')} />
           </View>
 
@@ -165,9 +165,9 @@ class MapScreen extends Component {
               }}
             >
             {console.log(this.state.description)}
-              { this.state.isMapReady && 
+              { this.state.isMapReady &&
                 <View >
-                  <Marker.Animated 
+                  <Marker.Animated
                     coordinate={this.state.coordinate}
                     //Description is not being displayed
                     //description={this.state.description}
@@ -175,9 +175,9 @@ class MapScreen extends Component {
                     image={banana}
                     style={styles.markerStyle}
                   />
-                  <Marker 
+                  <Marker
                     coordinate={{ latitude, longitude }}
-                    description={'Current Location'}
+                    //description={'Current Location'}
                     image={carMarker}
                     style={styles.locationStyle}
                   />
@@ -203,12 +203,12 @@ class MapScreen extends Component {
                     image={spotMarker}
                     style={styles.markerStyle}
                   />
-                </View> 
+                </View>
               }
             </MapView>
-            
-            <GooglePlacesAutocomplete 
-              placeholder='Search a location or garage!' 
+
+            <GooglePlacesAutocomplete
+              placeholder='Search a location or garage!'
               minLength={2} //Minimum length of text entered for autocomplete results
               autoFocus={false}
               listViewDisplayed='false'
@@ -243,7 +243,7 @@ class MapScreen extends Component {
                   //color: 'white'
                 },
               }}
-            /> 
+            />
           </View>
         </View>
       );
@@ -286,7 +286,7 @@ class MapScreen extends Component {
     },
     mapAndSearchBarContainer: {
       alignItems: 'center',
-  
+
       height: '90%',
       width: '100%'
     },
@@ -342,4 +342,3 @@ class MapScreen extends Component {
   };
 
 export default connect(mapStateToProps, mapActionCreators)(MapScreen);
-

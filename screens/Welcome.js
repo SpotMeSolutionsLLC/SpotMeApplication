@@ -11,23 +11,23 @@ import LogoTitle from '../components/LogoTitle';
 //import what from '../images/what.png';
 
 const SLIDE_DATA = [
-  { 
+  {
     text: 'What is SpotMe',
     subText: 'A parking app that tells you where parking is available in real-time',
     image: require('../images/what.png'),
-    color: '#EAF3FE' 
+    color: '#EAF3FE'
   },
-  { 
-    text: 'How it Works', 
+  {
+    text: 'How it Works',
     subText: 'Sensors in garages count traffic flow and stream live data to the app',
     image: require('../images/real_time.png'),
-    color: '#EAF3FE' 
+    color: '#EAF3FE'
   },
-  { 
+  {
     text: 'Our Mission',
-    subText: 'Making parking easier for everyone', 
+    subText: 'Making parking easier for everyone',
     image: require('../images/mission.png'),
-    color: '#EAF3FE' 
+    color: '#EAF3FE'
   }
 ];
 
@@ -56,14 +56,14 @@ class WelcomeScreen extends Component {
         <View style={{ alignSelf: 'stretch', flexDirection:'row', justifyContent: 'space-around', margin: 30}} >
           {/* <Button title="Sign In" onPress={() => this.props.navigation.navigate('Signin')} />
           <Button title="Get Started" onPress={() => this.props.navigation.navigate('Signup')} /> */}
-          <Button 
-            onPress={() => this.props.navigation.navigate('Signin')}
+          <Button
+            onPress={() => this.props.navigation.navigate('App')}
             bordered dark
             style={{ width: 120, justifyContent: 'center'}}
           >
             <Text>Sign In</Text>
           </Button>
-          <Button 
+          <Button
             onPress={() => this.props.navigation.navigate('Signup')}
             style={{ width: 120, justifyContent: 'center', backgroundColor: '#1AE6CB' }}
           >
