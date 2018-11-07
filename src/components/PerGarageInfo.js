@@ -1,12 +1,15 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { GarageBottomLine } from './GarageBottomLine';
+import { colors } from 'react-native-elements';
+
 
 
 class PerGarageInfo extends React.Component {
     constructor(props) {
         super(props);
     }
+
 
     render() {
         return (
@@ -24,20 +27,36 @@ class PerGarageInfo extends React.Component {
                     </Text>
                 </View>
 
-                <View style={styles.rightSectionStyle}>
+                <View style={[styles.rightSectionStyle,{
+                    justifyContent: "center",
+                    alignItems: "center",
+                }]}>
                     
 
 
                     <View style={[styles.generalStyle, {
-                        alignContent: "center"
+                        alignItems: "center",
+                        
                     }]}>
                         {/* <GarageBottomLine
                             perLev={'Level 1: 49  '} // per garage levels
                             miles={'    4.2 mi'} //props.parking.distance
                             price={' $$$ '}
                         /> */}
-                        <Text>
-                            {(this.props.spotsNum / this.props.garageMax) * 100 + "% Full"}
+                        <Text style={{
+                            fontSize: 40,
+                            color: "white",
+                            textAlign: "center",
+                            textAlignVertical:"center",
+                            backgroundColor: "orange",
+                            borderRadius: 40,
+                            fontWeight: "900",
+                            borderColor: 'black',
+                            borderWidth: 4,
+                            height: 100,
+                            width: 150
+                        }}>
+                            {Math.floor((this.props.spotsNum /this.props.garageMax * 100))}%
                         </Text>
                     </View>
                 </View>
@@ -55,8 +74,6 @@ const styles = {
         marginBottom: 2,
         alignItems: 'center',
         justifyContent: 'center',
-        borderColor: 'black',
-        borderWidth: 2,
     },
     leftSectionStyle: {
         flexDirection: 'column',
@@ -64,19 +81,19 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: 5,
-        width: "20%"
+        width: "20%",
         
     },
     rightSectionStyle: {
         flexDirection: 'column',
         flex: 1,
         width:"20%",
-        borderColor: 'black',
-        borderWidth: 2,
+        height:"100%"
     },
     generalStyle: {
         marginTop: 2,
         marginBottom: 2,
+
     }
 };
 

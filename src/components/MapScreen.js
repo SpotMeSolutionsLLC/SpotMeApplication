@@ -22,6 +22,7 @@ import {
 import MapContainer from "./MapContainer";
 import DataTable from "./DataTable";
 import GarList from "./GarList";
+import SearchBar from "./SearchBar";
 
 
 
@@ -31,7 +32,8 @@ class MapScreen extends Component {
         super(props);
         this.state = {
             garageList: null,
-            garageListLoaded: false
+            garageListLoaded: false,
+            mapRef: null
         }
     }
 
@@ -58,69 +60,62 @@ class MapScreen extends Component {
 
         return (
             <View style={styles.outerContainer}>
-                <View style={styles.navigationBar}>
-                    <TouchableHighlight
-                        onPress={() => this.props.navigation.openDrawer()}
-                        underlayColor={'white'}
-                    >
-                        <Image source={require('../images/menu.png')} />
+                {/* <View style={styles.navigationBar}>
+                    
 
-                    </TouchableHighlight>
-
-                    <Text style={styles.companyText}>SpotMeSolutions</Text>
+                    <Text style={styles.companyText}>SpotMe</Text>
 
                     <Image source={require('../images/icon.jpg')} />
-                </View>
+                </View> */}
 
                 <View style={styles.container}>
 
 
                     { this.state.garageListLoaded && <MapContainer
                         ref={instance => {
-                            this.mapRef = instance;
+                            if(this.state.mapRef == null){
+                                this.setState({
+                                    mapRef: instance
+                                });
+                            }
                         }}
                         onMarkerPress = {this.state.garageList.slideUp}
                         onMapPress = {this.state.garageList.slideDown}
                     />
                     }
 
-                    <GooglePlacesAutocomplete
-                        placeholder='Search a location or garage!'
-                        minLength={2} //Minimum length of text entered for autocomplete results
-                        autoFocus={false}
-                        listViewDisplayed='false'
-                        returnKeyType={'default'}
-                        fetchDetails
-                        renderDescription={row => row.description}
-                        onPress={(data, details = null) => {
-                            this.mapRef.changeLocation(details.geometry.location.lat, details.geometry.location.lng);
-                            return details;
+                    
+
+                    <TouchableHighlight
+                        style={{
+                            flex: 1,
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            position: "absolute",
+                            left:0,
+                            top:30,
+                            zIndex: 99,
+                            width: "15%",
+                            height: 50
                         }}
-                        getDefaultValue={() => ''}
-                        query={{ key: 'AIzaSyAknyin7pzbkZ89IRg6QeQ0gC2sVjSKRpY' }}
-                        styles={{
-                            textInputContainer: {
-                                width: '100%',
-                                backgroundColor: '#42b8ba',
-                                //backgroundColor: 'transparent'
-                                zIndex: 99
-                            },
-                            listView: {
-                                position: 'absolute',
-                                backgroundColor: 'white',
-                                //backgroundColor: 'transparent',
-                                // height: Dimensions.get('window').height,
-                                zIndex: 99,
-                                top: 40
-                            },
-                            description: {
-                                fontWeight: 'bold',
-                                fontSize: 18,
-                                height: 40
-                                //color: 'white'
-                            },
-                        }}
-                    />
+                        onPress={() => this.props.navigation.openDrawer()}
+                        underlayColor={'white'}
+                    >
+                        <Image source={require('../images/menu.png')}
+                        style={{
+                            height: 30,
+                            width: 30,
+                            opacity: .5
+                        }}/>
+
+                    </TouchableHighlight>
+
+                    {this.state.mapRef != null &&
+                        <SearchBar
+                            mainMap={this.state.mapRef}
+                        />
+                    }
 
                     <GarList
                         ref = {(instance) => {
@@ -158,12 +153,13 @@ const styles = {
         zIndex: 99,
     },
     outerContainer: {
+        marginTop: 30,
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        borderRadius: 2,
-        borderWidth: 2,
-        borderColor: '#d6d7da'
+        // borderRadius: 2,
+        // borderWidth: 2,
+        // borderColor: '#d6d7da'
     },
     companyText: {
         fontSize: 30,

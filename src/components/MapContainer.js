@@ -13,10 +13,12 @@ import MapView, {
     Callout
 } from "react-native-maps";
 
-import carMarker from '../images/car.png';
-import banana from '../images/banana.png';
-import spotMarker from '../images/spotmarker.png';
-import GarList from "./GarList";
+// import carMarker from '../images/car.png';
+// import banana from '../images/banana.png';
+import garageMarker from '../images/garage.png';
+// import GarList from "./GarList";
+
+import MidnightCommander from "../mapstyles/MidnightCommander";
 
 
 
@@ -24,6 +26,29 @@ class MapContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            markers: [{
+                coordiantes: {
+                    latitude: 37.339222,
+                    longitude: -121.880724
+                },
+                title: "SJSU North Parking Garage",
+                key:"SJNorth"
+            },{
+                coordiantes: {
+                    latitude: 37.332303,
+                    longitude: -121.882986
+                },
+                title: "SJSU West Parking Garage",
+                key:"SJWest"
+            },{
+                coordiantes: {
+                    latitude: 37.333088,
+                    longitude: -121.880797
+                },
+                title: "SJSU South Parking Garage",
+                // description: "",
+                key: "SJSouth"
+            }]
         };
         this.coordinate = new AnimatedRegion({
             latitude: 37.339222,
@@ -38,6 +63,23 @@ class MapContainer extends Component {
         this.sjNorth = {
             loaded: false
         };
+    }
+
+    getMarkers(){
+        return this.state.markers.map( markerInstance => (
+            <Marker
+                coordinate={{latitude: markerInstance.coordiantes.latitude, longitude: markerInstance.coordiantes.longitude}}
+                //Can later pull coord, title, descrip from API when implemented
+                title={markerInstance.title}
+                description={markerInstance.description}
+                image={garageMarker}
+                style={styles.markerStyle}
+                key={markerInstance.key}
+                onPress = {(coordinate,position) => {
+                    this.props.onMarkerPress(markerInstance.key);
+                }}
+            />
+        ));
     }
 
     changeLocation(lat, lng) {
@@ -74,7 +116,7 @@ class MapContainer extends Component {
                     this.mapRef = instance;
                 }}
 
-                
+                customMapStyle={MidnightCommander}
 
                 onPress = {() => {
                     this.props.onMapPress();
@@ -86,13 +128,14 @@ class MapContainer extends Component {
                         //Description is not being displayed
                         //description={this.state.description}
                         description={'Your Destination'}
-                        image={banana}
+                        
                         style={styles.markerStyle}
                         ref={marker => {
                             this.marker = marker;
                         }}
                     />
-                    <Marker
+                    {this.getMarkers()}
+                    {/* <Marker
                         coordinate={{ latitude: 37.339222, longitude: -121.880724, }}
                         //Can later pull coord, title, descrip from API when implemented
                         title={'SJSU North Parking Garage'}
@@ -119,7 +162,7 @@ class MapContainer extends Component {
                         description={'Spots Filled: 1377/1500'}
                         image={spotMarker}
                         style={styles.markerStyle}
-                    />
+                    /> */}
                 </View>
 
             </MapView.Animated>

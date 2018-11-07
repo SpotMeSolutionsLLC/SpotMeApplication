@@ -4,20 +4,26 @@ import {
     Text,
     Button,
     Dimensions,
-    Animated
+    Animated,
+    Image
 } from 'react-native';
 import axios from 'axios';
 
 import {PerGarageInfo} from './PerGarageInfo';
+import loadingImage from "../images/loading.gif"
+
+const height = 150;
+const borderRadius = 20;
 
 let styles = {
     garageStyle: {
-      borderBottomColor: 'blue',
-      borderBottomWidth: 0.75,
-      marginLeft: 25,
-      marginRight: 25,
-      marginTop: 5,
-      marginBottom: 5
+        borderBottomColor: 'blue',
+        borderBottomWidth: 0.75,
+        marginLeft: 25,
+        marginRight: 25,
+        marginTop: 5,
+        marginBottom: 5 + 20,
+        height: height
     },
     headerContentStyles: {
         flexDirection: 'coloumn',
@@ -25,18 +31,19 @@ let styles = {
     },
     containerStyle: {
         backgroundColor: '#A0CFEC',
-        height: 150,
+        height: Dimensions.get("window").height,
         width: Dimensions.get("window").width,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         position: "absolute",
         left:0,
+        borderRadius: borderRadius
       },
 };
 
 
+
 class GarList extends Component {
     state = { 
-        whichGarage: 'SJNorth',
         parkingsName: '',
         parkingsMax: 0,
         parkingsCurrent: 0,
@@ -54,14 +61,24 @@ class GarList extends Component {
     }
 
 
-    componentDidMount() {
-      
+    // componentDidMount() {
+    //     this.updateData("SJNorth");
+    //     // this.setState({
+    //     //     parkingsName: "SJNorth",
+    //     //     parkingsMax: 730,
+    //     //     parkingsCurrent: 300,
+    //     //     loaded:true
+    //     // });
+
+    // }
+
+    updateData(searchName){
         console.log("Currently fetching data");
         axios.post('https://project-one-203604.appspot.com/garages/garage', {
-            name: this.state.whichGarage
+            name: searchName
         }).then(res => {
 
-            console.log('Type is: ');
+            console.log('Found Garage Data: ' + searchName);
 
 
 
@@ -91,27 +108,44 @@ class GarList extends Component {
         }
         else{
             return(
-                <View>
-                    <Text>
-                        Did not load yet
-                    </Text>
+                <View style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: height
+                }}>
+                    <Image style={{
+                        width:50,
+                        height:50
+                    }}
+                    source={loadingImage}/>
                 </View>
             )
         }
     }
 
-    slideUp(){
+    slideUp(searchName){
+        this.updateData(searchName);
         Animated.timing(this.state.bottom,{
-            toValue: 0,
+            toValue: -(styles.containerStyle.height - height),
             duration: 100
         }).start();
+        
     }
 
     slideDown(){
         Animated.timing(this.state.bottom,{
-            toValue: -styles.containerStyle.height,
+            toValue: -(styles.containerStyle.height),
             duration: 100
         }).start();
+        this.setState({
+            loaded:false
+        })
+    }
+
+    slideUpMore(){
+        Animated.timing(this.state.bottom,{
+            toValue: D
+        })
     }
 
 
