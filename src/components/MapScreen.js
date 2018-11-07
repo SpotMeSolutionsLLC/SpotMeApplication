@@ -8,12 +8,8 @@ import {
   Image,
   Platform 
 } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion } from 'react-native-maps';
-import { Constants, Location, Permissions } from 'expo';
 import { connect } from 'react-redux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-//import DarkMapStyles from '../mapstyles/DarkMapStyles';
-import MidnightCommander from '../mapstyles/MidnightCommander';
 import {
   locationChanged,
   getCurrentLocation,
@@ -24,50 +20,15 @@ import {
 } from '../actions';
 
 import MapContainer from "./MapContainer";
+import DataTable from "./DataTable";
+import GarList from "./GarList";
 
-//import garageMarker from '../images/garage.png';
-//import carMarker from '../images/car_icon.png';
-import carMarker from '../images/car.png';
-import banana from '../images/banana.png';
-import spotMarker from '../images/spotmarker.png';
+
+
 
 class MapScreen extends Component {
   constructor(props) {
       super(props);
-      this.state = {
-        isMapReady: false,
-        //Initial map region
-        coordinate: new AnimatedRegion({
-          latitude: 0,
-          longitude: 0,
-        }),
-        //Updated map region based on search
-        screenCoord: new AnimatedRegion({
-          latitude: 37.339222,
-          longitude: -121.880724,
-          latitudeDelta: 0.00112,
-          longitudeDelta: 0.001412
-        }),
-      };
-      // this.getLocationAsync();
-
-    }
-
-    //Calls the function to get current location
-    // componentDidMount() {
-    //   if (Platform.OS === 'android' && !Constants.isDevice) {
-    //     this.setState({
-    //       errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
-    //     });
-    //   } else {
-    //     this.getLocationAsync();
-    //   }
-    // }
-    
-
-    //If the map ready boolean is true, the state of the map is changed (Redirected)
-    onMapLayout = () => {
-      this.setState({ isMapReady: true });
     }
 
     //Gets the current location and changes the state of current location
@@ -88,25 +49,6 @@ class MapScreen extends Component {
       
     // };
 
-    //Set to change the location based on the new coordinates that are held
-    // changeLoc(lat, lng) {
-    //   const newCoord = {
-    //     latitude: lat,
-    //     longitude: lng
-    //   };
-
-    //   this.state.screenCoord = new AnimatedRegion({
-    //       latitude: lat,
-    //       longitude: lng,
-    //       latitudeDelta: 0.0312,
-    //       longitudeDelta: 0.03412
-    //   });
-    //   //Used for holding latitude and longitude of a loaded location
-
-    //   //Redirects map to new location (animated load)
-    //   this.state.coordinate.timing(newCoord).start();
-    //   this.mapRef.animateToRegion(this.state.screenCoord, 500);
-    // }
 
     render() {
       
@@ -127,66 +69,12 @@ class MapScreen extends Component {
           </View>
 
           <View style={styles.container}>
-            {/* <MapView
-              provider={PROVIDER_GOOGLE}
-              style={styles.map}
-              //props error on region, expected number but got object
-              //error doesnt have big effect/matter but gives a warning
-              region={this.state.screenCoord}
-              // customMapStyle={MidnightCommander}
-              // onLayout={this.onMapLayout}
-              // ref={(instance) => {
-              //   this.mapRef = instance;
-              // }}
 
-            >
-            {console.log(this.state.description)}
-              { this.state.isMapReady && 
-                <View >
-                  <Marker.Animated 
-                    coordinate={this.state.coordinate}
-                    //Description is not being displayed
-                    //description={this.state.description}
-                    description={'Your Destination'}
-                    image={banana}
-                    style={styles.markerStyle}
-                  />
-                  <Marker 
-                    coordinate={this.state.currentLocation.coords}
-                    description={'Current Location'}
-                    image={carMarker}
-                    style={styles.locationStyle}
-                  />
-                  <Marker
-                    coordinate={{ latitude: 37.339222, longitude: -121.880724, }}
-                    //Can later pull coord, title, descrip from API when implemented
-                    title={'SJSU North Parking Garage'}
-                    description={'Spots Filled: 977/1490'}
-                    image={spotMarker}
-                    style={styles.markerStyle}
-                  />
-                  <Marker
-                    coordinate={{ latitude: 37.332303, longitude: -121.882986, }}
-                    title={'SJSU West Parking Garage'}
-                    description={'Spots Filled: 827/1135'}
-                    image={spotMarker}
-                    style={styles.markerStyle}
-                  />
-                  <Marker
-                    coordinate={{ latitude: 37.333088, longitude: -121.880797, }}
-                    title={'SJSU South Parking Garage'}
-                    description={'Spots Filled: 1377/1500'}
-                    image={spotMarker}
-                    style={styles.markerStyle}
-                  />
-                </View> 
-              }
-            </MapView> */}
 
-            <MapContainer ref={ instance => {
+            <MapContainer 
+              ref={ instance => {
               this.mapRef = instance;
             }} />
-            
             
             <GooglePlacesAutocomplete 
               placeholder='Search a location or garage!' 
@@ -226,20 +114,13 @@ class MapScreen extends Component {
               }}
             /> 
           </View>
+          
+          {/* <DataTable ref={instance => {
+            this.dataBox = instance;
+          }}/> */}
+          
         </View>
       );
-      // return(
-      //   <MapView
-      //       provider={PROVIDER_GOOGLE}
-      //       style={{
-      //         ...StyleSheet.absoluteFillObject
-      //       }}
-      //       region={this.state.screenCoord}
-
-
-      //       >
-      //   </MapView>
-      // )
     }
 }
 

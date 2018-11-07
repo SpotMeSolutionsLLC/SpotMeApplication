@@ -2,14 +2,22 @@ import React, {Component} from "react";
 import {
     StyleSheet,
     View,
-    Dimensions
+    Dimensions,
 } from "react-native";
 
-import MapView, {PROVIDER_GOOGLE, Marker, AnimatedRegion, Animated} from "react-native-maps";
+import MapView, {
+    PROVIDER_GOOGLE,
+    Marker,
+    AnimatedRegion,
+    Animated,
+    Callout
+} from "react-native-maps";
 
 import carMarker from '../images/car.png';
 import banana from '../images/banana.png';
 import spotMarker from '../images/spotmarker.png';
+import GarList from "./GarList";
+
 
 
 class MapContainer extends Component{
@@ -19,7 +27,7 @@ class MapContainer extends Component{
         };
         this.coordinate = new AnimatedRegion({
             latitude: 37.339222,
-            longitude: -121.880724,
+            longitude: -121.880724
         });
         this.startingLoc = new AnimatedRegion({
             latitude: 37.339222,
@@ -32,34 +40,27 @@ class MapContainer extends Component{
     changeLocation(lat,lng){
         console.log("MapContainer changeLocation() called");
         const duration = 3000;
-        // new AnimatedRegion({
+        // this.startingLoc.timing({
         //     latitude: lat,
         //     longitude: lng,
-        //     latitudeDelta: 0.0312,
-        //     longitudeDelta: 0.03412,
-        // });
-        // this.mapRef.animateToRegion(new AnimatedRegion({
-        //     latitude: lat,
-        //     longitude: lng,
-        //     latitudeDelta: 0.0312,
-        //     longitudeDelta: 0.03412,
-        // }), 500);
-        this.startingLoc.timing({
-            latitude: lat,
-            longitude: lng,
-            latitudeDelta: 1,
-            longitudeDelta: 1
-        }, duration).start();
+        // }, duration).start();
+
         this.coordinate.timing({
             latitude: lat,
+            longitude: lng
+        }, 1).start();
+
+        this.mapRef._component.animateToCoordinate({
+            latitude: lat,
             longitude: lng,
-        }, duration).start();
+        });
     }
 
 
     render(){
         return(
             <MapView.Animated
+                
                 provider={PROVIDER_GOOGLE}
                 style={styles.map}
                 //props error on region, expected number but got object
@@ -71,7 +72,7 @@ class MapContainer extends Component{
                 }}
             >
                 <View >
-                    <Marker.Animated 
+                    <Marker.Animated
                         coordinate={this.coordinate}
                         //Description is not being displayed
                         //description={this.state.description}
@@ -89,7 +90,18 @@ class MapContainer extends Component{
                         description={'Spots Filled: 977/1490'}
                         image={spotMarker}
                         style={styles.markerStyle}
-                    />
+                        onPress={(event) => {
+                        
+                        }}
+                    >
+                        <Callout
+                            
+                            style={styles.callOut}
+                        >
+                            <GarList ></GarList>
+                        </Callout>
+                    </Marker>
+
                     <Marker
                         coordinate={{ latitude: 37.332303, longitude: -121.882986, }}
                         title={'SJSU West Parking Garage'}
@@ -114,9 +126,6 @@ class MapContainer extends Component{
 const styles = {
     map:{
         ...StyleSheet.absoluteFillObject,
-        // flex: 1,
-        // width: Dimensions.get('window').width,
-        // height: Dimensions.get('window').height
     },
     markerStyle: {
         zIndex: 98
@@ -124,6 +133,12 @@ const styles = {
     locationStyle: {
         zIndex: 99
     },
+    callOut:{
+        justifyContent: "flex-start",
+    },
+    garList:{
+        height:400
+    }
 }
 
 export default MapContainer;
