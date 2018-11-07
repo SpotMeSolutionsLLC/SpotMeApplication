@@ -70,9 +70,14 @@ const AppSwitchNavigator = createSwitchNavigator({
   Auth: AuthStackNavigator,
   App: MapApp,
 //  FbAuth: FacebookAuth
+<<<<<<< HEAD
 });
 
 //Removed yellow box errors for presentation
+=======
+})
+//remove the // WARNING:
+>>>>>>> upstream/master
 console.disableYellowBox = true;
 class App extends React.Component {
   render() {

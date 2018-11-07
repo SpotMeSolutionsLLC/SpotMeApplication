@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import DarkMapStyles from '../mapstyles/DarkMapStyles';
 import MidnightCommander from '../mapstyles/MidnightCommander';
+//import GarList from "./GarList";
 
 import {
   locationChanged,
@@ -159,10 +160,10 @@ class MapScreen extends Component {
       this.mapRef.animateToRegion(this.state.screenCoord, 500);
     }
 
-    
+
     render() {
       //Pulls data directly from San Jose Garage API
-      
+
 
       let longitude = 'Waiting..';
       let latitude = 'Waiting..';
@@ -179,7 +180,7 @@ class MapScreen extends Component {
         //int long = parseInt(longitude);
         //int lat = parseInt(latitude);
       }
-      
+
       return (
         <View style={styles.outerContainer}>
           <View style={styles.navigationBar}>
@@ -220,14 +221,16 @@ class MapScreen extends Component {
                     description={'Your Destination'}
                     image={banana}
                     style={styles.markerStyle}
-                  />             
-
-                  <Marker 
+                  />
+                  
+                  <Marker
                     coordinate={{ latitude, longitude }}
-                    //description={'Current Location'}
+                   description={'Current Location'}
                     image={carMarker}
                     style={styles.locationStyle}
-                  />
+                   />
+
+
 
                   <Marker
                     coordinate={{ latitude: 37.339222, longitude: -121.880724, }}
@@ -243,6 +246,7 @@ class MapScreen extends Component {
                     description={'Spots Filled: 827/1135'}
                     image={spotMarker}
                     style={styles.markerStyle}
+
                   />
                   <Marker
                     coordinate={{ latitude: 37.333088, longitude: -121.880797, }}
@@ -251,51 +255,51 @@ class MapScreen extends Component {
                     image={spotMarker}
                     style={styles.markerStyle}
                   />
-                      
-                  <Marker 
+
+                  <Marker
                     coordinate={{ latitude: 37.336537, longitude: -121.886143 }}
                     title={this.state.garageInfo.fourthStreetGarageName}
                     description={this.state.garageInfo.fourthStreetGarageSpaces}
                     image={spotMarker}
                     style={styles.markerStyle}
                   />
-                  <Marker 
+                  <Marker
                     coordinate={{ latitude: 37.337845, longitude: -121.884707 }}
                     title={this.state.garageInfo.cityHallGarageName}
                     description={this.state.garageInfo.cityHallGarageSpaces}
                     image={spotMarker}
                     style={styles.markerStyle}
                   />
-                  <Marker 
+                  <Marker
                     coordinate={{ latitude: 37.336572, longitude: -121.888315 }}
                     title={this.state.garageInfo.thirdStreetGarageName}
                     description={this.state.garageInfo.thirdStreetGarageSpaces}
                     image={spotMarker}
                     style={styles.markerStyle}
                   />
-                  <Marker 
+                  <Marker
                     coordinate={{ latitude: 37.336345, longitude: -121.892787 }}
                     title={this.state.garageInfo.marketSanPedroSquareGarageName}
                     description={this.state.garageInfo.marketSanPedroSquareGarageSpaces}
                     image={spotMarker}
                     style={styles.markerStyle}
                   />
-                  <Marker 
+                  <Marker
                     coordinate={{ latitude: 37.329989, longitude: -121.887033 }}
                     title={this.state.garageInfo.conventionCenterGarageName}
                     description={this.state.garageInfo.conventionCenterGarageSpaces}
                     image={spotMarker}
                     style={styles.markerStyle}
                   />
-                  <Marker 
+                  <Marker
                     coordinate={{ latitude: 37.331803, longitude: -121.884765 }}
                     title={this.state.garageInfo.secondSanCarlosGarageName}
                     description={this.state.garageInfo.secondSanCarlosGarageSpaces}
                     image={spotMarker}
                     style={styles.markerStyle}
                   />
-                  
-                </View> 
+
+                </View>
 
               }
             </MapView>
