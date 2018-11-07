@@ -4,7 +4,7 @@ import { View, List, ListItem, Left, Body } from 'native-base';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const SearchResults = ({ // component for handling list of recommendation 
+const SearchResults = ({ // component for handling list of recommendation
   predictions,
   getSelectedAddress,
   fetchSanJoseAPI
@@ -72,7 +72,7 @@ const styles = {
 };
 
 export default SearchResults;
-*/
+*//*
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { Constants } from 'expo';
@@ -106,4 +106,29 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
   },
+});*/
+
+import React, { Component } from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+import { Constants } from 'expo';
+import GarList from './GarList.js';
+
+export default class Testing extends Component {
+  render() {
+    return(
+      <View>
+        <GarList />
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+  paddingTop: Constants.statusBarHeight,
+  backgroundColor: '#ecf0f1',
+  }
 });

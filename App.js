@@ -74,7 +74,8 @@ const AppSwitchNavigator = createSwitchNavigator({
   App: MapApp,
 //  FbAuth: FacebookAuth
 })
-
+//remove the // WARNING:
+console.disableYellowBox = true;
 class App extends React.Component {
   render() {
     return (
