@@ -1,9 +1,9 @@
 {
-  "devToolsPort": 19003,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 25832,
-  "expoServerNgrokUrl": "https://wm-rcx.anonymous.spotmereactfrontend.exp.direct",
-  "packagerNgrokUrl": "https://packager.wm-rcx.anonymous.spotmereactfrontend.exp.direct",
-  "ngrokPid": 28016
+  "devToolsPort": 19002,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

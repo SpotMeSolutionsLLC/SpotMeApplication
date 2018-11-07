@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "spotme_application",
+    "name": "Login",
     "description": "This project is really great.",
-    "slug": "spotme_application",
+    "slug": "Login",
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": ["ios", "android"],
