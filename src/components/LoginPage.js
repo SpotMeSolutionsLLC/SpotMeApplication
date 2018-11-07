@@ -83,7 +83,7 @@ class LoginPage extends Component {
   }
 }
 const styles = {
-  errorTextStyle:{
+  errorTextStyle: {
     fontSize: 20,
     alignSelf: 'center',
     color: 'red'

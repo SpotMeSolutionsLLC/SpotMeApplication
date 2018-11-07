@@ -73,6 +73,7 @@ const styles = {
 
 export default SearchResults;
 */
+/*
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { Constants } from 'expo';
@@ -82,7 +83,6 @@ export default class Testing extends Component {
   render() {
   let data = axios.get('http://api.data.sanjoseca.gov/api/v2/datastreams/PARKI-GARAG-DATA/data.json/?auth_key=974e8db20c97825c8fe806dcbeaa3889c7b8c921&limit=50');
   console.log(data);
-  console.log(data.Promise);
   //console.log(data.Promise._55._55.data.result);
   data = JSON.stringify(data);
     return (
@@ -107,3 +107,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+*/

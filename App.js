@@ -24,7 +24,7 @@ const AuthStackNavigator = createStackNavigator({
   Welcome: WelcomeScreen,
 //  Signin: Signin,
   Signup: Signup,
-})
+});
 
 const AppTabNavigator = createBottomTabNavigator({
   HomeScreen: {
@@ -39,13 +39,10 @@ const AppTabNavigator = createBottomTabNavigator({
   Favorite: {
     screen: Favorite,
   },
-  Profile: {
-    screen: Profile,
-  }
-})
+});
 
 const AppStackNavigator = createStackNavigator({
-  AppTabNavigator:{
+  AppTabNavigator: {
     screen: AppTabNavigator,
     navigationOptions: ({ navigation }) => ({
       headerTitle: <LogoTitle />,
@@ -58,7 +55,7 @@ const AppStackNavigator = createStackNavigator({
       )
     })
   }
-})
+});
 
 const AppDrawerNavigator = createDrawerNavigator({
   Home: AppStackNavigator,
@@ -66,15 +63,17 @@ const AppDrawerNavigator = createDrawerNavigator({
   Profile: Profile,
   Favorite: Favorite,
   History: History
-})
+});
 
 const AppSwitchNavigator = createSwitchNavigator({
   AuthLoadingScreen: AuthLoadingScreen,
   Auth: AuthStackNavigator,
   App: MapApp,
 //  FbAuth: FacebookAuth
-})
+});
 
+//Removed yellow box errors for presentation
+console.disableYellowBox = true;
 class App extends React.Component {
   render() {
     return (

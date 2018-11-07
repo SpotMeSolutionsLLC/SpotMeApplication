@@ -6,7 +6,8 @@ import {
   Text,
   TouchableHighlight,
   Image,
-  Platform
+  Platform,
+  Alert
 } from 'react-native';
 import axios from 'axios';
 import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion } from 'react-native-maps';
