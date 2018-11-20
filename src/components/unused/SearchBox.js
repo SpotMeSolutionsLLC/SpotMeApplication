@@ -1,4 +1,4 @@
-/* import React from 'react';
+import React from 'react';
 import { Dimensions } from 'react-native';
 import { View, InputGroup, Input } from 'native-base';
 
@@ -66,4 +66,4 @@ const styles = {
 };
 
 export default SearchBox;
-*/
+

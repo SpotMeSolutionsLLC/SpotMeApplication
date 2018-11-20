@@ -24,7 +24,7 @@ import DataTable from "./DataTable";
 import GarList from "./GarList";
 import SearchBar from "./SearchBar";
 
-
+import styles from "./Styling.style.js";
 
 
 class MapScreen extends Component {
@@ -59,16 +59,9 @@ class MapScreen extends Component {
     render() {
 
         return (
-            <View style={styles.outerContainer}>
-                {/* <View style={styles.navigationBar}>
-                    
+            <View style={styles.mapScreen.outerContainer}>
 
-                    <Text style={styles.companyText}>SpotMe</Text>
-
-                    <Image source={require('../images/icon.jpg')} />
-                </View> */}
-
-                <View style={styles.container}>
+                <View style={styles.mapScreen.container}>
 
 
                     { this.state.garageListLoaded && <MapContainer
@@ -87,18 +80,7 @@ class MapScreen extends Component {
                     
 
                     <TouchableHighlight
-                        style={{
-                            flex: 1,
-                            flexDirection: "column",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            position: "absolute",
-                            left:0,
-                            top:30,
-                            zIndex: 99,
-                            width: "15%",
-                            height: 50
-                        }}
+                        style={styles.mapScreen.menuButton}
                         onPress={() => this.props.navigation.openDrawer()}
                         underlayColor={'white'}
                     >
@@ -130,88 +112,11 @@ class MapScreen extends Component {
                     ></GarList>
                 </View>
 
-                {/* <DataTable ref={instance => {
-            this.dataBox = instance;
-          }}/> */}
-
             </View>
         );
     }
 }
 
-const styles = {
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    map: {
-        ...StyleSheet.absoluteFillObject,
-        flex: 1,
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-        zIndex: 99,
-    },
-    outerContainer: {
-        marginTop: 30,
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        // borderRadius: 2,
-        // borderWidth: 2,
-        // borderColor: '#d6d7da'
-    },
-    companyText: {
-        fontSize: 30,
-        color: '#42b8ba',
-        fontWeight: '900',
-        alignItems: 'center',
-        width: 380,
-        textAlign: 'center'
-    },
-    navigationBar: {
-        marginTop: 20,
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    mapAndSearchBarContainer: {
-        alignItems: 'center',
-
-        height: '90%',
-        width: '100%'
-    },
-    inputContainer: {
-        //height: 40,
-        elevation: 1,
-        backgroundColor: 'white',
-        width: '90%',
-        height: '10%',
-        top: 40,
-        borderRadius: 3,
-        shadowOpacity: 0.75,
-        shadowRadius: 1,
-        shadowColor: 'gray',
-        shadowOffset: { height: 0, width: 0 },
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    inputStyle: {
-        color: '#000',
-        padding: 10,
-        height: 50,
-        fontSize: 18,
-        lineHeight: 23,
-        flex: 2
-    },
-    locationStyle: {
-        zIndex: 99
-    },
-    markerStyle: {
-        zIndex: 98
-    }
-};
 
 const mapStateToProps = ({ loc }) => {
     const {

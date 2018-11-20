@@ -1,9 +1,8 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
-import { GarageBottomLine } from './GarageBottomLine';
 import { colors } from 'react-native-elements';
 
-
+import styles from "./Styling.style.js";
 
 class PerGarageInfo extends React.Component {
     constructor(props) {
@@ -13,10 +12,10 @@ class PerGarageInfo extends React.Component {
 
     render() {
         return (
-            <View style={styles.containerStyle}>
+            <View style={styles.perGarageInfo.containerStyle}>
 
-                <View style={styles.leftSectionStyle}>
-                    <View style={styles.generalStyle}>
+                <View style={styles.perGarageInfo.leftSectionStyle}>
+                    <View style={styles.perGarageInfo.generalStyle}>
                         <Text style={{ fontSize: 40, color: 'blue' }}>
                             {this.props.garageName}
                         </Text>
@@ -27,14 +26,14 @@ class PerGarageInfo extends React.Component {
                     </Text>
                 </View>
 
-                <View style={[styles.rightSectionStyle,{
+                <View style={[styles.perGarageInfo.rightSectionStyle,{
                     justifyContent: "center",
                     alignItems: "center",
                 }]}>
                     
 
 
-                    <View style={[styles.generalStyle, {
+                    <View style={[styles.perGarageInfo.generalStyle, {
                         alignItems: "center",
                         
                     }]}>
@@ -65,36 +64,5 @@ class PerGarageInfo extends React.Component {
     }
 }
 
-const styles = {
-    containerStyle: {
-        flexDirection: 'row',
-        marginLeft: 7,
-        marginRight: 7,
-        marginTop: 10,
-        marginBottom: 2,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    leftSectionStyle: {
-        flexDirection: 'column',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: 5,
-        width: "20%",
-        
-    },
-    rightSectionStyle: {
-        flexDirection: 'column',
-        flex: 1,
-        width:"20%",
-        height:"100%"
-    },
-    generalStyle: {
-        marginTop: 2,
-        marginBottom: 2,
-
-    }
-};
 
 export { PerGarageInfo };

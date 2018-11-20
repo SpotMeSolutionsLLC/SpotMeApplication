@@ -20,7 +20,7 @@ import garageMarker from '../images/garage.png';
 
 import MidnightCommander from "../mapstyles/MidnightCommander";
 
-
+import styles from "./Styling.style.js";
 
 class MapContainer extends Component {
     constructor(props) {
@@ -73,7 +73,7 @@ class MapContainer extends Component {
                 title={markerInstance.title}
                 description={markerInstance.description}
                 image={garageMarker}
-                style={styles.markerStyle}
+                style={styles.MapContainer.markerStyle}
                 key={markerInstance.key}
                 onPress = {(coordinate,position) => {
                     this.props.onMarkerPress(markerInstance.key);
@@ -107,7 +107,7 @@ class MapContainer extends Component {
             <MapView.Animated
 
                 provider={PROVIDER_GOOGLE}
-                style={styles.map}
+                style={styles.MapContainer.map}
                 //props error on region, expected number but got object
                 //error doesnt have big effect/matter but gives a warning
                 region={this.startingLoc}
@@ -125,65 +125,19 @@ class MapContainer extends Component {
                 <View >
                     <Marker.Animated
                         coordinate={this.coordinate}
-                        //Description is not being displayed
-                        //description={this.state.description}
                         description={'Your Destination'}
-                        
-                        style={styles.markerStyle}
+                        style={styles.MapContainer.markerStyle}
                         ref={marker => {
                             this.marker = marker;
                         }}
                     />
                     {this.getMarkers()}
-                    {/* <Marker
-                        coordinate={{ latitude: 37.339222, longitude: -121.880724, }}
-                        //Can later pull coord, title, descrip from API when implemented
-                        title={'SJSU North Parking Garage'}
-                        description={'Spots Filled: 977/1490'}
-                        image={spotMarker}
-                        style={styles.markerStyle}
-                        onPress = {(coordinate,position) => {
-                            this.props.onMarkerPress();
-                        }}
-
-                    >
-                    </Marker>
-
-                    <Marker
-                        coordinate={{ latitude: 37.332303, longitude: -121.882986, }}
-                        title={'SJSU West Parking Garage'}
-                        description={'Spots Filled: 827/1135'}
-                        image={spotMarker}
-                        style={styles.markerStyle}
-                    />
-                    <Marker
-                        coordinate={{ latitude: 37.333088, longitude: -121.880797, }}
-                        title={'SJSU South Parking Garage'}
-                        description={'Spots Filled: 1377/1500'}
-                        image={spotMarker}
-                        style={styles.markerStyle}
-                    /> */}
                 </View>
 
             </MapView.Animated>
                
         );
     }
-}
-
-const styles = {
-    map: {
-        ...StyleSheet.absoluteFillObject,
-    },
-    markerStyle: {
-        zIndex: 98
-    },
-    locationStyle: {
-        zIndex: 99
-    },
-    callOut: {
-        justifyContent: "flex-start",
-    },
 }
 
 export default MapContainer;

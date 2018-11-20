@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     View,
     Text,
@@ -9,53 +9,26 @@ import {
 } from 'react-native';
 import axios from 'axios';
 
-import {PerGarageInfo} from './PerGarageInfo';
-import loadingImage from "../images/loading.gif"
+import { PerGarageInfo } from './PerGarageInfo';
+import loadingImage from "../images/loading.gif";
 
-const height = 150;
-const borderRadius = 20;
-
-let styles = {
-    garageStyle: {
-        borderBottomColor: 'blue',
-        borderBottomWidth: 0.75,
-        marginLeft: 25,
-        marginRight: 25,
-        marginTop: 5,
-        marginBottom: 5 + 20,
-        height: height
-    },
-    headerContentStyles: {
-        flexDirection: 'coloumn',
-        justifyContent: 'space-around'
-    },
-    containerStyle: {
-        backgroundColor: '#A0CFEC',
-        height: Dimensions.get("window").height,
-        width: Dimensions.get("window").width,
-        justifyContent: 'flex-start',
-        position: "absolute",
-        left:0,
-        borderRadius: borderRadius
-      },
-};
-
+import styles from "./Styling.style.js";
 
 
 class GarList extends Component {
-    state = { 
+    state = {
         parkingsName: '',
         parkingsMax: 0,
         parkingsCurrent: 0,
         loaded: false,
-        bottom: new Animated.Value(-styles.containerStyle.height)
+        bottom: new Animated.Value(-styles.garList.containerStyle.height)
 
     };
 
-    constructor(props){
+    constructor(props) {
         super(props);
         console.log(this.state.bottom);
-        
+
         this.slideUp = this.slideUp.bind(this);
         this.slideDown = this.slideDown.bind(this);
     }
@@ -72,7 +45,7 @@ class GarList extends Component {
 
     // }
 
-    updateData(searchName){
+    updateData(searchName) {
         console.log("Currently fetching data");
         axios.post('https://project-one-203604.appspot.com/garages/garage', {
             name: searchName
@@ -86,76 +59,71 @@ class GarList extends Component {
                 parkingsName: res.data.name,
                 parkingsMax: res.data.max,
                 parkingsCurrent: res.data.current,
-                loaded:true
-            }, function(){
+                loaded: true
+            }, function () {
                 console.log("State has changed");
             });
 
-         });
+        });
     }
 
-    whenDoneLoading(){
+    whenDoneLoading() {
         console.log("WhenDoneLoading");
-        if(this.state.loaded){
+        if (this.state.loaded) {
             console.log("PerGarageInfo Loaded");
-            return(
+            return (
                 <PerGarageInfo
-                        spotsNum={this.state.parkingsCurrent} 
-                        garageName={this.state.parkingsName}
-                        garageMax={this.state.parkingsMax}
+                    spotsNum={this.state.parkingsCurrent}
+                    garageName={this.state.parkingsName}
+                    garageMax={this.state.parkingsMax}
                 />
             );
         }
-        else{
-            return(
+        else {
+            return (
                 <View style={{
                     alignItems: "center",
                     justifyContent: "center",
-                    height: height
+                    height: styles.garList.height
                 }}>
                     <Image style={{
-                        width:50,
-                        height:50
+                        width: 50,
+                        height: 50
                     }}
-                    source={loadingImage}/>
+                        source={loadingImage} />
                 </View>
             )
         }
     }
 
-    slideUp(searchName){
+    slideUp(searchName) {
         this.updateData(searchName);
-        Animated.timing(this.state.bottom,{
-            toValue: -(styles.containerStyle.height - height),
+        Animated.timing(this.state.bottom, {
+            toValue: -(styles.garList.containerStyle.height - styles.garList.height),
             duration: 100
         }).start();
         
+
     }
 
-    slideDown(){
-        Animated.timing(this.state.bottom,{
-            toValue: -(styles.containerStyle.height),
+    slideDown() {
+        Animated.timing(this.state.bottom, {
+            toValue: -(styles.garList.containerStyle.height),
             duration: 100
         }).start();
         this.setState({
-            loaded:false
-        })
-    }
-
-    slideUpMore(){
-        Animated.timing(this.state.bottom,{
-            toValue: D
+            loaded: false
         })
     }
 
 
     render() {
-        let {bottom} = this.state;
+        let { bottom } = this.state;
         return (
-            <Animated.View style={[styles.containerStyle,{bottom: bottom}]}>
-                <View style={styles.garageStyle}>
+            <Animated.View style={[styles.garList.containerStyle, { bottom: bottom }]}>
+                <View style={styles.garList.garageStyle}>
                     {this.whenDoneLoading()}
-                    
+
                 </View>
             </Animated.View>
         )

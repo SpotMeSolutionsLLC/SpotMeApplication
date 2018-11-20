@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View, Image, Button } from 'react-native';
 
+import styles from "./Styling.style.js";
+
 export default class MenuScreen extends Component {
     static navigationOptions = {
         drawerIcon: (
@@ -10,22 +12,15 @@ export default class MenuScreen extends Component {
 
     render() {
         return (
-            <View style={styles.containerStyle}>
-            <Text>* Account Information* </Text>
-            <Button
-            //onPress={() => this.props.navigation.navigate('DrawerOpen')}
-            onPress={() => this.props.navigation.openDrawer()}
-            title="Back"
-            />
+            <View style={styles.menu.containerStyle}>
+                <Text>* Account Information* </Text>
+                <Button
+                //onPress={() => this.props.navigation.navigate('DrawerOpen')}
+                onPress={() => this.props.navigation.openDrawer()}
+                title="Back"
+                />
             </View>
         );
     }
 }
 
-const styles = {
-    containerStyle: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-};
