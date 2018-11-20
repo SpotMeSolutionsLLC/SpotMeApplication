@@ -1,441 +1,140 @@
 import React, { Component } from 'react';
 import {
-  Dimensions,
-  StyleSheet,
-  View,
-  Text,
-  TouchableHighlight,
-  Image,
-  Platform,
-  Alert
+    Dimensions,
+    StyleSheet,
+    View,
+    Text,
+    TouchableHighlight,
+    Image,
+    Platform
 } from 'react-native';
-import axios from 'axios';
-import MapView, { PROVIDER_GOOGLE, Marker, AnimatedRegion } from 'react-native-maps';
-import { Constants, Location, Permissions } from 'expo';
 import { connect } from 'react-redux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import DarkMapStyles from '../mapstyles/DarkMapStyles';
-import MidnightCommander from '../mapstyles/MidnightCommander';
-//import GarList from "./GarList";
-
 import {
-  locationChanged,
-  getCurrentLocation,
-  getInputData,
-  getAddressPredictions,
-  getSelectedAddress,
-  fetchSanJoseAPI
+    locationChanged,
+    getCurrentLocation,
+    getInputData,
+    getAddressPredictions,
+    getSelectedAddress,
+    fetchSanJoseAPI
 } from '../actions';
 
-//import garageMarker from '../images/garage.png';
-import carMarker from '../images/car_icon.png';
-//import carMarker from '../images/car.png';
-import banana from '../images/banana.png';
-import spotMarker from '../images/spotmarker.png';
+import MapContainer from "./MapContainer";
+import DataTable from "./DataTable";
+import GarList from "./GarList";
+import SearchBar from "./SearchBar";
+
+import styles from "./Styling.style.js";
+
 
 class MapScreen extends Component {
-  constructor(props) {
-      super(props);
-      this.state = {
-        isMapReady: false,
-        //Initial map region
-        coordinate: new AnimatedRegion({
-          latitude: 0,
-          longitude: 0,
-        }),
-        //Updated map region based on search
-        screenCoord: new AnimatedRegion({
-          latitude: 0,
-          longitude: 0,
-          latitudeDelta: 0.01412,
-          longitudeDelta: 0.013412
-        }),
-        garageInfo: {
-          fourthStreetGarageName: '',
-          //fourthStreetGarageStatus: '',
-          fourthStreetGarageSpaces: '',
-          cityHallGarageName: '',
-          cityHallGarageSpaces: '',
-          thirdStreetGarageName: '',
-          thirdStreetGarageSpaces: '',
-          marketSanPedroSquareGarageName: '',
-          marketSanPedroSquareGarageSpaces: '',
-          conventionCenterGarageName: '',
-          conventionCenterGarageSpaces: '',
-          secondSanCarlosGarageName: '',
-          secondSanCarlosGarageSpaces: ''
+    constructor(props) {
+        super(props);
+        this.state = {
+            garageList: null,
+            garageListLoaded: false,
+            mapRef: null
         }
-      };
-    }
-    //The state of current location
-    state = {
-      location: null,
-      errorMessage: null,
-    };
-
-    //Calls the function to get current location
-    componentDidMount() {
-      if (Platform.OS === 'android' && !Constants.isDevice) {
-        this.setState({
-          errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
-        });
-      } else {
-        this.getLocationAsync();
-      }
-
-      //Gets the data for SJ Garages from SJ API
-      axios.get('http://api.data.sanjoseca.gov/api/v2/datastreams/PARKI-GARAG-DATA/data.json/?auth_key=974e8db20c97825c8fe806dcbeaa3889c7b8c921&limit=50').then(instance => {
-        //console.log(instance.data.result.fArray);
-        this.setState({
-          garageInfo: {
-            fourthStreetGarageName: instance.data.result.fArray[4].fStr,
-            //fourthStreetGarageStatus: 'Status: ' + instance.data.result.fArray[5].fStr,
-            fourthStreetGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[6].fStr + '/' + instance.data.result.fArray[7].fStr,
-            cityHallGarageName: instance.data.result.fArray[8].fStr,
-            cityHallGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[6].fStr + '/' + instance.data.result.fArray[7].fStr,
-            thirdStreetGarageName: instance.data.result.fArray[12].fStr,
-            thirdStreetGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[14].fStr + '/' + instance.data.result.fArray[15].fStr,
-            marketSanPedroSquareGarageName: instance.data.result.fArray[16].fStr,
-            marketSanPedroSquareGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[18].fStr + '/' + instance.data.result.fArray[19].fStr,
-            conventionCenterGarageName: instance.data.result.fArray[20].fStr,
-            conventionCenterGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[22].fStr + '/' + instance.data.result.fArray[23].fStr,
-            secondSanCarlosGarageName: instance.data.result.fArray[24].fStr,
-            secondSanCarlosGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[26].fStr + '/' + instance.data.result.fArray[27].fStr
-          }
-        });
-        this.markerInstace.setState();
-      });
-    }
-
-
-    //If the map ready boolean is true, the state of the map is changed (Redirected)
-    onMapLayout = () => {
-      this.setState({ isMapReady: true });
     }
 
     //Gets the current location and changes the state of current location
-    getLocationAsync = async () => {
-      const { status } = await Permissions.askAsync(Permissions.LOCATION);
-      if (status !== 'granted') {
-        this.setState({
-          errorMessage: 'Permission to access location was denied',
-        });
-      }
+    // getLocationAsync = async () => {
+    //   const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    //   if (status !== 'granted') {
+    //     this.setState({
+    //       errorMessage: 'Permission to access location was denied',
+    //     });
+    //   }
 
-      //Changes the location to be current location
-      const location = await Location.getCurrentPositionAsync({});
-      console.log(location);
-      this.setState({ location });
-      this.changeLoc(location.coords.latitude, location.coords.longitude);
-    };
+    //   let location = await Location.getCurrentPositionAsync({});
+    //   console.log(location);
 
-    //Set to change the location based on the new coordinates that are held
-    changeLoc(lat, lng) {
-      const newCoord = {
-        latitude: lat,
-        longitude: lng
-      };
-      // this.state.coordinate = new AnimatedRegion({
-      //     latitude: lat,
-      //     longitude: lng
-      // });
+    //   this.state.currentLocation = location;
 
-      this.state.screenCoord = new AnimatedRegion({
-          latitude: lat,
-          longitude: lng,
-          latitudeDelta: 0.01412,
-          longitudeDelta: 0.013412
-      });
-      //Used for holding latitude and longitude of a loaded location
-      // const reg = new AnimatedRegion({
-      //   latitude: lat,
-      //   longitude: lng,
-      //   latitudeDelta: 0.0312,
-      //   longitudeDelta: 0.03412
-      // });
+    //   this.changeLoc(location.coords.latitude, location.coords.longitude);
 
-
-      //Redirects map to new location (animated load)
-      this.state.coordinate.timing(newCoord).start();
-      this.mapRef.animateToRegion(this.state.screenCoord, 500);
-    }
+    // };
 
 
     render() {
-      //Pulls data directly from San Jose Garage API
+
+        return (
+            <View style={styles.mapScreen.outerContainer}>
+
+                <View style={styles.mapScreen.container}>
 
 
-      let longitude = 'Waiting..';
-      let latitude = 'Waiting..';
-      if (this.state.errorMessage) {
-        longitude = this.state.errorMessage;
-        latitude = this.state.errorMessage;
-      } else if (this.state.location) {
-        //Getting the information of current location from state
-        //Error for andriod when getting long, lat because
-        //it returns the values in a string form that ios can convert to double
-        //but andriod can not convert it to double (null to be specific)
-        longitude = this.state.location.coords.longitude;
-        latitude = this.state.location.coords.latitude;
-        //int long = parseInt(longitude);
-        //int lat = parseInt(latitude);
-      }
+                    { this.state.garageListLoaded && <MapContainer
+                        ref={instance => {
+                            if(this.state.mapRef == null){
+                                this.setState({
+                                    mapRef: instance
+                                });
+                            }
+                        }}
+                        onMarkerPress = {this.state.garageList.slideUp}
+                        onMapPress = {this.state.garageList.slideDown}
+                    />
+                    }
 
-      return (
-        <View style={styles.outerContainer}>
-          <View style={styles.navigationBar}>
-            <TouchableHighlight
-              onPress={() => this.props.navigation.openDrawer()}
-              underlayColor={'white'}
-            >
-              <Image source={require('../images/menu.png')} />
+                    
 
-            </TouchableHighlight>
+                    <TouchableHighlight
+                        style={styles.mapScreen.menuButton}
+                        onPress={() => this.props.navigation.openDrawer()}
+                        underlayColor={'white'}
+                    >
+                        <Image source={require('../images/menu.png')}
+                        style={{
+                            height: 30,
+                            width: 30,
+                            opacity: .5
+                        }}/>
 
-            <Text style={styles.companyText}>SpotMeSolutions</Text>
+                    </TouchableHighlight>
 
-            <Image source={require('../images/icon.jpg')} />
-          </View>
+                    {this.state.mapRef != null &&
+                        <SearchBar
+                            mainMap={this.state.mapRef}
+                        />
+                    }
 
-          <View style={styles.container}>
-            <MapView
-              provider={PROVIDER_GOOGLE}
-              style={styles.map}
-              //props error on region, expected number but got object
-              //error doesnt have big effect/matter but gives a warning
-              region={this.state.screenCoord}
-              //customMapStyle={DarkMapStyles}
-              customMapStyle={MidnightCommander}
-              onLayout={this.onMapLayout}
-              ref={(instance) => {
-                this.mapRef = instance;
-              }}
-            >
-            {console.log(this.state.description)}
-              { this.state.isMapReady &&
-                <View >
-                  <Marker.Animated
-                    coordinate={this.state.coordinate}
-                    //Description is not being displayed
-                    //description={this.state.description}
-                    description={'Your Destination'}
-                    image={banana}
-                    style={styles.markerStyle}
-                  />
-                  
-                  <Marker
-                    coordinate={{ latitude, longitude }}
-                   description={'Current Location'}
-                    image={carMarker}
-                    style={styles.locationStyle}
-                   />
-
-
-
-                  <Marker
-                    coordinate={{ latitude: 37.339222, longitude: -121.880724, }}
-                    //Can later pull coord, title, descrip from API when implemented
-                    title={'SJSU North Parking Garage'}
-                    description={'Spots Filled: 977/1490'}
-                    image={spotMarker}
-                    style={styles.markerStyle}
-                  />
-                  <Marker
-                    coordinate={{ latitude: 37.332303, longitude: -121.882986, }}
-                    title={'SJSU West Parking Garage'}
-                    description={'Spots Filled: 827/1135'}
-                    image={spotMarker}
-                    style={styles.markerStyle}
-
-                  />
-                  <Marker
-                    coordinate={{ latitude: 37.333088, longitude: -121.880797, }}
-                    title={'SJSU South Parking Garage'}
-                    description={'Spots Filled: 1377/1500'}
-                    image={spotMarker}
-                    style={styles.markerStyle}
-                  />
-
-                  <Marker
-                    coordinate={{ latitude: 37.336537, longitude: -121.886143 }}
-                    title={this.state.garageInfo.fourthStreetGarageName}
-                    description={this.state.garageInfo.fourthStreetGarageSpaces}
-                    image={spotMarker}
-                    style={styles.markerStyle}
-                  />
-                  <Marker
-                    coordinate={{ latitude: 37.337845, longitude: -121.884707 }}
-                    title={this.state.garageInfo.cityHallGarageName}
-                    description={this.state.garageInfo.cityHallGarageSpaces}
-                    image={spotMarker}
-                    style={styles.markerStyle}
-                  />
-                  <Marker
-                    coordinate={{ latitude: 37.336572, longitude: -121.888315 }}
-                    title={this.state.garageInfo.thirdStreetGarageName}
-                    description={this.state.garageInfo.thirdStreetGarageSpaces}
-                    image={spotMarker}
-                    style={styles.markerStyle}
-                  />
-                  <Marker
-                    coordinate={{ latitude: 37.336345, longitude: -121.892787 }}
-                    title={this.state.garageInfo.marketSanPedroSquareGarageName}
-                    description={this.state.garageInfo.marketSanPedroSquareGarageSpaces}
-                    image={spotMarker}
-                    style={styles.markerStyle}
-                  />
-                  <Marker
-                    coordinate={{ latitude: 37.329989, longitude: -121.887033 }}
-                    title={this.state.garageInfo.conventionCenterGarageName}
-                    description={this.state.garageInfo.conventionCenterGarageSpaces}
-                    image={spotMarker}
-                    style={styles.markerStyle}
-                  />
-                  <Marker
-                    coordinate={{ latitude: 37.331803, longitude: -121.884765 }}
-                    title={this.state.garageInfo.secondSanCarlosGarageName}
-                    description={this.state.garageInfo.secondSanCarlosGarageSpaces}
-                    image={spotMarker}
-                    style={styles.markerStyle}
-                  />
-
+                    <GarList
+                        ref = {(instance) => {
+                            console.log("GarList has loaded");
+                            if(!this.state.garageListLoaded){
+                                this.setState({
+                                    garageList: instance,
+                                    garageListLoaded: true
+                                });
+                            }
+                        }}
+                    ></GarList>
                 </View>
 
-              }
-            </MapView>
-
-            <GooglePlacesAutocomplete
-              placeholder='Search a location or garage!'
-              minLength={2} //Minimum length of text entered for autocomplete results
-              autoFocus={false}
-              listViewDisplayed='false'
-              returnKeyType={'default'}
-              fetchDetails
-              renderDescription={row => row.description}
-              onPress={(data, details = null) => {
-                this.changeLoc(details.geometry.location.lat, details.geometry.location.lng);
-                return details;
-              }}
-              getDefaultValue={() => ''}
-              query={{ key: 'AIzaSyAknyin7pzbkZ89IRg6QeQ0gC2sVjSKRpY' }}
-              styles={{
-                textInputContainer: {
-                  width: '100%',
-                  backgroundColor: '#42b8ba',
-                  //backgroundColor: 'transparent'
-                  zIndex: 99
-                },
-                listView: {
-                  position: 'absolute',
-                  backgroundColor: 'white',
-                  //backgroundColor: 'transparent',
-                  // height: Dimensions.get('window').height,
-                  zIndex: 99,
-                  top: 40
-                },
-                description: {
-                  fontWeight: 'bold',
-                  fontSize: 18,
-                  height: 40
-                  //color: 'white'
-                },
-              }}
-            />
-          </View>
-        </View>
-      );
+            </View>
+        );
     }
 }
 
-  const styles = {
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    map: {
-      ...StyleSheet.absoluteFillObject,
-      flex: 1,
-      width: Dimensions.get('window').width,
-      height: Dimensions.get('window').height
-    },
-    outerContainer: {
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-      borderRadius: 2,
-      borderWidth: 2,
-      borderColor: '#d6d7da'
-    },
-    companyText: {
-      fontSize: 30,
-      color: '#42b8ba',
-      fontWeight: '900',
-      alignItems: 'center',
-      width: 380,
-      textAlign: 'center'
-    },
-    navigationBar: {
-      marginTop: 20,
-      alignItems: 'center',
-      flexDirection: 'row',
-      justifyContent: 'space-between'
-    },
-    mapAndSearchBarContainer: {
-      alignItems: 'center',
 
-      height: '90%',
-      width: '100%'
-    },
-    inputContainer: {
-      //height: 40,
-      elevation: 1,
-      backgroundColor: 'white',
-      width: '90%',
-      height: '10%',
-      top: 40,
-      borderRadius: 3,
-      shadowOpacity: 0.75,
-      shadowRadius: 1,
-      shadowColor: 'gray',
-      shadowOffset: { height: 0, width: 0 },
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    inputStyle: {
-      color: '#000',
-      padding: 10,
-      height: 50,
-      fontSize: 18,
-      lineHeight: 23,
-      flex: 2
-    },
-    locationStyle: {
-      zIndex: 99
-    },
-    markerStyle: {
-      zIndex: 98
-    }
-  };
-
-  const mapStateToProps = ({ loc }) => {
+const mapStateToProps = ({ loc }) => {
     const {
-      location,
-      currentLocation,
-      inputData,
-      predictions,
-      sanjose
+        location,
+        currentLocation,
+        inputData,
+        predictions,
+        sanjose
     } = loc;
     return { location, currentLocation, inputData, predictions, sanjose };
-  };
-  const mapActionCreators = {
+};
+const mapActionCreators = {
     locationChanged,
     getCurrentLocation,
     getInputData,
     getAddressPredictions,
     getSelectedAddress,
     fetchSanJoseAPI,
-  };
+};
 
 export default connect(mapStateToProps, mapActionCreators)(MapScreen);

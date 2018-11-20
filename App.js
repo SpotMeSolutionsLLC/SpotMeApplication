@@ -7,12 +7,12 @@ import store from './store';
 import AuthLoadingScreen from './screens/AuthLoadingScreen'
 import WelcomeScreen from './screens/Welcome';
 import Signup from './screens/Signup';
-//import Signin from './screens/Signin';
+import Signin from './screens/Signin';
 import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import LogoTitle from './components/LogoTitle';
 import Icon from 'react-native-vector-icons/Ionicons'
-//import FacebookAuth from './screens/FacebookAuth';
+import FacebookAuth from './screens/FacebookAuth';
 
 import Profile from './screens/Profile';
 import Favorite from './screens/Favorite';
@@ -22,7 +22,7 @@ import MapApp from "./src/App";
 
 const AuthStackNavigator = createStackNavigator({
   Welcome: WelcomeScreen,
-//  Signin: Signin,
+  Signin: Signin,
   Signup: Signup,
 });
 
@@ -69,6 +69,7 @@ const AppSwitchNavigator = createSwitchNavigator({
   AuthLoadingScreen: AuthLoadingScreen,
   Auth: AuthStackNavigator,
   App: MapApp,
+<<<<<<< HEAD
 //  FbAuth: FacebookAuth
 <<<<<<< HEAD
 });
@@ -79,6 +80,11 @@ const AppSwitchNavigator = createSwitchNavigator({
 //remove the // WARNING:
 >>>>>>> upstream/master
 console.disableYellowBox = true;
+=======
+  FbAuth: FacebookAuth
+})
+
+>>>>>>> faf956e999637964727eed583680f67a8e2b5976
 class App extends React.Component {
   render() {
     return (

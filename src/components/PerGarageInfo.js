@@ -1,75 +1,68 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import  {GarageBottomLine}  from './GarageBottomLine';
+import { View, Text, Image } from 'react-native';
+import { colors } from 'react-native-elements';
 
-const PerGarageInfo = (props) => {
-  const { containerStyle, leftSectionStyle, rightSectionStyle, generalStyle } = styles;
-  return (
-    <View style={containerStyle}>
+import styles from "./Styling.style.js";
 
-      <View style={leftSectionStyle}>
-        <Text style={{ fontSize: 27, color: 'white' }}>
-        {props.spotsNum}
-        </Text>
-      </View>
+class PerGarageInfo extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
-      <View style={rightSectionStyle}>
-        <View style={generalStyle}>
-          <Text style={{ fontSize: 20, color: 'blue' }}>
-          {props.garageName}
-          </Text>
-        </View>
 
-        <View style={generalStyle}>
-          <Text style={{ fontSize: 15, color: 'white' }}>
-          {props.garageAddress}
-          </Text>
-        </View>
+    render() {
+        return (
+            <View style={styles.perGarageInfo.containerStyle}>
 
-         <View style={generalStyle}>
-          <GarageBottomLine
-          perLev={'Level 1:     '}
-          miles={'--- Distance'}
-          price={'--- Cost'}
+                <View style={styles.perGarageInfo.leftSectionStyle}>
+                    <View style={styles.perGarageInfo.generalStyle}>
+                        <Text style={{ fontSize: 40, color: 'blue' }}>
+                            {this.props.garageName}
+                        </Text>
+                    </View>
 
-          // stars={props.parking.id}
-          // miles={props.parking.id}
-          // price={props.parking.id}
+                    <Text style={{ fontSize: 23, color: 'white' }}>
+                        {this.props.spotsNum + " / " + this.props.garageMax}
+                    </Text>
+                </View>
 
-          />
-        </View>
-      </View>
+                <View style={[styles.perGarageInfo.rightSectionStyle,{
+                    justifyContent: "center",
+                    alignItems: "center",
+                }]}>
+                    
 
-    </View>
 
-  );
-};
+                    <View style={[styles.perGarageInfo.generalStyle, {
+                        alignItems: "center",
+                        
+                    }]}>
+                        {/* <GarageBottomLine
+                            perLev={'Level 1: 49  '} // per garage levels
+                            miles={'    4.2 mi'} //props.parking.distance
+                            price={' $$$ '}
+                        /> */}
+                        <Text style={{
+                            fontSize: 40,
+                            color: "white",
+                            textAlign: "center",
+                            textAlignVertical:"center",
+                            backgroundColor: "orange",
+                            borderRadius: 40,
+                            fontWeight: "900",
+                            borderColor: 'black',
+                            borderWidth: 4,
+                            height: 100,
+                            width: 150
+                        }}>
+                            {Math.floor((this.props.spotsNum /this.props.garageMax * 100))}%
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+}
 
-const styles = {
-  containerStyle: {
-    flexDirection: 'row',
-    marginLeft: 7,
-    marginRight: 7,
-    marginTop: 5,
-    marginBottom: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  leftSectionStyle: {
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 5
-  },
-  rightSectionStyle: {
-    flexDirection: 'column',
-    flex: 5,
-  },
-  generalStyle: {
-    marginTop: 2,
-    marginBottom: 2,
-  }
-};
 
 export { PerGarageInfo };

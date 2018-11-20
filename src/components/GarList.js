@@ -1,84 +1,137 @@
-import React, {Component} from 'react';
-import {View,Text} from 'react-native';
+import React, { Component } from 'react';
+import {
+    View,
+    Text,
+    Button,
+    Dimensions,
+    Animated,
+    Image
+} from 'react-native';
 import axios from 'axios';
-import GarDetail from './GarDetail';
-import {PerGarageInfo} from './PerGarageInfo';
+
+import { PerGarageInfo } from './PerGarageInfo';
+import loadingImage from "../images/loading.gif";
+
+import styles from "./Styling.style.js";
 
 
 class GarList extends Component {
     state = {
-        parkings: []
+        parkingsName: '',
+        parkingsMax: 0,
+        parkingsCurrent: 0,
+        loaded: false,
+        bottom: new Animated.Value(-styles.garList.containerStyle.height)
+
     };
 
+    constructor(props) {
+        super(props);
+        console.log(this.state.bottom);
 
-    componentWillMount() {
-
-        axios.get('https://jsonplaceholder.typicode.com/users')
-        .then(res => {
-            const parkings = res.data;
-            this.setState({ parkings });
-          })
-            //.then(response => console.log(response));
-            //.then(response => this.setState({parkings: response.data}));
-
+        this.slideUp = this.slideUp.bind(this);
+        this.slideDown = this.slideDown.bind(this);
     }
 
 
-    renderParkings(){
-        return this.state.parkings.map(parking =>
-            <GarDetail key={parking.title} parking = {parking} />
+    // componentDidMount() {
+    //     this.updateData("SJNorth");
+    //     // this.setState({
+    //     //     parkingsName: "SJNorth",
+    //     //     parkingsMax: 730,
+    //     //     parkingsCurrent: 300,
+    //     //     loaded:true
+    //     // });
 
-        );
+    // }
+
+    updateData(searchName) {
+        console.log("Currently fetching data");
+        axios.post('https://project-one-203604.appspot.com/garages/garage', {
+            name: searchName
+        }).then(res => {
+
+            console.log('Found Garage Data: ' + searchName);
+
+
+
+            this.setState({
+                parkingsName: res.data.name,
+                parkingsMax: res.data.max,
+                parkingsCurrent: res.data.current,
+                loaded: true
+            }, function () {
+                console.log("State has changed");
+            });
+
+        });
+    }
+
+    whenDoneLoading() {
+        console.log("WhenDoneLoading");
+        if (this.state.loaded) {
+            console.log("PerGarageInfo Loaded");
+            return (
+                <PerGarageInfo
+                    spotsNum={this.state.parkingsCurrent}
+                    garageName={this.state.parkingsName}
+                    garageMax={this.state.parkingsMax}
+                />
+            );
+        }
+        else {
+            return (
+                <View style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: styles.garList.height
+                }}>
+                    <Image style={{
+                        width: 50,
+                        height: 50
+                    }}
+                        source={loadingImage} />
+                </View>
+            )
+        }
+    }
+
+    slideUp(searchName) {
+        this.updateData(searchName);
+        Animated.timing(this.state.bottom, {
+            toValue: -(styles.garList.containerStyle.height - styles.garList.height),
+            duration: 100
+        }).start();
+        
 
     }
+
+    slideDown() {
+        Animated.timing(this.state.bottom, {
+            toValue: -(styles.garList.containerStyle.height),
+            duration: 100
+        }).start();
+        this.setState({
+            loaded: false
+        })
+    }
+
 
     render() {
-     return(
-      <View>
-          {this.renderParkings()}
+        let { bottom } = this.state;
+        return (
+            <Animated.View style={[styles.garList.containerStyle, { bottom: bottom }]}>
+                <View style={styles.garList.garageStyle}>
+                    {this.whenDoneLoading()}
 
-       </View>
-      );
-    }
-
-
-  //   renderit(){
-  //
-	// for(let i = 0; i < noGuest; i++){
-  //
-	// 	parkings.get(
-	// 		<View key = {i}>
-	// 			parkings
-	// 		</View>
-	// 	)
-	// }
-
-
+                </View>
+            </Animated.View>
+        )
 
     }
+}
 
 
-
-const styles = {
-    garageStyle: {
-      borderBottomColor: 'blue',
-      borderBottomWidth: 0.75,
-      marginLeft: 25,
-      marginRight: 25,
-      marginTop: 5,
-      marginBottom: 5
-    },
-    containerStyle: {
-      backgroundColor: '#00FFFF',
-      height: 300,
-      width: 325,
-      borderRadius: 15,
-      marginLeft: 25,
-      marginRight: 25,
-      marginTop: 200,
-      marginBottom: 35,
-      justifyContent: 'center'
-    },
-  };
 
 export default GarList;
+

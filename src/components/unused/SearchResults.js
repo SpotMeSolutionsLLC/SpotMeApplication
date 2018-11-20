@@ -1,10 +1,10 @@
-/*import React from 'react';
+import React from 'react';
 import { Text } from 'react-native';
 import { View, List, ListItem, Left, Body } from 'native-base';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const SearchResults = ({ // component for handling list of recommendation
+const SearchResults = ({ // component for handling list of recommendation 
   predictions,
   getSelectedAddress,
   fetchSanJoseAPI
@@ -72,6 +72,7 @@ const styles = {
 };
 
 export default SearchResults;
+<<<<<<< HEAD:src/components/SearchResults.js
 <<<<<<< HEAD
 */
 /*
@@ -137,3 +138,6 @@ const styles = StyleSheet.create({
   }
 });
 */
+=======
+
+>>>>>>> faf956e999637964727eed583680f67a8e2b5976:src/components/unused/SearchResults.js

@@ -4,12 +4,14 @@ import {View,Text} from 'react-native';
 //import CardSection from './basic/CardSection';
 import {PerGarageInfo} from './PerGarageInfo';
 
+import styles from "Styling.style.js";
+
 const GarDetail = (props) =>  {
 
     return (
 
-             <View style={styles.containerStyle}>
-               <View style={styles.garageStyle}>
+             <View style={styles.garDetail.containerStyle}>
+               <View style={styles.garDetail.garageStyle}>
                 <PerGarageInfo
                     spotsNum={props.parking.id}
                     garageName={props.parking.name}
@@ -22,31 +24,6 @@ const GarDetail = (props) =>  {
 
 };
 
-const styles = {
-    headerContentStyles: {
-        flexDirection: 'coloumn',
-        justifyContent: 'space-around'
-    },
-    garageStyle: {
-        borderBottomColor: 'blue',
-        borderBottomWidth: 0.75,
-        marginLeft: 25,
-        marginRight: 25,
-        marginTop: 5,
-        marginBottom: 5
-      },
-      containerStyle: {
-        backgroundColor: '#A0CFEC',
-        height: 200,
-        width: 325,
-        borderRadius: 15,
-        marginLeft: 25,
-        marginRight: 25,
-        marginTop: 400,
-        marginBottom: 35,
-        justifyContent: 'center'
-      },
-};
 
 
 export default GarDetail;
