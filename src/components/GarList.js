@@ -5,7 +5,8 @@ import {
     Button,
     Dimensions,
     Animated,
-    Image
+    Image,
+    Platform
 } from 'react-native';
 import axios from 'axios';
 
@@ -96,24 +97,42 @@ class GarList extends Component {
         }
     }
 
-    slideUp(searchName) {
+    slideUp(searchName){
+        console.log("slideUp called");
         this.updateData(searchName);
-        Animated.timing(this.state.bottom, {
-            toValue: -(styles.garList.containerStyle.height - styles.garList.height),
-            duration: 100
-        }).start();
-        
-
+        if(Platform.OS == "android"){
+                Animated.timing(this.state.bottom,{
+                toValue: -(styles.garList.containerStyle.height - styles.garList.height),
+                duration: 100
+            }).start();
+            this.state.loaded = true;
+        }
+        else{
+            this.setState({
+                loaded: true,
+                bottom: -(styles.garList.containerStyle.height - styles.garList.height)
+            });
+        }
+            
     }
 
-    slideDown() {
-        Animated.timing(this.state.bottom, {
-            toValue: -(styles.garList.containerStyle.height),
-            duration: 100
-        }).start();
-        this.setState({
-            loaded: false
-        })
+    slideDown(){
+        console.log("slideDown Called");
+        if(this.state.loaded == true){
+            if(Platform.OS == "android"){
+                Animated.timing(this.state.bottom,{
+                    toValue: -(styles.garList.containerStyle.height),
+                    duration: 100
+                }).start();
+                this.state.loaded = false;
+            }
+            else{
+                this.setState({
+                    bottom: -(styles.garList.containerStyle.height),
+                    loaded: false
+                });
+            }
+        }
     }
 
 
