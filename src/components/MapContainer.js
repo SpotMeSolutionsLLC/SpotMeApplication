@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import {
     StyleSheet,
     View,
@@ -27,28 +28,28 @@ class MapContainer extends Component {
         super(props);
         this.state = {
             markers: [{
-                coordiantes: {
+                coordinates: {
                     latitude: 37.339222,
                     longitude: -121.880724
                 },
                 title: 'SJSU North Parking Garage',
                 key: 'SJNorth'
             }, {
-                coordiantes: {
+                coordinates: {
                     latitude: 37.332303,
                     longitude: -121.882986
                 },
                 title: 'SJSU West Parking Garage',
                 key: 'SJWest'
             }, {
-                coordiantes: {
+                coordinates: {
                     latitude: 37.333088,
                     longitude: -121.880797
                 },
                 title: 'SJSU South Parking Garage',
                 // description: '',
                 key: 'SJSouth'
-            }]
+            }],
         };
         this.coordinate = new AnimatedRegion({
             latitude: 37.339222,
@@ -68,7 +69,7 @@ class MapContainer extends Component {
     getMarkers() {
         return this.state.markers.map(markerInstance => (
             <Marker
-                coordinate={{ latitude: markerInstance.coordiantes.latitude, longitude: markerInstance.coordiantes.longitude }}
+                coordinate={{ latitude: markerInstance.coordinates.latitude, longitude: markerInstance.coordinates.longitude }}
                 //Can later pull coord, title, descrip from API when implemented
                 title={markerInstance.title}
                 description={markerInstance.description}
@@ -101,8 +102,27 @@ class MapContainer extends Component {
         });
     }
 
-
     render() {
+        //Gets the data for SJ Garages from SJ API
+        axios.get('http://api.data.sanjoseca.gov/api/v2/datastreams/PARKI-GARAG-DATA/data.json/?auth_key=974e8db20c97825c8fe806dcbeaa3889c7b8c921&limit=50').then(instance => {
+        console.log(instance.data.result.fArray);
+        console.log('this is reached');
+        console.log(instance.data.result.fArray[4].fStr);
+            //fourthStreetGarageName: instance.data.result.fArray[4].fStr,
+            //fourthStreetGarageStatus: 'Status: ' + instance.data.result.fArray[5].fStr,
+            //fourthStreetGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[6].fStr + '/' + instance.data.result.fArray[7].fStr,
+            
+            // cityHallGarageName: instance.data.result.fArray[8].fStr,
+            // cityHallGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[6].fStr + '/' + instance.data.result.fArray[7].fStr,
+            // thirdStreetGarageName: instance.data.result.fArray[12].fStr,
+            // thirdStreetGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[14].fStr + '/' + instance.data.result.fArray[15].fStr,
+            // marketSanPedroSquareGarageName: instance.data.result.fArray[16].fStr,
+            // marketSanPedroSquareGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[18].fStr + '/' + instance.data.result.fArray[19].fStr,
+            // conventionCenterGarageName: instance.data.result.fArray[20].fStr,
+            // conventionCenterGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[22].fStr + '/' + instance.data.result.fArray[23].fStr,
+            // secondSanCarlosGarageName: instance.data.result.fArray[24].fStr,
+            // secondSanCarlosGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[26].fStr + '/' + instance.data.result.fArray[27].fStr
+        });
         return (
             <MapView.Animated
 
