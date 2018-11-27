@@ -66,25 +66,12 @@ const AppDrawerNavigator = createDrawerNavigator({
 });
 
 const AppSwitchNavigator = createSwitchNavigator({
-  AuthLoadingScreen: AuthLoadingScreen,
+  AuthLoadingScreen,
   Auth: AuthStackNavigator,
   App: MapApp,
-<<<<<<< HEAD
-//  FbAuth: FacebookAuth
-<<<<<<< HEAD
+  FbAuth: FacebookAuth
 });
 
-//Removed yellow box errors for presentation
-=======
-})
-//remove the // WARNING:
->>>>>>> upstream/master
-console.disableYellowBox = true;
-=======
-  FbAuth: FacebookAuth
-})
-
->>>>>>> faf956e999637964727eed583680f67a8e2b5976
 class App extends React.Component {
   render() {
     return (

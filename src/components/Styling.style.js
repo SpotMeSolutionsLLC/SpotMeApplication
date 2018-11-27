@@ -1,9 +1,7 @@
 import {
     StyleSheet,
-    View,
     Dimensions,
-    Text
-} from "react-native";
+} from 'react-native';
 
 const garListHeight = 150;
 const borderRadius = 20;
@@ -12,7 +10,7 @@ const styles = {
     dataTable: { //DataTable.js
         box: {
 
-            position: "absolute",
+            position: 'absolute',
             height: 100,
             width: 100
         },
@@ -104,12 +102,12 @@ const styles = {
         },
         containerStyle: {
             backgroundColor: '#A0CFEC',
-            height: Dimensions.get("window").height,
-            width: Dimensions.get("window").width,
+            height: Dimensions.get('window').height,
+            width: Dimensions.get('window').width,
             justifyContent: 'flex-start',
-            position: "absolute",
+            position: 'absolute',
             left: 0,
-            borderRadius: borderRadius
+            borderRadius
         },
     },
 
@@ -178,7 +176,7 @@ const styles = {
             zIndex: 99
         },
         callOut: {
-            justifyContent: "flex-start",
+            justifyContent: 'flex-start',
         },
     },
 
@@ -196,14 +194,14 @@ const styles = {
         },
         menuButton: {
             flex: 1,
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'absolute',
             left: 0,
             top: 30,
             zIndex: 99,
-            width: "15%",
+            width: '15%',
             height: 50
         }
     },
@@ -279,23 +277,20 @@ const styles = {
             alignItems: 'center',
             justifyContent: 'center',
             marginRight: 5,
-            width: "20%",
+            width: '20%',
 
         },
         rightSectionStyle: {
             flexDirection: 'column',
             flex: 1,
-            width: "20%",
-            height: "100%"
+            width: '20%',
+            height: '100%'
         },
         generalStyle: {
             marginTop: 2,
             marginBottom: 2,
-
         }
     }
-
-}
-
+};
 
 export default styles;
