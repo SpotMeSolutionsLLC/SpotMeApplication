@@ -19,12 +19,12 @@ import {
     fetchSanJoseAPI
 } from '../actions';
 
-import MapContainer from "./MapContainer";
-import DataTable from "./DataTable";
-import GarList from "./GarList";
-import SearchBar from "./SearchBar";
+import MapContainer from './MapContainer';
+import DataTable from './DataTable';
+import GarList from './GarList';
+import SearchBar from './SearchBar';
 
-import styles from "./Styling.style.js";
+import styles from './Styling.style.js';
 
 
 class MapScreen extends Component {
@@ -34,7 +34,7 @@ class MapScreen extends Component {
             garageList: null,
             garageListLoaded: false,
             mapRef: null
-        }
+        };
     }
 
     //Gets the current location and changes the state of current location
@@ -57,7 +57,6 @@ class MapScreen extends Component {
 
 
     render() {
-
         return (
             <View style={styles.mapScreen.outerContainer}>
 
@@ -66,30 +65,30 @@ class MapScreen extends Component {
 
                     { this.state.garageListLoaded && <MapContainer
                         ref={instance => {
-                            if(this.state.mapRef == null){
+                            if (this.state.mapRef == null) {
                                 this.setState({
                                     mapRef: instance
                                 });
                             }
                         }}
-                        onMarkerPress = {this.state.garageList.slideUp}
-                        onMapPress = {this.state.garageList.slideDown}
+                        onMarkerPress={this.state.garageList.slideUp}
+                        onMapPress={this.state.garageList.slideDown}
                     />
                     }
-
-                    
 
                     <TouchableHighlight
                         style={styles.mapScreen.menuButton}
                         onPress={() => this.props.navigation.openDrawer()}
                         underlayColor={'white'}
                     >
-                        <Image source={require('../images/menu.png')}
-                        style={{
-                            height: 30,
-                            width: 30,
-                            opacity: .5
-                        }}/>
+                        <Image 
+                            source={require('../images/menu.png')}
+                            style={{
+                                height: 30,
+                                width: 30,
+                                opacity: 0.5
+                            }}
+                        />
 
                     </TouchableHighlight>
 
@@ -100,18 +99,17 @@ class MapScreen extends Component {
                     }
 
                     <GarList
-                        ref = {(instance) => {
-                            console.log("GarList has loaded");
-                            if(!this.state.garageListLoaded){
+                        ref={(instance) => {
+                            console.log('GarList has loaded');
+                            if (!this.state.garageListLoaded) {
                                 this.setState({
                                     garageList: instance,
                                     garageListLoaded: true
                                 });
                             }
                         }}
-                    ></GarList>
+                    />
                 </View>
-
             </View>
         );
     }

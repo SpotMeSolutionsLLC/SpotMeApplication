@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, Button } from 'react-native';
 
-import styles from "./Styling.style.js";
+import styles from './Styling.style.js';
 
 export default class MenuScreen extends Component {
     render() {
@@ -10,7 +10,7 @@ export default class MenuScreen extends Component {
                 <Text>* This feature is under development * </Text>
                 <Button
                 onPress={() => this.props.navigation.openDrawer()}
-                title="Back"
+                title='Back'
                 />
             </View>
         );

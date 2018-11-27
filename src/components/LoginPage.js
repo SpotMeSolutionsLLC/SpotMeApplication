@@ -34,7 +34,7 @@ class LoginPage extends Component {
   }
   renderButton() {
     if (this.props.loading) {
-      return <Spinner size="large" />;
+      return <Spinner size='large' />;
     }
     // ()=>this.props.navigation.navigate('DrawerOpen')
     // this.onButtonPress.bind(this)
@@ -59,7 +59,6 @@ class LoginPage extends Component {
         <LogoImageSection />
         <CardSection>
           <InputEmail>
-              //label="Email"
               placeholder='e-mail'
               onChangeText={this.onEmailChange.bind(this)}
               value={this.props.email}
@@ -68,8 +67,6 @@ class LoginPage extends Component {
 
         <CardSection>
           <InputPassword>
-              //secureTextEntry = {true}
-              //label="Password"
               placeholder='Password'
               onChangeText={this.onPasswordChange.bind(this)}
               value={this.props.password}

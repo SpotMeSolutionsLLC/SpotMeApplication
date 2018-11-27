@@ -11,19 +11,19 @@ import Signin from './screens/Signin';
 import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import LogoTitle from './components/LogoTitle';
-import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/Ionicons';
 import FacebookAuth from './screens/FacebookAuth';
 
 import Profile from './screens/Profile';
 import Favorite from './screens/Favorite';
 import History from './screens/History';
-import MapApp from "./src/App";
-// import AppDrawerNavigator from "./SpotMeReact/App"
+import MapApp from './src/App';
+// import AppDrawerNavigator from './SpotMeReact/App'
 
 const AuthStackNavigator = createStackNavigator({
   Welcome: WelcomeScreen,
-  Signin: Signin,
-  Signup: Signup,
+  Signin,
+  Signup
 });
 
 const AppTabNavigator = createBottomTabNavigator({
@@ -49,7 +49,7 @@ const AppStackNavigator = createStackNavigator({
       headerLeft: (
         <TouchableOpacity onPress={() => navigation.toggleDrawer()} >
           <View style={{ paddingHorizontal: 10 }}>
-            <Icon name="md-menu" size={24} />
+            <Icon name='md-menu' size={24} />
           </View>
         </TouchableOpacity>
       )
@@ -60,9 +60,9 @@ const AppStackNavigator = createStackNavigator({
 const AppDrawerNavigator = createDrawerNavigator({
   Home: AppStackNavigator,
   Settings: SettingsScreen,
-  Profile: Profile,
-  Favorite: Favorite,
-  History: History
+  Profile,
+  Favorite,
+  History
 });
 
 const AppSwitchNavigator = createSwitchNavigator({

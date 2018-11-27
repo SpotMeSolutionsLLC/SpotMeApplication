@@ -11,9 +11,9 @@ import {
 import axios from 'axios';
 
 import { PerGarageInfo } from './PerGarageInfo';
-import loadingImage from "../images/loading.gif";
+import loadingImage from '../images/loading.gif';
 
-import styles from "./Styling.style.js";
+import styles from './Styling.style.js';
 
 
 class GarList extends Component {
@@ -36,9 +36,9 @@ class GarList extends Component {
 
 
     // componentDidMount() {
-    //     this.updateData("SJNorth");
+    //     this.updateData('SJNorth');
     //     // this.setState({
-    //     //     parkingsName: "SJNorth",
+    //     //     parkingsName: 'SJNorth',
     //     //     parkingsMax: 730,
     //     //     parkingsCurrent: 300,
     //     //     loaded:true
@@ -47,14 +47,11 @@ class GarList extends Component {
     // }
 
     updateData(searchName) {
-        console.log("Currently fetching data");
+        console.log('Currently fetching data');
         axios.post('https://project-one-203604.appspot.com/garages/garage', {
             name: searchName
         }).then(res => {
-
             console.log('Found Garage Data: ' + searchName);
-
-
 
             this.setState({
                 parkingsName: res.data.name,
@@ -62,16 +59,15 @@ class GarList extends Component {
                 parkingsCurrent: res.data.current,
                 loaded: true
             }, function () {
-                console.log("State has changed");
+                console.log('State has changed');
             });
-
         });
     }
 
     whenDoneLoading() {
-        console.log("WhenDoneLoading");
+        console.log('WhenDoneLoading');
         if (this.state.loaded) {
-            console.log("PerGarageInfo Loaded");
+            console.log('PerGarageInfo Loaded');
             return (
                 <PerGarageInfo
                     spotsNum={this.state.parkingsCurrent}
@@ -82,51 +78,54 @@ class GarList extends Component {
         }
         else {
             return (
-                <View style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: styles.garList.height
-                }}>
-                    <Image style={{
-                        width: 50,
-                        height: 50
+                <View 
+                    style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: styles.garList.height
                     }}
-                        source={loadingImage} />
+                >
+                    <Image 
+                        style={{
+                            width: 50,
+                            height: 50
+                        }}
+                        source={loadingImage} 
+                    />
                 </View>
-            )
+            );
         }
     }
 
-    slideUp(searchName){
-        console.log("slideUp called");
+    slideUp(searchName) {
+        console.log('slideUp called');
         this.updateData(searchName);
-        if(Platform.OS == "android"){
-                Animated.timing(this.state.bottom,{
+        if (Platform.OS === 'android') {
+                Animated.timing(this.state.bottom, {
                 toValue: -(styles.garList.containerStyle.height - styles.garList.height),
                 duration: 100
             }).start();
             this.state.loaded = true;
         }
-        else{
+        else {
             this.setState({
                 loaded: true,
                 bottom: -(styles.garList.containerStyle.height - styles.garList.height)
             });
-        }
-            
+        }        
     }
 
-    slideDown(){
-        console.log("slideDown Called");
-        if(this.state.loaded == true){
-            if(Platform.OS == "android"){
-                Animated.timing(this.state.bottom,{
+    slideDown() {
+        console.log('slideDown Called');
+        if (this.state.loaded === true) {
+            if (Platform.OS === 'android') {
+                Animated.timing(this.state.bottom, {
                     toValue: -(styles.garList.containerStyle.height),
                     duration: 100
                 }).start();
                 this.state.loaded = false;
             }
-            else{
+            else {
                 this.setState({
                     bottom: -(styles.garList.containerStyle.height),
                     loaded: false
@@ -139,18 +138,14 @@ class GarList extends Component {
     render() {
         let { bottom } = this.state;
         return (
-            <Animated.View style={[styles.garList.containerStyle, { bottom: bottom }]}>
+            <Animated.View style={[styles.garList.containerStyle, { bottom }]}>
                 <View style={styles.garList.garageStyle}>
                     {this.whenDoneLoading()}
 
                 </View>
             </Animated.View>
-        )
-
+        );
     }
 }
 
-
-
 export default GarList;
-

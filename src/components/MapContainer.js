@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
     Dimensions,
-} from "react-native";
+} from 'react-native';
 
 import MapView, {
     PROVIDER_GOOGLE,
@@ -11,16 +11,16 @@ import MapView, {
     AnimatedRegion,
     Animated,
     Callout
-} from "react-native-maps";
+} from 'react-native-maps';
 
 // import carMarker from '../images/car.png';
 // import banana from '../images/banana.png';
 import garageMarker from '../images/garage.png';
-// import GarList from "./GarList";
+// import GarList from './GarList';
 
-import MidnightCommander from "../mapstyles/MidnightCommander";
+import MidnightCommander from '../mapstyles/MidnightCommander';
 
-import styles from "./Styling.style.js";
+import styles from './Styling.style.js';
 
 class MapContainer extends Component {
     constructor(props) {
@@ -31,23 +31,23 @@ class MapContainer extends Component {
                     latitude: 37.339222,
                     longitude: -121.880724
                 },
-                title: "SJSU North Parking Garage",
-                key:"SJNorth"
-            },{
+                title: 'SJSU North Parking Garage',
+                key: 'SJNorth'
+            }, {
                 coordiantes: {
                     latitude: 37.332303,
                     longitude: -121.882986
                 },
-                title: "SJSU West Parking Garage",
-                key:"SJWest"
-            },{
+                title: 'SJSU West Parking Garage',
+                key: 'SJWest'
+            }, {
                 coordiantes: {
                     latitude: 37.333088,
                     longitude: -121.880797
                 },
-                title: "SJSU South Parking Garage",
-                // description: "",
-                key: "SJSouth"
+                title: 'SJSU South Parking Garage',
+                // description: '',
+                key: 'SJSouth'
             }]
         };
         this.coordinate = new AnimatedRegion({
@@ -65,17 +65,17 @@ class MapContainer extends Component {
         };
     }
 
-    getMarkers(){
-        return this.state.markers.map( markerInstance => (
+    getMarkers() {
+        return this.state.markers.map(markerInstance => (
             <Marker
-                coordinate={{latitude: markerInstance.coordiantes.latitude, longitude: markerInstance.coordiantes.longitude}}
+                coordinate={{ latitude: markerInstance.coordiantes.latitude, longitude: markerInstance.coordiantes.longitude }}
                 //Can later pull coord, title, descrip from API when implemented
                 title={markerInstance.title}
                 description={markerInstance.description}
                 image={garageMarker}
                 style={styles.MapContainer.markerStyle}
                 key={markerInstance.key}
-                onPress = {(coordinate,position) => {
+                onPress={(coordinate, position) => {
                     this.props.onMarkerPress(markerInstance.key);
                 }}
             />
@@ -83,7 +83,7 @@ class MapContainer extends Component {
     }
 
     changeLocation(lat, lng) {
-        console.log("MapContainer changeLocation() called");
+        console.log('MapContainer changeLocation() called');
         const duration = 3000;
         // this.startingLoc.timing({
         //     latitude: lat,
@@ -118,7 +118,7 @@ class MapContainer extends Component {
 
                 customMapStyle={MidnightCommander}
 
-                onPress = {() => {
+                onPress={() => {
                     this.props.onMapPress();
                 }}
             >

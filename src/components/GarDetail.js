@@ -1,13 +1,12 @@
 import React from 'react';
-import {View,Text} from 'react-native';
+import { View, Text } from 'react-native';
 //import Card from './basic/Card';
 //import CardSection from './basic/CardSection';
-import {PerGarageInfo} from './PerGarageInfo';
+import { PerGarageInfo } from './PerGarageInfo';
 
-import styles from "Styling.style.js";
+import styles from 'Styling.style.js';
 
-const GarDetail = (props) =>  {
-
+const GarDetail = (props) => {
     return (
 
              <View style={styles.garDetail.containerStyle}>
@@ -21,9 +20,6 @@ const GarDetail = (props) =>  {
            </View>
 
     );
-
 };
-
-
 
 export default GarDetail;
