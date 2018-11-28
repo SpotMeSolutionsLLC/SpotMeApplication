@@ -2,11 +2,16 @@ import {
     StyleSheet,
     View,
     Dimensions,
-    Text
+    Text,
+    Platform
 } from "react-native";
 
 const garListHeight = 150;
 const borderRadius = 20;
+const markerSize = {
+    height: 40,
+    width: 40
+}
 
 const styles = {
     dataTable: { //DataTable.js
@@ -172,7 +177,9 @@ const styles = {
             ...StyleSheet.absoluteFillObject,
         },
         markerStyle: {
-            zIndex: 98
+            zIndex: 98,
+            width: markerSize.width,
+            height: markerSize.height
         },
         locationStyle: {
             zIndex: 99
@@ -189,7 +196,6 @@ const styles = {
             alignItems: 'center',
         },
         outerContainer: {
-            marginTop: 30,
             flex: 1,
             flexDirection: 'column',
             justifyContent: 'flex-start',
@@ -291,8 +297,27 @@ const styles = {
         generalStyle: {
             marginTop: 2,
             marginBottom: 2,
-
+        },
+        textStyle: {
+            justifyContent: "center",
+            fontSize: 40,
+            color: "white",
+            textAlign: "center",
+            textAlignVertical: "center",
+            backgroundColor: "orange",
+            borderRadius: 40,
+            fontWeight: "900",
+            borderColor: 'black',
+            borderWidth: 4,
+            height: 100,
+            width: 150,
+            overflow: "hidden",
+            lineHeight: 100,
         }
+    },
+
+    safeAreaViewAndroid: {
+        paddingTop: Platform.OS == "android" ? 30 : 0,
     }
 
 }

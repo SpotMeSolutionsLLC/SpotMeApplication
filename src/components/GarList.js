@@ -71,7 +71,7 @@ class GarList extends Component {
     whenDoneLoading() {
         console.log("WhenDoneLoading");
         if (this.state.loaded) {
-            console.log("PerGarageInfo Loaded");
+            console.log("PerGarageInfo Loaded" + this.state.loaded);
             return (
                 <PerGarageInfo
                     spotsNum={this.state.parkingsCurrent}
@@ -105,11 +105,9 @@ class GarList extends Component {
                 toValue: -(styles.garList.containerStyle.height - styles.garList.height),
                 duration: 100
             }).start();
-            this.state.loaded = true;
         }
         else{
             this.setState({
-                loaded: true,
                 bottom: -(styles.garList.containerStyle.height - styles.garList.height)
             });
         }

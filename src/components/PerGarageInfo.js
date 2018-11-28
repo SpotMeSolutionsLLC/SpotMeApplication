@@ -37,24 +37,7 @@ class PerGarageInfo extends React.Component {
                         alignItems: "center",
                         
                     }]}>
-                        {/* <GarageBottomLine
-                            perLev={'Level 1: 49  '} // per garage levels
-                            miles={'    4.2 mi'} //props.parking.distance
-                            price={' $$$ '}
-                        /> */}
-                        <Text style={{
-                            fontSize: 40,
-                            color: "white",
-                            textAlign: "center",
-                            textAlignVertical:"center",
-                            backgroundColor: "orange",
-                            borderRadius: 40,
-                            fontWeight: "900",
-                            borderColor: 'black',
-                            borderWidth: 4,
-                            height: 100,
-                            width: 150
-                        }}>
+                        <Text style={styles.perGarageInfo.textStyle}>
                             {Math.floor((this.props.spotsNum /this.props.garageMax * 100))}%
                         </Text>
                     </View>

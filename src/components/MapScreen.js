@@ -6,7 +6,8 @@ import {
     Text,
     TouchableHighlight,
     Image,
-    Platform
+    Platform,
+    SafeAreaView,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -59,7 +60,7 @@ class MapScreen extends Component {
     render() {
 
         return (
-            <View style={styles.mapScreen.outerContainer}>
+            <SafeAreaView style={[styles.mapScreen.outerContainer, styles.safeAreaViewAndroid]}>
 
                 <View style={styles.mapScreen.container}>
 
@@ -112,7 +113,7 @@ class MapScreen extends Component {
                     ></GarList>
                 </View>
 
-            </View>
+            </SafeAreaView>
         );
     }
 }

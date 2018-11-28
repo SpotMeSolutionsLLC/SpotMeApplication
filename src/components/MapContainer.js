@@ -3,6 +3,8 @@ import {
     StyleSheet,
     View,
     Dimensions,
+    Image,
+
 } from "react-native";
 
 import MapView, {
@@ -72,13 +74,20 @@ class MapContainer extends Component {
                 //Can later pull coord, title, descrip from API when implemented
                 title={markerInstance.title}
                 description={markerInstance.description}
-                image={garageMarker}
-                style={styles.MapContainer.markerStyle}
+                
                 key={markerInstance.key}
-                onPress = {(coordinate,position) => {
+                onPress = {(e) => {
+                    e.stopPropagation();
                     this.props.onMarkerPress(markerInstance.key);
                 }}
-            />
+            >
+                <Image
+                    source={garageMarker}
+                    style={styles.MapContainer.markerStyle}
+                >
+
+                </Image>
+            </Marker>
         ));
     }
 
