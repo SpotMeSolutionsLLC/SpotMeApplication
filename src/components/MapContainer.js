@@ -4,6 +4,8 @@ import {
     StyleSheet,
     View,
     Dimensions,
+    Platform,
+    Text
 } from 'react-native';
 
 import MapView, {
@@ -13,6 +15,8 @@ import MapView, {
     Animated,
     Callout
 } from 'react-native-maps';
+
+import { Constants, Location, Permissions } from 'expo';
 
 // import carMarker from '../images/car.png';
 // import banana from '../images/banana.png';
@@ -52,12 +56,12 @@ class MapContainer extends Component {
             }],
         };
         this.coordinate = new AnimatedRegion({
-            latitude: 37.339222,
-            longitude: -121.880724
+            latitude: 0,
+            longitude: 0
         });
         this.startingLoc = new AnimatedRegion({
-            latitude: 37.339222,
-            longitude: -121.880724,
+            latitude: 0,
+            longitude: 0,
             latitudeDelta: 0.00112,
             longitudeDelta: 0.001412
         });
@@ -65,6 +69,33 @@ class MapContainer extends Component {
             loaded: false
         };
     }
+
+      state = {
+        location: null,
+        errorMessage: null,
+      };
+    
+      componentWillMount() {
+        if (Platform.OS === 'android' && !Constants.isDevice) {
+          this.setState({
+            errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
+          });
+        } else {
+          this._getLocationAsync();
+        }
+      }
+    
+      _getLocationAsync = async () => {
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+          this.setState({
+            errorMessage: 'Permission to access location was denied',
+          });
+        }
+    
+        let location = await Location.getCurrentPositionAsync({});
+        this.setState({ location });
+      };
 
     getMarkers() {
         return this.state.markers.map(markerInstance => (
@@ -103,6 +134,23 @@ class MapContainer extends Component {
     }
 
     render() {
+        let longitude = 'Waiting..';
+        let latitude = 'Waiting..';
+        if (this.state.errorMessage) {
+            longitude = this.state.errorMessage;
+            latitude = this.state.errorMessage;
+        } else if (this.state.location) {
+            //Getting the information of current location from state
+            //Error for andriod when getting long, lat because
+            //it returns the values in a string form that ios can convert to double
+            //but andriod can not convert it to double (null to be specific)
+            longitude = this.state.location.coords.longitude;
+            latitude = this.state.location.coords.latitude;
+            //int long = parseInt(longitude);
+            //int lat = parseInt(latitude);
+        }
+
+
         //Gets the data for SJ Garages from SJ API
         axios.get('http://api.data.sanjoseca.gov/api/v2/datastreams/PARKI-GARAG-DATA/data.json/?auth_key=974e8db20c97825c8fe806dcbeaa3889c7b8c921&limit=50').then(instance => {
         console.log(instance.data.result.fArray);
@@ -151,11 +199,14 @@ class MapContainer extends Component {
                             this.marker = marker;
                         }}
                     />
+                    <Marker.Animated
+                        coordinate={{ latitude, longitude }}
+                        description={'CurrentLocation'}
+                    />
                     {this.getMarkers()}
                 </View>
 
             </MapView.Animated>
-               
         );
     }
 }

@@ -1,17 +1,29 @@
 import React, { Component } from 'react';
 import { Text, View, Image, Button } from 'react-native';
 
+import { Speech } from 'expo';
 import styles from './Styling.style.js';
 
 class History extends Component {
   render() {
+    //Speech.speak('hello, this is reached', { language: 'en' });
   return (
+    
     <View style={styles.history.containerStyle}>
     <View style={styles.history.imageStyle}>
     <Button
     onPress={() => this.props.navigation.openDrawer()}
     title='back'
     />
+    <Button 
+    //onPress={() => console.log(locationText)}//Alert.alert('Hi', locationText)}
+    title='location'
+    />
+    <Button 
+      onPress={() => Speech.speak('Hi, this is working', { language: 'en' })}
+      title='Speech'
+    />
+
     <Text style={styles.history.headerText}>Recently Searched </Text>
 
       <Image
@@ -72,7 +84,6 @@ class History extends Component {
     </View>
       </View>
     </View>
-
   );
 }
 }
