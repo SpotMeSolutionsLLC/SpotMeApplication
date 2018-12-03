@@ -176,7 +176,11 @@ const styles = {
         map: {
             ...StyleSheet.absoluteFillObject,
         },
-        markerStyle: {
+        markerStyle:{
+            width: markerSize.width,
+            height: markerSize.height
+        },
+        markerStyleImage: {
             zIndex: 98,
             width: markerSize.width,
             height: markerSize.height

@@ -7,6 +7,8 @@ import {
 
 } from "react-native";
 
+import {connect} from "react-redux";
+
 import MapView, {
     PROVIDER_GOOGLE,
     Marker,
@@ -14,6 +16,11 @@ import MapView, {
     Animated,
     Callout
 } from "react-native-maps";
+
+import {
+    slideUp,
+    slideDown
+} from "../actions/slideActions"
 
 // import carMarker from '../images/car.png';
 // import banana from '../images/banana.png';
@@ -27,6 +34,7 @@ import styles from "./Styling.style.js";
 class MapContainer extends Component {
     constructor(props) {
         super(props);
+        console.log("MapContainer Loaded");
         this.state = {
             markers: [{
                 coordiantes: {
@@ -48,10 +56,10 @@ class MapContainer extends Component {
                     longitude: -121.880797
                 },
                 title: "SJSU South Parking Garage",
-                // description: "",
                 key: "SJSouth"
             }]
         };
+
         this.coordinate = new AnimatedRegion({
             latitude: 37.339222,
             longitude: -121.880724
@@ -74,19 +82,19 @@ class MapContainer extends Component {
                 //Can later pull coord, title, descrip from API when implemented
                 title={markerInstance.title}
                 description={markerInstance.description}
-                
+                style={styles.MapContainer.markerStyle}
                 key={markerInstance.key}
                 onPress = {(e) => {
                     e.stopPropagation();
-                    this.props.onMarkerPress(markerInstance.key);
+                    this.props.slideUp(markerInstance.key);
                 }}
             >
-                <Image
+                {/* <Image
                     source={garageMarker}
-                    style={styles.MapContainer.markerStyle}
+                    style={styles.MapContainer.markerStyleImage}
                 >
 
-                </Image>
+                </Image> */}
             </Marker>
         ));
     }
@@ -128,7 +136,7 @@ class MapContainer extends Component {
                 customMapStyle={MidnightCommander}
 
                 onPress = {() => {
-                    this.props.onMapPress();
+                    this.props.slideDown();
                 }}
             >
                 <View >
@@ -149,4 +157,15 @@ class MapContainer extends Component {
     }
 }
 
-export default MapContainer;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        slideUp: (key) => {
+            dispatch(slideUp(key))
+        },
+        slideDown: () => {
+            dispatch(slideDown());
+        }
+    }
+};
+
+export default connect(null, mapDispatchToProps)(MapContainer);

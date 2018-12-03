@@ -10,7 +10,6 @@ import {
     SafeAreaView,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import {
     locationChanged,
     getCurrentLocation,
@@ -38,24 +37,6 @@ class MapScreen extends Component {
         }
     }
 
-    //Gets the current location and changes the state of current location
-    // getLocationAsync = async () => {
-    //   const { status } = await Permissions.askAsync(Permissions.LOCATION);
-    //   if (status !== 'granted') {
-    //     this.setState({
-    //       errorMessage: 'Permission to access location was denied',
-    //     });
-    //   }
-
-    //   let location = await Location.getCurrentPositionAsync({});
-    //   console.log(location);
-
-    //   this.state.currentLocation = location;
-
-    //   this.changeLoc(location.coords.latitude, location.coords.longitude);
-
-    // };
-
 
     render() {
 
@@ -65,7 +46,7 @@ class MapScreen extends Component {
                 <View style={styles.mapScreen.container}>
 
 
-                    { this.state.garageListLoaded && <MapContainer
+                    <MapContainer
                         ref={instance => {
                             if(this.state.mapRef == null){
                                 this.setState({
@@ -73,10 +54,8 @@ class MapScreen extends Component {
                                 });
                             }
                         }}
-                        onMarkerPress = {this.state.garageList.slideUp}
-                        onMapPress = {this.state.garageList.slideDown}
                     />
-                    }
+
 
                     
 
@@ -100,17 +79,7 @@ class MapScreen extends Component {
                         />
                     }
 
-                    <GarList
-                        ref = {(instance) => {
-                            console.log("GarList has loaded");
-                            if(!this.state.garageListLoaded){
-                                this.setState({
-                                    garageList: instance,
-                                    garageListLoaded: true
-                                });
-                            }
-                        }}
-                    ></GarList>
+                    <GarList></GarList>
                 </View>
 
             </SafeAreaView>
@@ -119,23 +88,4 @@ class MapScreen extends Component {
 }
 
 
-const mapStateToProps = ({ loc }) => {
-    const {
-        location,
-        currentLocation,
-        inputData,
-        predictions,
-        sanjose
-    } = loc;
-    return { location, currentLocation, inputData, predictions, sanjose };
-};
-const mapActionCreators = {
-    locationChanged,
-    getCurrentLocation,
-    getInputData,
-    getAddressPredictions,
-    getSelectedAddress,
-    fetchSanJoseAPI,
-};
-
-export default connect(mapStateToProps, mapActionCreators)(MapScreen);
+export default MapScreen;

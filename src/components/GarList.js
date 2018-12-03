@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import axios from 'axios';
 
+import {connect} from "react-redux";
+
 import { PerGarageInfo } from './PerGarageInfo';
 import loadingImage from "../images/loading.gif";
 
@@ -17,34 +19,19 @@ import styles from "./Styling.style.js";
 
 
 class GarList extends Component {
-    state = {
-        parkingsName: '',
-        parkingsMax: 0,
-        parkingsCurrent: 0,
-        loaded: false,
-        bottom: new Animated.Value(-styles.garList.containerStyle.height)
-
-    };
 
     constructor(props) {
         super(props);
-        console.log(this.state.bottom);
-
+        this.state = {
+            parkingsName: '',
+            parkingsMax: 0,
+            parkingsCurrent: 0,
+            loaded: false,
+            bottom: new Animated.Value(-(styles.garList.containerStyle.height)),
+        };
         this.slideUp = this.slideUp.bind(this);
         this.slideDown = this.slideDown.bind(this);
     }
-
-
-    // componentDidMount() {
-    //     this.updateData("SJNorth");
-    //     // this.setState({
-    //     //     parkingsName: "SJNorth",
-    //     //     parkingsMax: 730,
-    //     //     parkingsCurrent: 300,
-    //     //     loaded:true
-    //     // });
-
-    // }
 
     updateData(searchName) {
         console.log("Currently fetching data");
@@ -55,12 +42,11 @@ class GarList extends Component {
             console.log('Found Garage Data: ' + searchName);
 
 
-
             this.setState({
                 parkingsName: res.data.name,
                 parkingsMax: res.data.max,
                 parkingsCurrent: res.data.current,
-                loaded: true
+                loaded: true,
             }, function () {
                 console.log("State has changed");
             });
@@ -95,6 +81,7 @@ class GarList extends Component {
                 </View>
             )
         }
+        
     }
 
     slideUp(searchName){
@@ -122,24 +109,35 @@ class GarList extends Component {
                     toValue: -(styles.garList.containerStyle.height),
                     duration: 100
                 }).start();
-                this.state.loaded = false;
+                this.setState({
+                    loaded:false
+                });
             }
             else{
                 this.setState({
+                    loaded: false,
                     bottom: -(styles.garList.containerStyle.height),
-                    loaded: false
                 });
             }
         }
     }
 
+    componentDidUpdate(prevProps,prevState){
+        if(this.props.slide == "up" && !(this.state.loaded)){
+            this.slideUp(this.props.keySearch);
+        }
+        else if(this.props.slide == "down"){
+            this.slideDown();
+        }
+    }
+
 
     render() {
-        let { bottom } = this.state;
         return (
-            <Animated.View style={[styles.garList.containerStyle, { bottom: bottom }]}>
+            <Animated.View style={[styles.garList.containerStyle, { bottom: this.state.bottom }]}>
                 <View style={styles.garList.garageStyle}>
                     {this.whenDoneLoading()}
+                    
 
                 </View>
             </Animated.View>
@@ -148,7 +146,15 @@ class GarList extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    console.log("This is the state: ");
+    console.log(state);
+    return {
+        keySearch: state.mapPress.key,
+        slide: state.mapPress.slide,
+    };
+}
 
 
-export default GarList;
+export default connect(mapStateToProps, null)(GarList);
 
