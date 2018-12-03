@@ -57,7 +57,7 @@ class WelcomeScreen extends Component {
           {/* <Button title="Sign In" onPress={() => this.props.navigation.navigate('Signin')} />
           <Button title="Get Started" onPress={() => this.props.navigation.navigate('Signup')} /> */}
           <Button 
-            onPress={() => this.props.navigation.navigate('Signin')}
+            onPress={() => this.props.navigation.navigate('App')}
             bordered dark
             style={{ width: 120, justifyContent: 'center'}}
           >
