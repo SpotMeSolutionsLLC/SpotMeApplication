@@ -1,161 +1,153 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     View,
     Text,
     Button,
     Dimensions,
     Animated,
-    Image
+    Image,
+    Platform
 } from 'react-native';
 import axios from 'axios';
 
-import {PerGarageInfo} from './PerGarageInfo';
-import loadingImage from "../images/loading.gif"
+import { 
+    slideUp,
+    sendKey,
+    slideDown
+} from "../actions/slideActions"
 
-const height = 150;
-const borderRadius = 20;
+import { connect } from "react-redux";
 
-let styles = {
-    garageStyle: {
-        borderBottomColor: 'blue',
-        borderBottomWidth: 0.75,
-        marginLeft: 25,
-        marginRight: 25,
-        marginTop: 5,
-        marginBottom: 5 + 20,
-        height: height
-    },
-    headerContentStyles: {
-        flexDirection: 'coloumn',
-        justifyContent: 'space-around'
-    },
-    containerStyle: {
-        backgroundColor: '#A0CFEC',
-        height: Dimensions.get("window").height,
-        width: Dimensions.get("window").width,
-        justifyContent: 'flex-start',
-        position: "absolute",
-        left:0,
-        borderRadius: borderRadius
-      },
-};
+import { PerGarageInfo } from './PerGarageInfo';
+import loadingImage from "../images/loading.gif";
 
+import styles from "./Styling.style.js";
 
 
 class GarList extends Component {
-    state = { 
-        parkingsName: '',
-        parkingsMax: 0,
-        parkingsCurrent: 0,
-        loaded: false,
-        bottom: new Animated.Value(-styles.containerStyle.height)
 
-    };
-
-    constructor(props){
+    constructor(props) {
         super(props);
-        console.log(this.state.bottom);
-        
+        this.state = {
+            parkingsName: '',
+            parkingsMax: 0,
+            parkingsCurrent: 0,
+            status: 0, //0 = not loaded, 1 = loading, 2 = loaded
+            bottom: new Animated.Value(-(styles.garList.containerStyle.height)),
+        };
         this.slideUp = this.slideUp.bind(this);
         this.slideDown = this.slideDown.bind(this);
     }
 
+    updateData(searchName) {
+        console.log("Currently fetching data: " + searchName);
+        this.setState({
+            status: 1
+        }, () => {
+            axios.post('https://project-one-203604.appspot.com/garages/garage', {
+                name: searchName
+            }).then(res => {
 
-    // componentDidMount() {
-    //     this.updateData("SJNorth");
-    //     // this.setState({
-    //     //     parkingsName: "SJNorth",
-    //     //     parkingsMax: 730,
-    //     //     parkingsCurrent: 300,
-    //     //     loaded:true
-    //     // });
-
-    // }
-
-    updateData(searchName){
-        console.log("Currently fetching data");
-        axios.post('https://project-one-203604.appspot.com/garages/garage', {
-            name: searchName
-        }).then(res => {
-
-            console.log('Found Garage Data: ' + searchName);
+                console.log('Found Garage Data: ' + searchName);
 
 
+                this.setState({
+                    parkingsName: res.data.name,
+                    parkingsMax: res.data.max,
+                    parkingsCurrent: res.data.current,
+                    status: 2
+                }, function () {
+                    console.log("State has changed");
+                });
 
-            this.setState({
-                parkingsName: res.data.name,
-                parkingsMax: res.data.max,
-                parkingsCurrent: res.data.current,
-                loaded:true
-            }, function(){
-                console.log("State has changed");
             });
+        });
 
-         });
     }
 
-    whenDoneLoading(){
+    whenDoneLoading() {
         console.log("WhenDoneLoading");
-        if(this.state.loaded){
-            console.log("PerGarageInfo Loaded");
-            return(
+        if (this.state.status == 2) {
+            console.log("PerGarageInfo Loaded, Status: " + this.state.status);
+            return (
                 <PerGarageInfo
-                        spotsNum={this.state.parkingsCurrent} 
-                        garageName={this.state.parkingsName}
-                        garageMax={this.state.parkingsMax}
+                    spotsNum={this.state.parkingsCurrent}
+                    garageName={this.state.parkingsName}
+                    garageMax={this.state.parkingsMax}
                 />
             );
         }
-        else{
-            return(
+        else {
+            return (
                 <View style={{
                     alignItems: "center",
                     justifyContent: "center",
-                    height: height
+                    height: styles.garList.height
                 }}>
                     <Image style={{
-                        width:50,
-                        height:50
+                        width: 50,
+                        height: 50
                     }}
-                    source={loadingImage}/>
+                        source={loadingImage} />
                 </View>
             )
         }
+
     }
 
-    slideUp(searchName){
-        this.updateData(searchName);
-        Animated.timing(this.state.bottom,{
-            toValue: -(styles.containerStyle.height - height),
-            duration: 100
-        }).start();
-        
+    slideUp() {
+        if (Platform.OS == "android") {
+            Animated.timing(this.state.bottom, {
+                toValue: -(styles.garList.containerStyle.height - styles.garList.height),
+                duration: 100
+            }).start();
+        }
+        else {
+            this.setState({
+                bottom: -(styles.garList.containerStyle.height - styles.garList.height)
+            });
+        }
+
     }
 
-    slideDown(){
-        Animated.timing(this.state.bottom,{
-            toValue: -(styles.containerStyle.height),
-            duration: 100
-        }).start();
-        this.setState({
-            loaded:false
-        })
+    slideDown() {
+        if (Platform.OS == "android") {
+            Animated.timing(this.state.bottom, {
+                toValue: -(styles.garList.containerStyle.height),
+                duration: 100
+            }).start();
+            this.setState({
+                status: 0
+            });
+        }
+        else {
+            this.setState({
+                status: 0,
+                bottom: -(styles.garList.containerStyle.height),
+            });
+        }
     }
 
-    slideUpMore(){
-        Animated.timing(this.state.bottom,{
-            toValue: D
-        })
+    componentDidUpdate() {
+        if (this.props.upClicked) {
+            this.slideUp();
+            this.updateData(this.props.keySearch);
+            this.props.Up(false);
+        }
+        if (this.props.downClicked) {
+            this.slideDown();
+            this.props.Down(false);
+        }
     }
 
 
     render() {
-        let {bottom} = this.state;
         return (
-            <Animated.View style={[styles.containerStyle,{bottom: bottom}]}>
-                <View style={styles.garageStyle}>
+            <Animated.View style={[styles.garList.containerStyle, { bottom: this.state.bottom }]}>
+                <View style={styles.garList.garageStyle}>
                     {this.whenDoneLoading()}
-                    
+
+
                 </View>
             </Animated.View>
         )
@@ -163,7 +155,27 @@ class GarList extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        keySearch: state.mapPress.key,
+        upClicked: state.mapPress.upClicked,
+        downClicked: state.mapPress.downClicked
+    };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        Down: (status) => {
+            
+            dispatch(slideDown(status))
+        },
+        Up: (status) =>{
+            
+            dispatch(slideUp(status))
+        }
+    }
+}
 
 
-export default GarList;
+export default connect(mapStateToProps, mapDispatchToProps)(GarList);
 

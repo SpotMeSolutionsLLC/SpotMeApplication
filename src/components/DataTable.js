@@ -7,6 +7,7 @@ import {
     Animated
 } from "react-native";
 
+import styles from "./Styling.style.js"
 
 class DataTable extends Component{
     constructor(props){
@@ -25,12 +26,10 @@ class DataTable extends Component{
 
     render(){
         return(
-            <Animated.View style={{
+            <Animated.View style={[{
                 top: this.state.top,
-                position:"absolute",
-                height: 100,
-                width: 100
-            }}>
+                
+            },styles.dataTable.box]}>
                 <Text>asdf</Text>
             </Animated.View>
         );
@@ -39,14 +38,5 @@ class DataTable extends Component{
 }
 
 
-
-
-let styles = {
-    box:{
-        position:"absolute",
-        height: 100,
-        width: 100
-    }
-};
 
 export default DataTable;

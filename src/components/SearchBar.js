@@ -10,10 +10,11 @@ import {
     Animated
 } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import styles from "./Styling.style";
 
 
-class SearchBar extends Component{
-    constructor(props){
+class SearchBar extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             opacity: 0.5,
@@ -24,22 +25,22 @@ class SearchBar extends Component{
         this.onBlur = this.onBlur.bind(this);
     }
 
-    onFocus(){
+    onFocus() {
         console.log("focused");
         this.setState({
             opacity: 1
         });
     }
 
-    onBlur(){
+    onBlur() {
         console.log("blurred");
         this.setState({
             opacity: 0.5
         })
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <GooglePlacesAutocomplete
                 placeholder='Search a location or garage!'
                 minLength={2} //Minimum length of text entered for autocomplete results
@@ -63,8 +64,8 @@ class SearchBar extends Component{
                     }
                 }}
                 styles={{
-                    container:{
-                        
+                    container: {
+
                     },
                     textInputContainer: {
                         top: 30,
@@ -74,11 +75,11 @@ class SearchBar extends Component{
                         backgroundColor: 'white',
                         zIndex: 98,
                         opacity: this.state.opacity
-                        
+
                     },
-                    textInput:{
-                        top:-7,
-                        height:"100%",
+                    textInput: {
+                        top: -7,
+                        height: "100%",
                         width: "100%",
                         margin: 0,
                         padding: 0,
@@ -93,7 +94,7 @@ class SearchBar extends Component{
                         // height: Dimensions.get('window').height,
                         zIndex: 98,
                         top: 40,
-                        width:"70%"
+                        width: "70%"
                     },
                     description: {
                         fontWeight: 'bold',
@@ -102,6 +103,7 @@ class SearchBar extends Component{
                         //color: 'white'
                     },
                 }}
+
             />
         )
     }

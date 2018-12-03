@@ -3,7 +3,11 @@ import {
     StyleSheet,
     View,
     Dimensions,
+    Image,
+
 } from "react-native";
+
+import {connect} from "react-redux";
 
 import MapView, {
     PROVIDER_GOOGLE,
@@ -13,6 +17,12 @@ import MapView, {
     Callout
 } from "react-native-maps";
 
+import {
+    slideUp,
+    slideDown,
+    sendKey
+} from "../actions/slideActions"
+
 // import carMarker from '../images/car.png';
 // import banana from '../images/banana.png';
 import garageMarker from '../images/garage.png';
@@ -20,11 +30,12 @@ import garageMarker from '../images/garage.png';
 
 import MidnightCommander from "../mapstyles/MidnightCommander";
 
-
+import styles from "./Styling.style.js";
 
 class MapContainer extends Component {
     constructor(props) {
         super(props);
+        console.log("MapContainer Loaded");
         this.state = {
             markers: [{
                 coordiantes: {
@@ -46,10 +57,10 @@ class MapContainer extends Component {
                     longitude: -121.880797
                 },
                 title: "SJSU South Parking Garage",
-                // description: "",
                 key: "SJSouth"
             }]
         };
+
         this.coordinate = new AnimatedRegion({
             latitude: 37.339222,
             longitude: -121.880724
@@ -72,13 +83,21 @@ class MapContainer extends Component {
                 //Can later pull coord, title, descrip from API when implemented
                 title={markerInstance.title}
                 description={markerInstance.description}
-                image={garageMarker}
-                style={styles.markerStyle}
+                style={styles.MapContainer.markerStyle}
                 key={markerInstance.key}
-                onPress = {(coordinate,position) => {
-                    this.props.onMarkerPress(markerInstance.key);
+                onPress = {(e) => {
+                    e.stopPropagation();
+                    this.props.sendKey(markerInstance.key);
+                    this.props.slideUp(true);
                 }}
-            />
+            >
+                {/* <Image
+                    source={garageMarker}
+                    style={styles.MapContainer.markerStyleImage}
+                >
+
+                </Image> */}
+            </Marker>
         ));
     }
 
@@ -107,7 +126,7 @@ class MapContainer extends Component {
             <MapView.Animated
 
                 provider={PROVIDER_GOOGLE}
-                style={styles.map}
+                style={styles.MapContainer.map}
                 //props error on region, expected number but got object
                 //error doesnt have big effect/matter but gives a warning
                 region={this.startingLoc}
@@ -119,50 +138,19 @@ class MapContainer extends Component {
                 customMapStyle={MidnightCommander}
 
                 onPress = {() => {
-                    this.props.onMapPress();
+                    this.props.slideDown(true);
                 }}
             >
                 <View >
                     <Marker.Animated
                         coordinate={this.coordinate}
-                        //Description is not being displayed
-                        //description={this.state.description}
                         description={'Your Destination'}
-                        
-                        style={styles.markerStyle}
+                        style={styles.MapContainer.markerStyle}
                         ref={marker => {
                             this.marker = marker;
                         }}
                     />
                     {this.getMarkers()}
-                    {/* <Marker
-                        coordinate={{ latitude: 37.339222, longitude: -121.880724, }}
-                        //Can later pull coord, title, descrip from API when implemented
-                        title={'SJSU North Parking Garage'}
-                        description={'Spots Filled: 977/1490'}
-                        image={spotMarker}
-                        style={styles.markerStyle}
-                        onPress = {(coordinate,position) => {
-                            this.props.onMarkerPress();
-                        }}
-
-                    >
-                    </Marker>
-
-                    <Marker
-                        coordinate={{ latitude: 37.332303, longitude: -121.882986, }}
-                        title={'SJSU West Parking Garage'}
-                        description={'Spots Filled: 827/1135'}
-                        image={spotMarker}
-                        style={styles.markerStyle}
-                    />
-                    <Marker
-                        coordinate={{ latitude: 37.333088, longitude: -121.880797, }}
-                        title={'SJSU South Parking Garage'}
-                        description={'Spots Filled: 1377/1500'}
-                        image={spotMarker}
-                        style={styles.markerStyle}
-                    /> */}
                 </View>
 
             </MapView.Animated>
@@ -171,19 +159,18 @@ class MapContainer extends Component {
     }
 }
 
-const styles = {
-    map: {
-        ...StyleSheet.absoluteFillObject,
-    },
-    markerStyle: {
-        zIndex: 98
-    },
-    locationStyle: {
-        zIndex: 99
-    },
-    callOut: {
-        justifyContent: "flex-start",
-    },
-}
+const mapDispatchToProps = (dispatch) => {
+    return {
+        slideUp: (status) => {
+            dispatch(slideUp(status))
+        },
+        slideDown: (status) => {
+            dispatch(slideDown(status));
+        },
+        sendKey: (key) =>{
+            dispatch(sendKey(key));
+        },
+    }
+};
 
-export default MapContainer;
+export default connect(null, mapDispatchToProps)(MapContainer);

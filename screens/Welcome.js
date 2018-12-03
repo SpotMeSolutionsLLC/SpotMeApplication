@@ -1,6 +1,6 @@
 //import _ from 'lodash';
 import React, { Component } from 'react';
-import { Image, View, Text, AsyncStorage } from 'react-native';
+import { Image, View, Text, AsyncStorage , SafeAreaView} from 'react-native';
 import { Button } from 'native-base';
 // import { createBottomTabNavigator, createSwitchNavigator, createStackNavigator } from 'react-navigation';
 
@@ -47,7 +47,7 @@ class WelcomeScreen extends Component {
   };
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#EAF3FE' }}>
+      <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#EAF3FE' }}>
         <Image
           source={require('../images/SpotMe_Logo.png')}
           style={{ width: 201, height: 60, justifyContent: 'center', alignItems: 'center', marginTop: 75 }}
@@ -70,7 +70,7 @@ class WelcomeScreen extends Component {
             <Text style={{ color: 'white'}}>Get Started</Text>
           </Button>
         </View>
-      </View>
+      </SafeAreaView>
     )
   }
 }
