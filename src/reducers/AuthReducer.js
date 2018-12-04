@@ -21,7 +21,7 @@ const INITIAL_STATE = {
     loading: false
 };
 export default (state = INITIAL_STATE, action) => {
-    console.log(action);
+    // console.log(action);
     switch (action.type) {
         case EMAIL_CHANGED:
             //console.log('action!')

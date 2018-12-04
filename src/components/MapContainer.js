@@ -21,7 +21,13 @@ import {
     slideUp,
     slideDown,
     sendKey
-} from "../actions/slideActions"
+} from "../actions/slideActions";
+
+import {
+    focusClick,
+    blurClick,
+    sendLocData
+} from "../actions/searchActions"
 
 // import carMarker from '../images/car.png';
 // import banana from '../images/banana.png';
@@ -89,6 +95,7 @@ class MapContainer extends Component {
                     e.stopPropagation();
                     this.props.sendKey(markerInstance.key);
                     this.props.slideUp(true);
+                    this.props.blurClick(true);
                 }}
             >
                 {/* <Image
@@ -102,7 +109,7 @@ class MapContainer extends Component {
     }
 
     changeLocation(lat, lng) {
-        console.log("MapContainer changeLocation() called");
+        // console.log("MapContainer changeLocation() called");
         const duration = 3000;
         // this.startingLoc.timing({
         //     latitude: lat,
@@ -118,6 +125,20 @@ class MapContainer extends Component {
             latitude: lat,
             longitude: lng,
         });
+    }
+
+
+    shouldComponentUpdate(nextProps, nextState){
+        // console.log("shouldComponentUpdate fired");
+        // console.log(nextProps);
+        if(nextProps.latitude != undefined && nextProps.longitude != undefined){
+            // console.log("Change Location Called");
+            this.changeLocation(nextProps.latitude, nextProps.longitude);
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
 
@@ -139,6 +160,7 @@ class MapContainer extends Component {
 
                 onPress = {() => {
                     this.props.slideDown(true);
+                    this.props.blurClick(true);
                 }}
             >
                 <View >
@@ -159,6 +181,14 @@ class MapContainer extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    // console.log("MapContainer mapStateToProps called");
+    return {
+        latitude: state.searchBar.latitude,
+        longitude: state.searchBar.longitude
+    }
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
         slideUp: (status) => {
@@ -170,7 +200,16 @@ const mapDispatchToProps = (dispatch) => {
         sendKey: (key) =>{
             dispatch(sendKey(key));
         },
+        focusClick: (status) => {
+            dispatch(focusClick(status));
+        },
+        blurClick: (status) => {
+            dispatch(blurClick(status));
+        },
+        resetLocData: () => {
+            dispatch(sendLocData(undefined,undefined));
+        }
     }
 };
 
-export default connect(null, mapDispatchToProps)(MapContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);
