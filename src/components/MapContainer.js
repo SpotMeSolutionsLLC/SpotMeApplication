@@ -7,7 +7,8 @@ import {
 
 } from "react-native";
 
-import {connect} from "react-redux";
+import { connect } from "react-redux";
+
 
 import MapView, {
     PROVIDER_GOOGLE,
@@ -27,7 +28,6 @@ import {
     focusClick,
     blurClick,
     sendLocData,
-    sendLocQuery
 } from "../actions/searchActions"
 
 // import carMarker from '../images/car.png';
@@ -38,61 +38,78 @@ import garageMarker from '../images/garage.png';
 import MidnightCommander from "../mapstyles/MidnightCommander";
 
 import styles from "./Styling.style.js";
+import Axios from "axios";
+import reducers from "../reducers";
 
 class MapContainer extends Component {
     constructor(props) {
         super(props);
         console.log("MapContainer Loaded");
         this.state = {
-            markers: [{
-                coordiantes: {
-                    latitude: 37.339222,
-                    longitude: -121.880724
-                },
-                title: "SJSU North Parking Garage",
-                key:"SJNorth"
-            },{
-                coordiantes: {
-                    latitude: 37.332303,
-                    longitude: -121.882986
-                },
-                title: "SJSU West Parking Garage",
-                key:"SJWest"
-            },{
-                coordiantes: {
-                    latitude: 37.333088,
-                    longitude: -121.880797
-                },
-                title: "SJSU South Parking Garage",
-                key: "SJSouth"
-            }]
-        };
-
-        this.coordinate = new AnimatedRegion({
-            latitude: 37.339222,
-            longitude: -121.880724
+            markers: [],
+            coordinate: {
+                latitude: 37.339222,
+                longitude: -121.880724
+            },
+        }
+        //this.state = {
+        //     markers: [{
+        //         coordiantes: {
+        //             latitude: 37.339222,
+        //             longitude: -121.880724
+        //         },
+        //         title: "SJSU North Parking Garage",
+        //         key:"SJNorth"
+        //     },{
+        //         coordiantes: {
+        //             latitude: 37.332303,
+        //             longitude: -121.882986
+        //         },
+        //         title: "SJSU West Parking Garage",
+        //         key:"SJWest"
+        //     },{
+        //         coordiantes: {
+        //             latitude: 37.333088,
+        //             longitude: -121.880797
+        //         },
+        //         title: "SJSU South Parking Garage",
+        //         key: "SJSouth"
+        //     }]
+        // };
+        Axios.get("https://project-one-203604.appspot.com/garages/getMarkers").then((res) => {
+            console.log(res.data);
+            this.setState({
+                markers: res.data
+            });
         });
-        this.startingLoc = new AnimatedRegion({
+
+        // this.currentLocation = {
+        //     latitude: 37.339222,
+        //     longitude: -121.880724,
+        //     latitudeDelta: 0.00112,
+        //     longitudeDelta: 0.001412
+        // };
+
+        this.initialLocation = {
             latitude: 37.339222,
             longitude: -121.880724,
             latitudeDelta: 0.00112,
             longitudeDelta: 0.001412
-        });
-        this.sjNorth = {
-            loaded: false
-        };
+        }
+
     }
 
-    getMarkers(){
-        return this.state.markers.map( markerInstance => (
+    getMarkers() {
+
+        return this.state.markers.map(markerInstance => (
             <Marker
-                coordinate={{latitude: markerInstance.coordiantes.latitude, longitude: markerInstance.coordiantes.longitude}}
+                coordinate={{ latitude: markerInstance.lat, longitude: markerInstance.lng }}
                 //Can later pull coord, title, descrip from API when implemented
-                title={markerInstance.title}
-                description={markerInstance.description}
+                title={markerInstance.name}
+                // description={markerInstance.description}
                 style={styles.MapContainer.markerStyle}
                 key={markerInstance.key}
-                onPress = {(e) => {
+                onPress={(e) => {
                     e.stopPropagation();
                     this.props.sendKey(markerInstance.key);
                     this.props.slideUp(true);
@@ -107,20 +124,22 @@ class MapContainer extends Component {
                 </Image> */}
             </Marker>
         ));
+
     }
 
     changeLocation(lat, lng) {
         // console.log("MapContainer changeLocation() called");
-        const duration = 3000;
         // this.startingLoc.timing({
         //     latitude: lat,
         //     longitude: lng,
         // }, duration).start();
 
-        this.coordinate.timing({
-            latitude: lat,
-            longitude: lng
-        }, 1).start();
+        this.setState({
+            coordinate:{
+                latitude: lat,
+                longitude: lng
+            }
+        });
 
         this.mapRef._component.animateToCoordinate({
             latitude: lat,
@@ -129,21 +148,13 @@ class MapContainer extends Component {
 
     }
 
-
-    shouldComponentUpdate(nextProps, nextState){
-        // console.log("shouldComponentUpdate fired");
+    componentDidUpdate() {
+        // console.log("componentDidUpdate fired");
         // console.log(nextProps);
-        if(nextProps.latitude != undefined && nextProps.longitude != undefined){
+        if (this.props.latitude != undefined && this.props.longitude != undefined) {
             // console.log("Change Location Called");
-            nextProps.resetLocData();
-            this.changeLocation(nextProps.latitude, nextProps.longitude);
-            return false;
-        }
-        else if(nextState.toUpdate == true){
-            return true;
-        }
-        else{
-            return false;
+            this.changeLocation(this.props.latitude, this.props.longitude);
+            this.props.resetLocData();
         }
     }
 
@@ -156,7 +167,7 @@ class MapContainer extends Component {
                 style={styles.MapContainer.map}
                 //props error on region, expected number but got object
                 //error doesnt have big effect/matter but gives a warning
-                region={this.startingLoc}
+                initialRegion={this.initialLocation}
                 //   customMapStyle={MidnightCommander}
                 ref={(instance) => {
                     this.mapRef = instance;
@@ -164,25 +175,25 @@ class MapContainer extends Component {
 
                 customMapStyle={MidnightCommander}
 
-                onPress = {() => {
+                onPress={() => {
                     this.props.slideDown(true);
                     this.props.blurClick(true);
                 }}
             >
                 <View >
                     <Marker.Animated
-                        coordinate={this.coordinate}
+                        coordinate={this.state.coordinate}
                         description={'Your Destination'}
                         style={styles.MapContainer.markerStyle}
                         ref={marker => {
                             this.marker = marker;
                         }}
                     />
-                    {this.getMarkers()}
+                    {this.state.markers.length != 0 && this.getMarkers()}
                 </View>
 
             </MapView.Animated>
-               
+
         );
     }
 }
@@ -192,9 +203,11 @@ const mapStateToProps = (state) => {
     return {
         latitude: state.searchBar.latitude,
         longitude: state.searchBar.longitude,
-        query: state.searchBar.toChangeLoc
+
     }
 }
+
+
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -204,7 +217,7 @@ const mapDispatchToProps = (dispatch) => {
         slideDown: (status) => {
             dispatch(slideDown(status));
         },
-        sendKey: (key) =>{
+        sendKey: (key) => {
             dispatch(sendKey(key));
         },
         focusClick: (status) => {
@@ -214,10 +227,11 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(blurClick(status));
         },
         resetLocData: () => {
-            dispatch(sendLocQuery(false));
-            dispatch(sendLocData(undefined,undefined));
+            dispatch(sendLocData(undefined, undefined));
         }
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);
+export default connect(mapStateToProps, mapDispatchToProps, null, {
+    pure: false
+})(MapContainer);

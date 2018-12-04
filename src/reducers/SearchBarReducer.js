@@ -5,7 +5,6 @@ const INITIAL_STATE = {
     blurClicked: false,
     latitude: undefined,
     longitude: undefined,
-    toChangeLoc: false,
 };
 
 let todoApp = (state, action) => {
@@ -21,10 +20,7 @@ let todoApp = (state, action) => {
             return {...state, blurClicked: action.click};
 
         case "sendLocData":
-            return { ...state, latitude: action.latitude, longitude: action.longitude}
-
-        case "sendLocQuery":
-            return { ...state, toChangeLoc: action.clicked}
+            return { ...state, latitude: action.latitude, longitude: action.longitude};
         
         default:
             return {...state};

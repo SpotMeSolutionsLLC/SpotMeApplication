@@ -14,7 +14,6 @@ import {
     focusClick,
     blurClick,
     sendLocData,
-    sendLocQuery
 } from "../actions/searchActions"
 
 import { connect } from "react-redux";
@@ -51,7 +50,6 @@ class SearchBar extends Component {
 
     onResultPress = (details) => {
         console.log("onPress");
-        this.props.sendQuery(true);
         this.props.sendLocation(details.lat, details.lng);
     }
 
@@ -100,9 +98,6 @@ const mapDispatchToProps = (dispatch) => {
         sendLocation: (latitude, longitude) => {
             dispatch(sendLocData(latitude, longitude));
         },
-        sendQuery: (status) => {
-            dispatch(sendLocQuery(status));
-        }
     }
 }
 
