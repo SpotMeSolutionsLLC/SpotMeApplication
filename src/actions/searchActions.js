@@ -22,3 +22,10 @@ export const sendLocData = (lat, lng) => {
         longitude: lng
     }
 }
+
+export const sendLocQuery = (isClicked) => {
+    return {
+        type: "sendLocQuery",
+        clicked: isClicked
+    }
+}

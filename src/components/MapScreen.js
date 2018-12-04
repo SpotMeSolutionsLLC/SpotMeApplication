@@ -57,7 +57,8 @@ class MapScreen extends Component {
                     />
 
 
-                    
+                    <SearchBar/>
+
 
                     <TouchableHighlight
                         style={styles.mapScreen.menuButton}
@@ -73,12 +74,7 @@ class MapScreen extends Component {
 
                     </TouchableHighlight>
 
-                    {this.state.mapRef != null &&
-                        <SearchBar
-                            mainMap={this.state.mapRef}
-                        />
-                    }
-
+                    
                     <GarList></GarList>
                 </View>
 

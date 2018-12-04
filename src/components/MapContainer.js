@@ -26,7 +26,8 @@ import {
 import {
     focusClick,
     blurClick,
-    sendLocData
+    sendLocData,
+    sendLocQuery
 } from "../actions/searchActions"
 
 // import carMarker from '../images/car.png';
@@ -125,6 +126,7 @@ class MapContainer extends Component {
             latitude: lat,
             longitude: lng,
         });
+
     }
 
 
@@ -133,11 +135,15 @@ class MapContainer extends Component {
         // console.log(nextProps);
         if(nextProps.latitude != undefined && nextProps.longitude != undefined){
             // console.log("Change Location Called");
+            nextProps.resetLocData();
             this.changeLocation(nextProps.latitude, nextProps.longitude);
             return false;
         }
-        else{
+        else if(nextState.toUpdate == true){
             return true;
+        }
+        else{
+            return false;
         }
     }
 
@@ -185,7 +191,8 @@ const mapStateToProps = (state) => {
     // console.log("MapContainer mapStateToProps called");
     return {
         latitude: state.searchBar.latitude,
-        longitude: state.searchBar.longitude
+        longitude: state.searchBar.longitude,
+        query: state.searchBar.toChangeLoc
     }
 }
 
@@ -207,6 +214,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(blurClick(status));
         },
         resetLocData: () => {
+            dispatch(sendLocQuery(false));
             dispatch(sendLocData(undefined,undefined));
         }
     }

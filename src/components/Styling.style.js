@@ -176,7 +176,7 @@ const styles = {
         map: {
             ...StyleSheet.absoluteFillObject,
         },
-        markerStyle:{
+        markerStyle: {
             width: markerSize.width,
             height: markerSize.height
         },
@@ -322,6 +322,36 @@ const styles = {
 
     safeAreaViewAndroid: {
         paddingTop: Platform.OS == "android" ? 30 : 0,
+    },
+
+    googleSearchResults: { //GoogleSearchResults.js
+        input: {
+            
+            // top: 30,
+            height: 50,
+            backgroundColor: "white",
+            paddingLeft: 20,
+            paddingRight: 20
+
+        },
+        inputContainer: {
+            position: "absolute",
+        },
+        scroll: {
+            backgroundColor: "white",
+            top:0
+        },
+        listView: {
+
+            height: 50,
+            justifyContent: "center",
+            borderTopColor: "black",
+            borderTopWidth: 1
+        },
+        listViewText: {
+            paddingLeft: 20,
+            paddingRight: 20,
+        }
     }
 
 }
