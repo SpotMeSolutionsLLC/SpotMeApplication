@@ -18,7 +18,7 @@ import {
 
 import { connect } from "react-redux";
 
-import { PerGarageInfo } from './PerGarageInfo';
+import PerGarageInfo from './PerGarageInfo';
 import loadingImage from "../images/loading.gif";
 
 import styles from "./Styling.style.js";
@@ -128,16 +128,22 @@ class GarList extends Component {
         }
     }
 
-    componentDidUpdate() {
-        if (this.props.upClicked) {
+    componentDidUpdate(){
+        this.props.Up(false);
+        this.props.Down(false);
+    }
+
+    shouldComponentUpdate(newProps, newState) {
+        if (newProps.upClicked) {
             this.slideUp();
-            this.updateData(this.props.keySearch);
-            this.props.Up(false);
+            this.updateData(newProps.keySearch);
+            return true;
         }
-        if (this.props.downClicked) {
+        if (newProps.downClicked) {
             this.slideDown();
-            this.props.Down(false);
+            return true;
         }
+        return true;
     }
 
 

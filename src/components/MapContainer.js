@@ -30,6 +30,10 @@ import {
     sendLocData,
 } from "../actions/searchActions"
 
+import {
+    getMarkerColor
+} from "../actions/speechActions"
+
 // import carMarker from '../images/car.png';
 // import banana from '../images/banana.png';
 import garageMarker from '../images/garage.png';
@@ -40,6 +44,10 @@ import MidnightCommander from "../mapstyles/MidnightCommander";
 import styles from "./Styling.style.js";
 import Axios from "axios";
 import reducers from "../reducers";
+
+import { Speech } from "expo";
+
+import { store } from "../App";
 
 class MapContainer extends Component {
     constructor(props) {
@@ -52,30 +60,6 @@ class MapContainer extends Component {
                 longitude: -121.880724
             },
         }
-        //this.state = {
-        //     markers: [{
-        //         coordiantes: {
-        //             latitude: 37.339222,
-        //             longitude: -121.880724
-        //         },
-        //         title: "SJSU North Parking Garage",
-        //         key:"SJNorth"
-        //     },{
-        //         coordiantes: {
-        //             latitude: 37.332303,
-        //             longitude: -121.882986
-        //         },
-        //         title: "SJSU West Parking Garage",
-        //         key:"SJWest"
-        //     },{
-        //         coordiantes: {
-        //             latitude: 37.333088,
-        //             longitude: -121.880797
-        //         },
-        //         title: "SJSU South Parking Garage",
-        //         key: "SJSouth"
-        //     }]
-        // };
         Axios.get("https://project-one-203604.appspot.com/garages/getMarkers").then((res) => {
             console.log(res.data);
             this.setState({
@@ -83,20 +67,16 @@ class MapContainer extends Component {
             });
         });
 
-        // this.currentLocation = {
-        //     latitude: 37.339222,
-        //     longitude: -121.880724,
-        //     latitudeDelta: 0.00112,
-        //     longitudeDelta: 0.001412
-        // };
-
         this.initialLocation = {
             latitude: 37.339222,
             longitude: -121.880724,
             latitudeDelta: 0.00112,
             longitudeDelta: 0.001412
         }
+    }
 
+    getColor = async () => {
+        
     }
 
     getMarkers() {
@@ -148,6 +128,13 @@ class MapContainer extends Component {
 
     }
 
+    shouldComponentUpdate(newProps, newState){
+        if(newProps.currentMarkerColor != this.props.currentMarkerColor && newProps.currentMarkerColor != ""){
+            Speech.speak("The Current Color is: " + newProps.currentMarkerColor);
+        }
+        return true;
+    }
+
     componentDidUpdate() {
         // console.log("componentDidUpdate fired");
         // console.log(nextProps);
@@ -160,6 +147,7 @@ class MapContainer extends Component {
 
 
     render() {
+        console.log("MapContainer rendered");
         return (
             <MapView.Animated
 
@@ -201,12 +189,15 @@ class MapContainer extends Component {
 
 const mapStateToProps = (state) => {
     // console.log("MapContainer mapStateToProps called");
+    console.log(state.speech);
     return {
         latitude: state.searchBar.latitude,
         longitude: state.searchBar.longitude,
-
+        currentMarkerColor: state.speech.color
     }
 }
+
+
 
 
 
@@ -229,7 +220,14 @@ const mapDispatchToProps = (dispatch) => {
         },
         resetLocData: () => {
             dispatch(sendLocData(undefined, undefined));
+        },
+
+        resetMarkerColor: () => {
+            dispatch(getMarkerColor(""));
         }
+
+
+        
     }
 };
 

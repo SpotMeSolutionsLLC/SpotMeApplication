@@ -1,8 +1,16 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
-import { colors } from 'react-native-elements';
+// import { colors } from 'react-native-elements';
 
 import styles from "./Styling.style.js";
+
+import { connect } from "react-redux";
+
+import {
+    getMarkerColor
+} from "../actions/speechActions";
+
+import { Speech } from "expo";
 
 class PerGarageInfo extends React.Component {
     constructor(props) {
@@ -11,18 +19,23 @@ class PerGarageInfo extends React.Component {
 
 
     getColor(percentage) {
-        if(percentage < 25){
+        if (percentage < 25) {
             return "green";
         }
-        else if(percentage < 50){
+        else if (percentage < 50) {
             return "yellow";
         }
-        else if(percentage < 75){
+        else if (percentage < 75) {
             return "orange";
         }
-        else{
+        else {
             return "red";
         }
+    }
+
+    sendColor() {
+        console.log("Color Sent");
+        this.props.sendColor(this.getColor(this.props.spotsNum / this.props.garageMax * 100))
     }
 
     render() {
@@ -37,25 +50,32 @@ class PerGarageInfo extends React.Component {
                     </View>
 
                     <Text style={{ fontSize: 23, color: 'white' }}>
-                        {this.props.spotsNum + " / " + this.props.garageMax}
+                        {
+                            this.props.spotsNum + " / " + this.props.garageMax}
                     </Text>
                 </View>
 
-                <View style={[styles.perGarageInfo.rightSectionStyle,{
+                <View style={[styles.perGarageInfo.rightSectionStyle, {
                     justifyContent: "center",
                     alignItems: "center",
                 }]}>
-                    
+
 
 
                     <View style={[styles.perGarageInfo.generalStyle, {
                         alignItems: "center",
-                        
+
                     }]}>
-                        <Text style={[styles.perGarageInfo.textStyle,{
-                            backgroundColor: this.getColor(this.props.spotsNum /this.props.garageMax * 100)
-                        }]}>
-                            {Math.floor((this.props.spotsNum /this.props.garageMax * 100))}%
+                        <Text
+                            style={[styles.perGarageInfo.textStyle, {
+                                backgroundColor: this.getColor(this.props.spotsNum / this.props.garageMax * 100)
+                            }]}
+                            ref = {() => {
+                                console.log("PerGarageInfo rendered");
+                                this.sendColor();
+                            }}
+                        >
+                            {Math.floor((this.props.spotsNum / this.props.garageMax * 100))}%
                         </Text>
                     </View>
                 </View>
@@ -64,5 +84,13 @@ class PerGarageInfo extends React.Component {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        sendColor: (color) => {
+            dispatch(getMarkerColor(color))
+        }
+    }
+}
 
-export { PerGarageInfo };
+
+export default connect(null, mapDispatchToProps)(PerGarageInfo);

@@ -123,7 +123,8 @@ class GoogleSearchResults extends Component {
                 key: "AIzaSyAknyin7pzbkZ89IRg6QeQ0gC2sVjSKRpY",
                 input: newText,
                 offset: 3,
-                types: "geocode"
+                types: "geocode",
+                
             }
         }).then((placesAutocomplete) => {
             console.log(placesAutocomplete.data);

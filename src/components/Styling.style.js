@@ -308,7 +308,6 @@ const styles = {
             color: "white",
             textAlign: "center",
             textAlignVertical: "center",
-            backgroundColor: "orange",
             borderRadius: 40,
             fontWeight: "900",
             borderColor: 'black',

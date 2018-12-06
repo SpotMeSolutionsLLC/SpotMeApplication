@@ -19,7 +19,7 @@ import Router from './Router';
 // import firebase from 'firebase';
 
 
-const store = createStore(reducers, {}, applyMiddleware(thunk));
+export const store = createStore(reducers, {}, applyMiddleware(thunk));
 
 //var loaded = false;
 
