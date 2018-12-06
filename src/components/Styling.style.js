@@ -211,7 +211,7 @@ const styles = {
             alignItems: "center",
             position: "absolute",
             left: 0,
-            top: 30,
+            bottom: 30,
             zIndex: 99,
             width: "15%",
             height: 50

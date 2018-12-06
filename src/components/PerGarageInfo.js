@@ -10,6 +10,21 @@ class PerGarageInfo extends React.Component {
     }
 
 
+    getColor(percentage) {
+        if(percentage < 25){
+            return "green";
+        }
+        else if(percentage < 50){
+            return "yellow";
+        }
+        else if(percentage < 75){
+            return "orange";
+        }
+        else{
+            return "red";
+        }
+    }
+
     render() {
         return (
             <View style={styles.perGarageInfo.containerStyle}>
@@ -37,7 +52,9 @@ class PerGarageInfo extends React.Component {
                         alignItems: "center",
                         
                     }]}>
-                        <Text style={styles.perGarageInfo.textStyle}>
+                        <Text style={[styles.perGarageInfo.textStyle,{
+                            backgroundColor: this.getColor(this.props.spotsNum /this.props.garageMax * 100)
+                        }]}>
                             {Math.floor((this.props.spotsNum /this.props.garageMax * 100))}%
                         </Text>
                     </View>

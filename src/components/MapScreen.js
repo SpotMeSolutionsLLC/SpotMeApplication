@@ -19,6 +19,8 @@ import {
     fetchSanJoseAPI
 } from '../actions';
 
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+
 import MapContainer from "./MapContainer";
 import DataTable from "./DataTable";
 import GarList from "./GarList";
@@ -37,46 +39,69 @@ class MapScreen extends Component {
         }
     }
 
+    onSwipeRight = (state) => {
+        if(state.x0 < 40){
+            this.props.navigation.openDrawer();
+        }
+    }
+
 
     render() {
 
         return (
             <SafeAreaView style={[styles.mapScreen.outerContainer, styles.safeAreaViewAndroid]}>
-
-                <View style={styles.mapScreen.container}>
-
-
-                    <MapContainer
-                        ref={instance => {
-                            if(this.state.mapRef == null){
-                                this.setState({
-                                    mapRef: instance
-                                });
-                            }
-                        }}
-                    />
+                <GestureRecognizer
+                    style = {{
+                        flex: 1
+                    }}
+                    onSwipeRight = {this.onSwipeRight}
+                >
+                    <View style={styles.mapScreen.container}>
 
 
-                    <SearchBar/>
+                        <MapContainer
+                            ref={instance => {
+                                if (this.state.mapRef == null) {
+                                    this.setState({
+                                        mapRef: instance
+                                    });
+                                }
+                            }}
+                        />
+                        <View
+                            style = {{
+                                position: "absolute",
+                                backgroundColor: "transparent",
+                                left: 0,
+                                width: 40,
+                                height: Dimensions.get("window").height
+                            }}
+                        >
+
+                        </View>
 
 
-                    <TouchableHighlight
-                        style={styles.mapScreen.menuButton}
-                        onPress={() => this.props.navigation.openDrawer()}
-                        underlayColor={'white'}
-                    >
-                        <Image source={require('../images/menu.png')}
-                        style={{
-                            height: 30,
-                            width: 30,
-                            opacity: .5
-                        }}/>
+                        <SearchBar />
 
-                    </TouchableHighlight>
 
-                    
-                    <GarList></GarList>
-                </View>
+                        <TouchableHighlight
+                            style={styles.mapScreen.menuButton}
+                            onPress={() => this.props.navigation.openDrawer()}
+                            underlayColor={'white'}
+                        >
+                            <Image source={require('../images/menu.png')}
+                                style={{
+                                    height: 30,
+                                    width: 30,
+                                    opacity: .5
+                                }} />
+
+                        </TouchableHighlight>
+
+
+                        <GarList></GarList>
+                    </View>
+                </GestureRecognizer>
 
             </SafeAreaView>
         );

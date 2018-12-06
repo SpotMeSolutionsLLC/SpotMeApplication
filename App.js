@@ -20,7 +20,6 @@ import History from './screens/History';
 import MapApp from "./src/App";
 
 
-
 const AppSwitchNavigator = createSwitchNavigator({
     AuthLoadingScreen: AuthLoadingScreen,
     App: MapApp,

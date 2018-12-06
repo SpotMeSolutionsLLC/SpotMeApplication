@@ -189,8 +189,9 @@ class MapContainer extends Component {
                             this.marker = marker;
                         }}
                     />
-                    {this.state.markers.length != 0 && this.getMarkers()}
+                    
                 </View>
+                {this.state.markers.length != 0 && this.getMarkers()}
 
             </MapView.Animated>
 
