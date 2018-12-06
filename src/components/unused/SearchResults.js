@@ -1,4 +1,4 @@
-/*import React from 'react';
+import React from 'react';
 import { Text } from 'react-native';
 import { View, List, ListItem, Left, Body } from 'native-base';
 
@@ -72,4 +72,4 @@ const styles = {
 };
 
 export default SearchResults;
-*/
+
