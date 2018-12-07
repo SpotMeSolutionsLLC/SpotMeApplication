@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, Image, Button, Dimensions } from 'react-native';
 
-import styles from './Styling.style.js';
+import styles from "./Styling.style.js";
 
 class Payment extends Component {
     render() {

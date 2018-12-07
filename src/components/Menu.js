@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Text, View, Image, Button } from 'react-native';
 
-import styles from './Styling.style.js';
+import styles from "./Styling.style.js";
 
 export default class MenuScreen extends Component {
     static navigationOptions = {
         drawerIcon: (
-            <Image source={require('../images/profile1.png')} />
+            <Image source={require("../images/profile1.png")} />
         )
       }
 
@@ -17,7 +17,7 @@ export default class MenuScreen extends Component {
                 <Button
                 //onPress={() => this.props.navigation.navigate('DrawerOpen')}
                 onPress={() => this.props.navigation.openDrawer()}
-                title='Back'
+                title="Back"
                 />
             </View>
         );
