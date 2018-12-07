@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, Button } from 'react-native';
+import { showLocation } from 'react-native-map-link'
 // import { colors } from 'react-native-elements';
+
 
 import styles from "./Styling.style.js";
 
@@ -17,7 +19,7 @@ import PubSub from "pubsub-js";
 class PerGarageInfo extends React.Component {
     constructor(props) {
         super(props);
-        
+
     }
 
 
@@ -43,7 +45,7 @@ class PerGarageInfo extends React.Component {
 
 
     shouldComponentUpdate(){
-        
+
     }
 
     render() {
@@ -86,6 +88,28 @@ class PerGarageInfo extends React.Component {
                             {Math.floor((this.props.spotsNum / this.props.garageMax * 100))}%
                         </Text>
                     </View>
+                    <Button onPress={() => {
+                       // Alert.alert("B pressed")
+                        showLocation({
+                          latitude: 37.339169,
+                          longitude: -121.880684,
+                         // sourceLatitude: -8.0870631,  // optionally specify starting location for directions
+                         // sourceLongitude: -34.8941619,  // not optional if sourceLatitude is specified
+                          title: "SJSU garage",  // optional
+                          //googleForceLatLon: false,  // optionally force GoogleMaps to use the latlon for the query instead of the title
+                          googlePlaceId: 'ChIJGVtI4by3t4kRr51d_Qm_x58',  // optionally specify the google-place-id
+                          dialogTitle: 'Opening in Maps', // optional (default: 'Open in Maps')
+                          dialogMessage: 'This is the amazing dialog Message', // optional (default: 'What app would you like to use?')
+                          cancelText: 'This is the cancel button text', // optional (default: 'Cancel')
+                          appsWhiteList: ['apple-maps', 'google-maps'], // optionally you can set which apps to show (default: will show all supported apps installed on device)
+                          app: 'google-maps'  // optionally specify specific app to use
+                      })
+
+                    }}
+                     style = {styles.perGarageInfo.button}
+                    title ="Start Navigation"
+                    color = "blue"
+                     />
                 </View>
             </View>
         )
