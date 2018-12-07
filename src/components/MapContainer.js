@@ -35,6 +35,7 @@ import {
     getMarkerColor
 } from '../actions/speechActions'
 
+
 import MidnightCommander from '../mapstyles/MidnightCommander';
 
 import styles from './Styling.style.js';
@@ -163,7 +164,19 @@ class MapContainer extends Component {
 
     shouldComponentUpdate(newProps, newState) {
         if (newProps.currentMarkerColor !== this.props.currentMarkerColor && newProps.currentMarkerColor != ''){
-            Speech.speak('The Current Color is: ' + newProps.currentMarkerColor);
+            Speech.speak('The status of the garage is ' + newProps.currentMarkerColor);
+            if (newProps.currentMarkerColor === 'red') {
+                Speech.speak('The garage is full.');
+            } else if (newProps.currentMarkerColor === 'orange') {
+                Speech.speak('The garage is more than 75% filled!');
+            } else if (newProps.currentMarkerColor === 'yellow') {
+                Speech.speak('The garage is fairly empty, it is likely you will find parking at this garage.');
+            } else {
+                Speech.speak('The garage is basically empty. It is very likely you will find parking here.');
+            }
+            //const num = this.props.spotNum / this.props.garageMax;
+            //console.log(getPercentFull);
+            //Speech.speak('The garage is ' + getPercentFull + ' percent filled');
         }
         return true;
     }
@@ -229,6 +242,8 @@ class MapContainer extends Component {
                     <Marker
                         coordinate={{ latitude, longitude }}
                         description={'Current Location'}
+                        //Current location being called multiple times, may affect rendering
+                        //onPress={Speech.speak('This is your current location.')}
                         //image={carMarker}
                         style={styles.locationStyle}
                         image={carMarker}
