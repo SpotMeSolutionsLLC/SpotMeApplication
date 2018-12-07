@@ -49,6 +49,8 @@ import { Speech } from "expo";
 
 import { store } from "../App";
 
+import PubSub from "pubsub-js";
+
 class MapContainer extends Component {
     constructor(props) {
         super(props);
@@ -66,6 +68,7 @@ class MapContainer extends Component {
                 markers: res.data
             });
         });
+        //Array of objects with keys: lat, lng, name, key
 
         this.initialLocation = {
             latitude: 37.339222,
@@ -75,13 +78,10 @@ class MapContainer extends Component {
         }
     }
 
-    getColor = async () => {
-        
-    }
-
     getMarkers() {
 
         return this.state.markers.map(markerInstance => (
+            
             <Marker
                 coordinate={{ latitude: markerInstance.lat, longitude: markerInstance.lng }}
                 //Can later pull coord, title, descrip from API when implemented
@@ -91,16 +91,17 @@ class MapContainer extends Component {
                 key={markerInstance.key}
                 onPress={(e) => {
                     e.stopPropagation();
-                    this.props.sendKey(markerInstance.key);
-                    this.props.slideUp(true);
                     this.props.blurClick(true);
+                    PubSub.publish("slideUp");
+                    PubSub.publish("updateData", {
+                        key: markerInstance.key
+                    })
                 }}
             >
                 {/* <Image
                     source={garageMarker}
                     style={styles.MapContainer.markerStyleImage}
                 >
-
                 </Image> */}
             </Marker>
         ));
@@ -129,9 +130,9 @@ class MapContainer extends Component {
     }
 
     shouldComponentUpdate(newProps, newState){
-        if(newProps.currentMarkerColor != this.props.currentMarkerColor && newProps.currentMarkerColor != ""){
-            Speech.speak("The Current Color is: " + newProps.currentMarkerColor);
-        }
+        // if(newProps.currentMarkerColor != this.props.currentMarkerColor && newProps.currentMarkerColor != ""){
+        //     Speech.speak("The Current Color is: " + newProps.currentMarkerColor);
+        // }
         return true;
     }
 
@@ -164,8 +165,8 @@ class MapContainer extends Component {
                 customMapStyle={MidnightCommander}
 
                 onPress={() => {
-                    this.props.slideDown(true);
                     this.props.blurClick(true);
+                    PubSub.publish("slideDown");
                 }}
             >
                 <View >
@@ -203,15 +204,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        slideUp: (status) => {
-            dispatch(slideUp(status))
-        },
-        slideDown: (status) => {
-            dispatch(slideDown(status));
-        },
-        sendKey: (key) => {
-            dispatch(sendKey(key));
-        },
         focusClick: (status) => {
             dispatch(focusClick(status));
         },
