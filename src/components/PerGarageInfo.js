@@ -12,9 +12,12 @@ import {
 
 import { Speech } from "expo";
 
+import PubSub from "pubsub-js";
+
 class PerGarageInfo extends React.Component {
     constructor(props) {
         super(props);
+        
     }
 
 
@@ -36,6 +39,11 @@ class PerGarageInfo extends React.Component {
     sendColor() {
         console.log("Color Sent");
         this.props.sendColor(this.getColor(this.props.spotsNum / this.props.garageMax * 100))
+    }
+
+
+    shouldComponentUpdate(){
+        
     }
 
     render() {
