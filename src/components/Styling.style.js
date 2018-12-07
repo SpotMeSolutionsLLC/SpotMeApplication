@@ -257,7 +257,7 @@ const styles = {
         imageStyle: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
         },
         headerText: {
             fontSize: 30,

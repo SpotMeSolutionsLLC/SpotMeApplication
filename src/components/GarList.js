@@ -23,8 +23,6 @@ import loadingImage from "../images/loading.gif";
 
 import styles from "./Styling.style.js";
 
-import PubSub from "pubsub-js";
-
 
 class GarList extends Component {
 
@@ -39,21 +37,18 @@ class GarList extends Component {
         };
         this.slideUp = this.slideUp.bind(this);
         this.slideDown = this.slideDown.bind(this);
-        PubSub.subscribe("slideUp", this.slideUp);
-        PubSub.subscribe("slideDown", this.slideDown);
-        PubSub.subscribe("updateData", this.updateData);
     }
 
-    updateData = (context, searchName) => {
-        console.log("Currently fetching data: " + searchName.key);
+    updateData(searchName) {
+        console.log("Currently fetching data: " + searchName);
         this.setState({
             status: 1
         }, () => {
             axios.post('https://project-one-203604.appspot.com/garages/garage', {
-                name: searchName.key
+                name: searchName
             }).then(res => {
 
-                console.log('Found Garage Data: ' + searchName.key);
+                console.log('Found Garage Data: ' + searchName);
 
 
                 this.setState({
@@ -133,6 +128,24 @@ class GarList extends Component {
         }
     }
 
+    componentDidUpdate(){
+        this.props.Up(false);
+        this.props.Down(false);
+    }
+
+    shouldComponentUpdate(newProps, newState) {
+        if (newProps.upClicked) {
+            this.slideUp();
+            this.updateData(newProps.keySearch);
+            return true;
+        }
+        if (newProps.downClicked) {
+            this.slideDown();
+            return true;
+        }
+        return true;
+    }
+
 
     render() {
         return (
@@ -148,5 +161,27 @@ class GarList extends Component {
     }
 }
 
-export default GarList;
+const mapStateToProps = (state) => {
+    return {
+        keySearch: state.mapPress.key,
+        upClicked: state.mapPress.upClicked,
+        downClicked: state.mapPress.downClicked
+    };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        Down: (status) => {
+            
+            dispatch(slideDown(status))
+        },
+        Up: (status) =>{
+            
+            dispatch(slideUp(status))
+        }
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(GarList);
 
