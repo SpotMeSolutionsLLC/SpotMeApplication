@@ -28,6 +28,7 @@ import SearchBar from "./SearchBar";
 
 import styles from "./Styling.style.js";
 
+import PubSub from "pubsub-js";
 
 class MapScreen extends Component {
     constructor(props) {

@@ -43,7 +43,6 @@ class PerGarageInfo extends React.Component {
         this.props.sendColor(this.getColor(this.props.spotsNum / this.props.garageMax * 100))
     }
 
-
     shouldComponentUpdate(){
 
     }
