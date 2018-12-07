@@ -2,8 +2,12 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 26653,
-  "expoServerNgrokUrl": "https://wz-aiv.anonymous.spotmeapplication.exp.direct",
-  "packagerNgrokUrl": "https://packager.wz-aiv.anonymous.spotmeapplication.exp.direct",
-  "ngrokPid": 26678
+
+
+  "packagerPid": 24536,
+  "expoServerNgrokUrl": "https://vg-vcw.anonymous.spotmeapplication.exp.direct",
+  "packagerNgrokUrl": "https://packager.vg-vcw.anonymous.spotmeapplication.exp.direct",
+  "ngrokPid": 660
+
 }
+
