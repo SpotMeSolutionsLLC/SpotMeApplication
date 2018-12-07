@@ -134,24 +134,6 @@ class GarList extends Component {
         }
     }
 
-    componentDidUpdate(){
-        this.props.Up(false);
-        this.props.Down(false);
-    }
-
-    shouldComponentUpdate(newProps, newState) {
-        if (newProps.upClicked) {
-            this.slideUp();
-            this.updateData(newProps.keySearch);
-            return true;
-        }
-        if (newProps.downClicked) {
-            this.slideDown();
-            return true;
-        }
-        return true;
-    }
-
 
     render() {
         return (
@@ -169,22 +151,13 @@ class GarList extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        keySearch: state.mapPress.key,
-        upClicked: state.mapPress.upClicked,
-        downClicked: state.mapPress.downClicked
-    };
+        
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        Down: (status) => {
-            
-            dispatch(slideDown(status))
-        },
-        Up: (status) =>{
-            
-            dispatch(slideUp(status))
-        }
+        
     }
 }
 

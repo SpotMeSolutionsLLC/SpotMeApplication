@@ -38,7 +38,9 @@ class GoogleSearchResults extends Component {
         }
         this.getReference = this.getReference.bind(this);
         PubSub.subscribe("getReferences", this.getReference);
-        PubSub.publish("sendBack");
+        PubSub.publish("sendBack", {
+            publishLoc: "getReferences"
+        });
 
 
     }
@@ -136,15 +138,15 @@ class GoogleSearchResults extends Component {
         });
     }
 
-    onChangeText = async (newText) => {
-        const currentLoc = await this.state.ref.getLocationAsync();
+    onChangeText =  (newText) => {
+        // const currentLoc = await this.state.ref.getLocationAsync();
         axios.get("https://maps.googleapis.com/maps/api/place/autocomplete/json", {
             params: {
                 key: "AIzaSyAknyin7pzbkZ89IRg6QeQ0gC2sVjSKRpY",
                 input: newText,
                 offset: 3,
                 types: "geocode",
-                location: currentLoc.coords.latitude + "," + currentLoc.coords.longitude
+                // location: currentLoc.coords.latitude + "," + currentLoc.coords.longitude
             }
         }).then((placesAutocomplete) => {
             console.log(placesAutocomplete.data);

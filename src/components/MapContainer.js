@@ -79,8 +79,8 @@ class MapContainer extends Component {
         this.changeLocation = this.changeLocation.bind(this);
         
         PubSub.subscribe("changeLocation", this.changeLocation);
-        PubSub.subscribe("sendBack", () => {
-            PubSub.publish("getReferences", {
+        PubSub.subscribe("sendBack", (data) => {
+            PubSub.publish(data.publishLoc, {
                 references: this
             });
         });
