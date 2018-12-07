@@ -12,6 +12,8 @@ import axios from "axios";
 
 import styleSheet from "./Styling.style";
 
+
+
 const styles = styleSheet.googleSearchResults;
 
 const windowWidth = Dimensions.get("window").width
