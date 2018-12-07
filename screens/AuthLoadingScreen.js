@@ -15,7 +15,7 @@ class AuthLoadingScreen extends Component {
 
   loadApp = async() => {
     const userToken = await AsyncStorage.getItem('fb_token'); //This checks if the user previously logged in, if so it skips the authentication screen
-    this.props.navigation.navigate(userToken ? 'App': 'Auth');
+    this.props.navigation.navigate(userToken ? 'App': 'Welcome');
   }
 
   render() {

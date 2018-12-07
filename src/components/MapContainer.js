@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { Component } from "react";
 import {
     StyleSheet,
     View,
     Dimensions,
-    Platform,
-    Text
-} from 'react-native';
+    Image,
+
+} from "react-native";
+
+import { connect } from "react-redux";
+
 
 import MapView, {
     PROVIDER_GOOGLE,
@@ -14,163 +16,139 @@ import MapView, {
     AnimatedRegion,
     Animated,
     Callout
-} from 'react-native-maps';
+} from "react-native-maps";
 
-import { Constants, Location, Permissions } from 'expo';
+import {
+    slideUp,
+    slideDown,
+    sendKey
+} from "../actions/slideActions";
+
+import {
+    focusClick,
+    blurClick,
+    sendLocData,
+} from "../actions/searchActions"
+
+import {
+    getMarkerColor
+} from "../actions/speechActions"
 
 // import carMarker from '../images/car.png';
 // import banana from '../images/banana.png';
 import garageMarker from '../images/garage.png';
-// import GarList from './GarList';
+// import GarList from "./GarList";
 
-import MidnightCommander from '../mapstyles/MidnightCommander';
+import MidnightCommander from "../mapstyles/MidnightCommander";
 
-import styles from './Styling.style.js';
+import styles from "./Styling.style.js";
+import Axios from "axios";
+import reducers from "../reducers";
+
+import { Speech } from "expo";
+
+import { store } from "../App";
+
+import PubSub from "pubsub-js";
 
 class MapContainer extends Component {
     constructor(props) {
         super(props);
+        console.log("MapContainer Loaded");
         this.state = {
-            markers: [{
-                coordinates: {
-                    latitude: 37.339222,
-                    longitude: -121.880724
-                },
-                title: 'SJSU North Parking Garage',
-                key: 'SJNorth'
-            }, {
-                coordinates: {
-                    latitude: 37.332303,
-                    longitude: -121.882986
-                },
-                title: 'SJSU West Parking Garage',
-                key: 'SJWest'
-            }, {
-                coordinates: {
-                    latitude: 37.333088,
-                    longitude: -121.880797
-                },
-                title: 'SJSU South Parking Garage',
-                // description: '',
-                key: 'SJSouth'
-            }],
-        };
-        this.coordinate = new AnimatedRegion({
-            latitude: 0,
-            longitude: 0
+            markers: [],
+            coordinate: {
+                latitude: 37.339222,
+                longitude: -121.880724
+            },
+        }
+        Axios.get("https://project-one-203604.appspot.com/garages/getMarkers").then((res) => {
+            console.log(res.data);
+            this.setState({
+                markers: res.data
+            });
         });
-        this.startingLoc = new AnimatedRegion({
-            latitude: 0,
-            longitude: 0,
+        //Array of objects with keys: lat, lng, name, key
+
+        this.initialLocation = {
+            latitude: 37.339222,
+            longitude: -121.880724,
             latitudeDelta: 0.00112,
             longitudeDelta: 0.001412
-        });
-        this.sjNorth = {
-            loaded: false
-        };
+        }
     }
 
-      state = {
-        location: null,
-        errorMessage: null,
-      };
-    
-      componentWillMount() {
-        if (Platform.OS === 'android' && !Constants.isDevice) {
-          this.setState({
-            errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
-          });
-        } else {
-          this._getLocationAsync();
-        }
-      }
-    
-      _getLocationAsync = async () => {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-          this.setState({
-            errorMessage: 'Permission to access location was denied',
-          });
-        }
-    
-        let location = await Location.getCurrentPositionAsync({});
-        this.setState({ location });
-      };
-
     getMarkers() {
+
         return this.state.markers.map(markerInstance => (
+            
             <Marker
-                coordinate={{ latitude: markerInstance.coordinates.latitude, longitude: markerInstance.coordinates.longitude }}
+                coordinate={{ latitude: markerInstance.lat, longitude: markerInstance.lng }}
                 //Can later pull coord, title, descrip from API when implemented
-                title={markerInstance.title}
-                description={markerInstance.description}
-                image={garageMarker}
+                title={markerInstance.name}
+                // description={markerInstance.description}
                 style={styles.MapContainer.markerStyle}
                 key={markerInstance.key}
-                onPress={(coordinate, position) => {
-                    this.props.onMarkerPress(markerInstance.key);
+                onPress={(e) => {
+                    e.stopPropagation();
+                    this.props.blurClick(true);
+                    PubSub.publish("slideUp");
+                    PubSub.publish("updateData", {
+                        key: markerInstance.key
+                    })
                 }}
-            />
+            >
+                {/* <Image
+                    source={garageMarker}
+                    style={styles.MapContainer.markerStyleImage}
+                >
+                </Image> */}
+            </Marker>
         ));
+
     }
 
     changeLocation(lat, lng) {
-        console.log('MapContainer changeLocation() called');
-        const duration = 3000;
+        // console.log("MapContainer changeLocation() called");
         // this.startingLoc.timing({
         //     latitude: lat,
         //     longitude: lng,
         // }, duration).start();
 
-        this.coordinate.timing({
-            latitude: lat,
-            longitude: lng
-        }, 1).start();
+        this.setState({
+            coordinate:{
+                latitude: lat,
+                longitude: lng
+            }
+        });
 
         this.mapRef._component.animateToCoordinate({
             latitude: lat,
             longitude: lng,
         });
+
     }
 
-    render() {
-        let longitude = 'Waiting..';
-        let latitude = 'Waiting..';
-        if (this.state.errorMessage) {
-            longitude = this.state.errorMessage;
-            latitude = this.state.errorMessage;
-        } else if (this.state.location) {
-            //Getting the information of current location from state
-            //Error for andriod when getting long, lat because
-            //it returns the values in a string form that ios can convert to double
-            //but andriod can not convert it to double (null to be specific)
-            longitude = this.state.location.coords.longitude;
-            latitude = this.state.location.coords.latitude;
-            //int long = parseInt(longitude);
-            //int lat = parseInt(latitude);
+    shouldComponentUpdate(newProps, newState){
+        // if(newProps.currentMarkerColor != this.props.currentMarkerColor && newProps.currentMarkerColor != ""){
+        //     Speech.speak("The Current Color is: " + newProps.currentMarkerColor);
+        // }
+        return true;
+    }
+
+    componentDidUpdate() {
+        // console.log("componentDidUpdate fired");
+        // console.log(nextProps);
+        if (this.props.latitude != undefined && this.props.longitude != undefined) {
+            // console.log("Change Location Called");
+            this.changeLocation(this.props.latitude, this.props.longitude);
+            this.props.resetLocData();
         }
+    }
 
 
-        //Gets the data for SJ Garages from SJ API
-        axios.get('http://api.data.sanjoseca.gov/api/v2/datastreams/PARKI-GARAG-DATA/data.json/?auth_key=974e8db20c97825c8fe806dcbeaa3889c7b8c921&limit=50').then(instance => {
-        console.log(instance.data.result.fArray);
-        console.log('this is reached');
-        console.log(instance.data.result.fArray[4].fStr);
-            //fourthStreetGarageName: instance.data.result.fArray[4].fStr,
-            //fourthStreetGarageStatus: 'Status: ' + instance.data.result.fArray[5].fStr,
-            //fourthStreetGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[6].fStr + '/' + instance.data.result.fArray[7].fStr,
-            
-            // cityHallGarageName: instance.data.result.fArray[8].fStr,
-            // cityHallGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[6].fStr + '/' + instance.data.result.fArray[7].fStr,
-            // thirdStreetGarageName: instance.data.result.fArray[12].fStr,
-            // thirdStreetGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[14].fStr + '/' + instance.data.result.fArray[15].fStr,
-            // marketSanPedroSquareGarageName: instance.data.result.fArray[16].fStr,
-            // marketSanPedroSquareGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[18].fStr + '/' + instance.data.result.fArray[19].fStr,
-            // conventionCenterGarageName: instance.data.result.fArray[20].fStr,
-            // conventionCenterGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[22].fStr + '/' + instance.data.result.fArray[23].fStr,
-            // secondSanCarlosGarageName: instance.data.result.fArray[24].fStr,
-            // secondSanCarlosGarageSpaces: 'Spaces filled: ' + instance.data.result.fArray[26].fStr + '/' + instance.data.result.fArray[27].fStr
-        });
+    render() {
+        console.log("MapContainer rendered");
         return (
             <MapView.Animated
 
@@ -178,7 +156,7 @@ class MapContainer extends Component {
                 style={styles.MapContainer.map}
                 //props error on region, expected number but got object
                 //error doesnt have big effect/matter but gives a warning
-                region={this.startingLoc}
+                initialRegion={this.initialLocation}
                 //   customMapStyle={MidnightCommander}
                 ref={(instance) => {
                     this.mapRef = instance;
@@ -187,28 +165,64 @@ class MapContainer extends Component {
                 customMapStyle={MidnightCommander}
 
                 onPress={() => {
-                    this.props.onMapPress();
+                    this.props.blurClick(true);
+                    PubSub.publish("slideDown");
                 }}
             >
                 <View >
                     <Marker.Animated
-                        coordinate={this.coordinate}
+                        coordinate={this.state.coordinate}
                         description={'Your Destination'}
                         style={styles.MapContainer.markerStyle}
                         ref={marker => {
                             this.marker = marker;
                         }}
                     />
-                    <Marker.Animated
-                        coordinate={{ latitude, longitude }}
-                        description={'CurrentLocation'}
-                    />
-                    {this.getMarkers()}
+                    
                 </View>
+                {this.state.markers.length != 0 && this.getMarkers()}
 
             </MapView.Animated>
+
         );
     }
 }
 
-export default MapContainer;
+const mapStateToProps = (state) => {
+    // console.log("MapContainer mapStateToProps called");
+    console.log(state.speech);
+    return {
+        latitude: state.searchBar.latitude,
+        longitude: state.searchBar.longitude,
+        currentMarkerColor: state.speech.color
+    }
+}
+
+
+
+
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        focusClick: (status) => {
+            dispatch(focusClick(status));
+        },
+        blurClick: (status) => {
+            dispatch(blurClick(status));
+        },
+        resetLocData: () => {
+            dispatch(sendLocData(undefined, undefined));
+        },
+
+        resetMarkerColor: () => {
+            dispatch(getMarkerColor(""));
+        }
+
+
+        
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps, null, {
+    pure: false
+})(MapContainer);
