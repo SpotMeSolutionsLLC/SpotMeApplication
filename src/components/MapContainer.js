@@ -54,7 +54,6 @@ import PubSub from "pubsub-js";
 class MapContainer extends Component {
     constructor(props) {
         super(props);
-        console.log("MapContainer Loaded");
         this.state = {
             markers: [],
             coordinate: {
@@ -76,12 +75,19 @@ class MapContainer extends Component {
             latitudeDelta: 0.00112,
             longitudeDelta: 0.001412
         }
+    
+        PubSub.subscribe("test", () => {
+            return "asdf";
+        })
+
+        console.log("PubSub Test " + PubSub.publish("test",null,() => {
+        }));
     }
 
     getMarkers() {
 
         return this.state.markers.map(markerInstance => (
-            
+
             <Marker
                 coordinate={{ latitude: markerInstance.lat, longitude: markerInstance.lng }}
                 //Can later pull coord, title, descrip from API when implemented
@@ -91,11 +97,11 @@ class MapContainer extends Component {
                 key={markerInstance.key}
                 onPress={(e) => {
                     e.stopPropagation();
-                    this.props.blurClick(true);
                     PubSub.publish("slideUp");
                     PubSub.publish("updateData", {
                         key: markerInstance.key
-                    })
+                    });
+                    PubSub.publish("onBlur");
                 }}
             >
                 {/* <Image
@@ -116,7 +122,7 @@ class MapContainer extends Component {
         // }, duration).start();
 
         this.setState({
-            coordinate:{
+            coordinate: {
                 latitude: lat,
                 longitude: lng
             }
@@ -129,26 +135,7 @@ class MapContainer extends Component {
 
     }
 
-    shouldComponentUpdate(newProps, newState){
-        // if(newProps.currentMarkerColor != this.props.currentMarkerColor && newProps.currentMarkerColor != ""){
-        //     Speech.speak("The Current Color is: " + newProps.currentMarkerColor);
-        // }
-        return true;
-    }
-
-    componentDidUpdate() {
-        // console.log("componentDidUpdate fired");
-        // console.log(nextProps);
-        if (this.props.latitude != undefined && this.props.longitude != undefined) {
-            // console.log("Change Location Called");
-            this.changeLocation(this.props.latitude, this.props.longitude);
-            this.props.resetLocData();
-        }
-    }
-
-
     render() {
-        console.log("MapContainer rendered");
         return (
             <MapView.Animated
 
@@ -165,7 +152,7 @@ class MapContainer extends Component {
                 customMapStyle={MidnightCommander}
 
                 onPress={() => {
-                    this.props.blurClick(true);
+                    PubSub.publish("onBlur");
                     PubSub.publish("slideDown");
                 }}
             >
@@ -178,7 +165,7 @@ class MapContainer extends Component {
                             this.marker = marker;
                         }}
                     />
-                    
+
                 </View>
                 {this.state.markers.length != 0 && this.getMarkers()}
 
@@ -189,12 +176,8 @@ class MapContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-    // console.log("MapContainer mapStateToProps called");
-    console.log(state.speech);
     return {
-        latitude: state.searchBar.latitude,
-        longitude: state.searchBar.longitude,
-        currentMarkerColor: state.speech.color
+
     }
 }
 
@@ -204,22 +187,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        focusClick: (status) => {
-            dispatch(focusClick(status));
-        },
-        blurClick: (status) => {
-            dispatch(blurClick(status));
-        },
-        resetLocData: () => {
-            dispatch(sendLocData(undefined, undefined));
-        },
 
-        resetMarkerColor: () => {
-            dispatch(getMarkerColor(""));
-        }
-
-
-        
     }
 };
 

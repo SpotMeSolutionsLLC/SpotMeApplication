@@ -99,6 +99,7 @@ class GoogleSearchResults extends Component {
     }
 
     onFocus = () => {
+        PubSub.publish("slideDown");
         Animated.parallel([
             Animated.timing(this.animations.inputTop, {
                 toValue: 0,

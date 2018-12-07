@@ -8,6 +8,8 @@ import {
     Image,
     Platform,
     SafeAreaView,
+    BackHandler,
+    Keyboard
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
@@ -28,6 +30,8 @@ import SearchBar from "./SearchBar";
 
 import styles from "./Styling.style.js";
 
+import PubSub from "pubsub-js";
+
 
 class MapScreen extends Component {
     constructor(props) {
@@ -37,6 +41,11 @@ class MapScreen extends Component {
             garageListLoaded: false,
             mapRef: null
         }
+        BackHandler.addEventListener("hardwareBackPress", () => {
+            PubSub.publish("slideDown");
+            PubSub.publish("onBlur");
+            return true;
+        });
     }
 
     onSwipeRight = (state) => {

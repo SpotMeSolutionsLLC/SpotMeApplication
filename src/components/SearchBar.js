@@ -22,6 +22,8 @@ import GoogleSearchResults from "./GoogleSearchResults";
 
 import styles from "./Styling.style";
 
+import PubSub from "pubsub-js";
+
 
 class SearchBar extends Component {
     constructor(props) {
@@ -30,12 +32,16 @@ class SearchBar extends Component {
             opacity: 0.5,
             width: Dimensions.get("window").width * .8,
         }
-        // this.onFocus = this.onFocus.bind(this);
-        // this.onBlur = this.onBlur.bind(this);
+        this.onFocus = this.onFocus.bind(this);
+        this.onBlur = this.onBlur.bind(this);
+        PubSub.subscribe("onFocus", this.onFocus);
+        PubSub.subscribe("onBlur", this.onBlur);
     }
 
     onFocus() {
+        PubSub.publish("slideDown");
         console.log("focused");
+        this.refs.googleRef.onFocus();
         // this.setState({
         //     opacity: 1
         // });
@@ -43,6 +49,7 @@ class SearchBar extends Component {
 
     onBlur() {
         console.log("blurred");
+        this.refs.googleRef.onBlur();
         // this.setState({
         //     opacity: 0.5
         // })
@@ -50,19 +57,6 @@ class SearchBar extends Component {
 
     onResultPress = (details) => {
         console.log("onPress");
-        this.props.sendLocation(details.lat, details.lng);
-    }
-
-    componentDidUpdate(){
-        // console.log("SearchBar Updated");
-        if(this.props.focused){
-            this.refs.googleRef.onFocus();
-            this.props.focus(false);
-        }
-        if(this.props.blurred){
-            this.refs.googleRef.onBlur();
-            this.props.blur(false);
-        }
     }
 
     render() {
@@ -70,6 +64,7 @@ class SearchBar extends Component {
             <GoogleSearchResults
                 ref="googleRef"
                 onPress = {this.onResultPress}
+                onFocus = {this.onFocus}
             >
                 
             </GoogleSearchResults>
@@ -79,25 +74,13 @@ class SearchBar extends Component {
 
 
 const mapStateToProps = (state) => {
-    // console.log("SearchBar mapStateToProps called");
-    // console.log(state.searchBar);
     return {
-        focused: state.searchBar.focusClicked,
-        blurred: state.searchBar.blurClicked
+        
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return{
-        focus: (status) => {
-            dispatch(focusClick(status));
-        },
-        blur: (status) => {
-            dispatch(blurClick(status));
-        },
-        sendLocation: (latitude, longitude) => {
-            dispatch(sendLocData(latitude, longitude));
-        },
     }
 }
 

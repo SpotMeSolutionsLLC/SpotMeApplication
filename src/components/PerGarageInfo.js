@@ -17,33 +17,27 @@ import PubSub from "pubsub-js";
 class PerGarageInfo extends React.Component {
     constructor(props) {
         super(props);
-        
+        this.getColor = this.getColor.bind(this);
+        PubSub.subscribe("getColor", this.getColor);
     }
 
 
     getColor(percentage) {
+        let toReturn = "";
         if (percentage < 25) {
-            return "green";
+            toReturn = "green";
         }
         else if (percentage < 50) {
-            return "yellow";
+            toReturn = "yellow";
         }
         else if (percentage < 75) {
-            return "orange";
+            toReturn = "orange";
         }
         else {
-            return "red";
+            toReturn = "red";
         }
-    }
-
-    sendColor() {
-        console.log("Color Sent");
-        this.props.sendColor(this.getColor(this.props.spotsNum / this.props.garageMax * 100))
-    }
-
-
-    shouldComponentUpdate(){
-        
+        Speech.speak("The Current Color is " + toReturn);
+        return toReturn;
     }
 
     render() {
@@ -80,7 +74,6 @@ class PerGarageInfo extends React.Component {
                             }]}
                             ref = {() => {
                                 console.log("PerGarageInfo rendered");
-                                this.sendColor();
                             }}
                         >
                             {Math.floor((this.props.spotsNum / this.props.garageMax * 100))}%
@@ -94,9 +87,8 @@ class PerGarageInfo extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        sendColor: (color) => {
-            dispatch(getMarkerColor(color))
-        }
+
+        
     }
 }
 
