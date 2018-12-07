@@ -11,7 +11,7 @@ import Signin from './screens/Signin';
 import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import LogoTitle from './components/LogoTitle';
-import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/Ionicons';
 import FacebookAuth from './screens/FacebookAuth';
 
 import Profile from './screens/Profile';
@@ -38,6 +38,9 @@ class App extends React.Component {
         );
     }
 }
+
+//remote the yellow // WARNING:
+console.disableYellowBox = true;
 
 export default App;
 
