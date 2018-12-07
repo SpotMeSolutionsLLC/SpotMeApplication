@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, Button } from 'react-native';
+import { View, Text, Image, Button, Alert } from 'react-native';
 import { showLocation } from 'react-native-map-link'
 // import { colors } from 'react-native-elements';
 
@@ -53,6 +53,14 @@ class PerGarageInfo extends React.Component {
 
                 <View style={styles.perGarageInfo.leftSectionStyle}>
                     <View style={styles.perGarageInfo.generalStyle}>
+                        <Button 
+                            style={styles.perGarageInfo.favoButton}
+                            title={'Favorite this Garage'}
+                            color={'purple'}
+                            onPress={() => {
+                                Alert.alert('This feature is under development.');
+                            }}
+                        />
                         <Text style={{ fontSize: 40, color: 'blue' }}>
                             {this.props.garageName}
                         </Text>
@@ -68,25 +76,6 @@ class PerGarageInfo extends React.Component {
                     justifyContent: "center",
                     alignItems: "center",
                 }]}>
-
-
-
-                    <View style={[styles.perGarageInfo.generalStyle, {
-                        alignItems: "center",
-
-                    }]}>
-                        <Text
-                            style={[styles.perGarageInfo.textStyle, {
-                                backgroundColor: this.getColor(this.props.spotsNum / this.props.garageMax * 100)
-                            }]}
-                            ref = {() => {
-                                console.log("PerGarageInfo rendered");
-                                this.sendColor();
-                            }}
-                        >
-                            {Math.floor((this.props.spotsNum / this.props.garageMax * 100))}%
-                        </Text>
-                    </View>
                     <Button onPress={() => {
                        // Alert.alert("B pressed")
                         showLocation({
@@ -109,6 +98,26 @@ class PerGarageInfo extends React.Component {
                     title ="Start Navigation"
                     color = "blue"
                      />
+
+
+                    <View style={[styles.perGarageInfo.generalStyle, {
+                        alignItems: "center",
+
+                    }]}>
+                        <Text
+                            style={[styles.perGarageInfo.textStyle, {
+                                backgroundColor: this.getColor(this.props.spotsNum / this.props.garageMax * 100)
+                            }]}
+                            ref = {() => {
+                                console.log("PerGarageInfo rendered");
+                                this.sendColor();
+                            }}
+                        >
+                            {Math.floor((this.props.spotsNum / this.props.garageMax * 100))}%
+                        </Text>
+                    </View>
+                
+
                 </View>
             </View>
         )
@@ -118,10 +127,9 @@ class PerGarageInfo extends React.Component {
 const mapDispatchToProps = (dispatch) => {
     return {
         sendColor: (color) => {
-            dispatch(getMarkerColor(color))
+            dispatch(getMarkerColor(color));
         }
-    }
-}
-
+    };
+};
 
 export default connect(null, mapDispatchToProps)(PerGarageInfo);

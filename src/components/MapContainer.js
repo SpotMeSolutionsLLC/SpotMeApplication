@@ -169,9 +169,9 @@ class MapContainer extends Component {
             } else if (newProps.currentMarkerColor === 'orange') {
                 Speech.speak('The garage is more than 75% filled!');
             } else if (newProps.currentMarkerColor === 'yellow') {
-                Speech.speak('The garage is fairly empty, it is likely you will find parking at this garage.');
+                Speech.speak('The garage is fairly empty.');
             } else {
-                Speech.speak('The garage is basically empty. It is very likely you will find parking here.');
+                Speech.speak('The garage is basically empty.');
             }
             //const num = this.props.spotNum / this.props.garageMax;
             //console.log(getPercentFull);

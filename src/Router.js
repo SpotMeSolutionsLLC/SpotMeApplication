@@ -5,6 +5,7 @@ import Favorite from './components/Favorite';
 import History from './components/History';
 import MapScreen from './components/MapScreen';
 import MenuScreen from './components/MenuScreen';
+import Welcome from '../screens/Welcome';
 
 const RouterComponent = createDrawerNavigator({
     Home: {
@@ -29,7 +30,7 @@ const RouterComponent = createDrawerNavigator({
     },
     LogOut: {
         path: '/sent',
-        screen: MenuScreen
+        screen: Welcome
     },
 }, {
         initialRouteName: 'Home',

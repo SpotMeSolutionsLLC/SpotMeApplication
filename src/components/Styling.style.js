@@ -319,8 +319,12 @@ const styles = {
         },
         button: {
         alignItems: 'center',
-        backgroundColor: '#DDDDDD',
+        backgroundColor: 'blue',
         padding: 10
+        },
+        favoButton: {
+            backgroundColor: 'blue',
+            padding: 10
         }
     },
 
