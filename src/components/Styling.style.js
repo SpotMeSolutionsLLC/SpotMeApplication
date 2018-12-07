@@ -1,10 +1,16 @@
 import {
     StyleSheet,
     Dimensions,
-} from 'react-native';
+    Text,
+    Platform
+} from "react-native";
 
 const garListHeight = 150;
 const borderRadius = 20;
+const markerSize = {
+    height: 40,
+    width: 40
+}
 
 const styles = {
     dataTable: { //DataTable.js
@@ -170,7 +176,13 @@ const styles = {
             ...StyleSheet.absoluteFillObject,
         },
         markerStyle: {
-            zIndex: 98
+            width: markerSize.width,
+            height: markerSize.height
+        },
+        markerStyleImage: {
+            zIndex: 98,
+            width: markerSize.width,
+            height: markerSize.height
         },
         locationStyle: {
             zIndex: 99
@@ -187,7 +199,6 @@ const styles = {
             alignItems: 'center',
         },
         outerContainer: {
-            marginTop: 30,
             flex: 1,
             flexDirection: 'column',
             justifyContent: 'flex-start',
@@ -199,7 +210,7 @@ const styles = {
             alignItems: 'center',
             position: 'absolute',
             left: 0,
-            top: 30,
+            bottom: 30,
             zIndex: 99,
             width: '15%',
             height: 50
@@ -245,7 +256,7 @@ const styles = {
         imageStyle: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
         },
         headerText: {
             fontSize: 30,
@@ -289,6 +300,55 @@ const styles = {
         generalStyle: {
             marginTop: 2,
             marginBottom: 2,
+        },
+        textStyle: {
+            justifyContent: "center",
+            fontSize: 40,
+            color: "white",
+            textAlign: "center",
+            textAlignVertical: "center",
+            borderRadius: 40,
+            fontWeight: "900",
+            borderColor: 'black',
+            borderWidth: 4,
+            height: 100,
+            width: 150,
+            overflow: "hidden",
+            lineHeight: 100,
+        }
+    },
+
+    safeAreaViewAndroid: {
+        paddingTop: Platform.OS == "android" ? 30 : 0,
+    },
+
+    googleSearchResults: { //GoogleSearchResults.js
+        input: {
+            
+            // top: 30,
+            height: 50,
+            backgroundColor: "white",
+            paddingLeft: 20,
+            paddingRight: 20
+
+        },
+        inputContainer: {
+            position: "absolute",
+        },
+        scroll: {
+            backgroundColor: "white",
+            top:0
+        },
+        listView: {
+
+            height: 50,
+            justifyContent: "center",
+            borderTopColor: "black",
+            borderTopWidth: 1
+        },
+        listViewText: {
+            paddingLeft: 20,
+            paddingRight: 20,
         }
     }
 };

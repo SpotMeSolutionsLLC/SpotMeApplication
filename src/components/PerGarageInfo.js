@@ -1,14 +1,50 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
-import { colors } from 'react-native-elements';
+// import { colors } from 'react-native-elements';
 
 import styles from './Styling.style.js';
+
+import { connect } from "react-redux";
+
+import {
+    getMarkerColor
+} from "../actions/speechActions";
+
+import { Speech } from "expo";
+
+import PubSub from "pubsub-js";
 
 class PerGarageInfo extends React.Component {
     constructor(props) {
         super(props);
+        
     }
 
+
+    getColor(percentage) {
+        if (percentage < 25) {
+            return "green";
+        }
+        else if (percentage < 50) {
+            return "yellow";
+        }
+        else if (percentage < 75) {
+            return "orange";
+        }
+        else {
+            return "red";
+        }
+    }
+
+    sendColor() {
+        console.log("Color Sent");
+        this.props.sendColor(this.getColor(this.props.spotsNum / this.props.garageMax * 100))
+    }
+
+
+    shouldComponentUpdate(){
+        
+    }
 
     render() {
         return (
@@ -22,44 +58,32 @@ class PerGarageInfo extends React.Component {
                     </View>
 
                     <Text style={{ fontSize: 23, color: 'white' }}>
-                        {this.props.spotsNum + ' / ' + this.props.garageMax}
+                        {
+                            this.props.spotsNum + " / " + this.props.garageMax}
                     </Text>
                 </View>
 
-                <View 
-                    style={[styles.perGarageInfo.rightSectionStyle, {
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }]}
-                > 
+                <View style={[styles.perGarageInfo.rightSectionStyle, {
+                    justifyContent: "center",
+                    alignItems: "center",
+                }]}>
 
-                    <View 
-                        style={[styles.perGarageInfo.generalStyle, {
-                            alignItems: 'center',
-                            
-                        }]}
-                    >
-                        {/* <GarageBottomLine
-                            perLev={'Level 1: 49  '} // per garage levels
-                            miles={'    4.2 mi'} //props.parking.distance
-                            price={' $$$ '}
-                        /> */}
-                        <Text 
-                            style={{
-                                fontSize: 40,
-                                color: 'white',
-                                textAlign: 'center',
-                                textAlignVertical: 'center',
-                                backgroundColor: 'orange',
-                                borderRadius: 40,
-                                fontWeight: '900',
-                                borderColor: 'black',
-                                borderWidth: 4,
-                                height: 100,
-                                width: 150
+
+
+                    <View style={[styles.perGarageInfo.generalStyle, {
+                        alignItems: "center",
+
+                    }]}>
+                        <Text
+                            style={[styles.perGarageInfo.textStyle, {
+                                backgroundColor: this.getColor(this.props.spotsNum / this.props.garageMax * 100)
+                            }]}
+                            ref = {() => {
+                                console.log("PerGarageInfo rendered");
+                                this.sendColor();
                             }}
                         >
-                            {Math.floor((this.props.spotsNum /this.props.garageMax * 100))}%
+                            {Math.floor((this.props.spotsNum / this.props.garageMax * 100))}%
                         </Text>
                     </View>
                 </View>
@@ -68,5 +92,13 @@ class PerGarageInfo extends React.Component {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        sendColor: (color) => {
+            dispatch(getMarkerColor(color))
+        }
+    }
+}
 
-export { PerGarageInfo };
+
+export default connect(null, mapDispatchToProps)(PerGarageInfo);
