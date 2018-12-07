@@ -17,11 +17,11 @@ const RouterComponent = createDrawerNavigator({
     },
     Payment: {
         path: '/sent',
-        screen: Payment
+        screen: MenuScreen
     },
     History: {
         path: '/sent',
-        screen: History
+        screen: MenuScreen
     },
     Settings: {
         path: '/sent',

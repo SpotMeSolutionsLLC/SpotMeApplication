@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Image, View, Text, AsyncStorage , SafeAreaView} from 'react-native';
 import { Button } from 'native-base';
 // import { createBottomTabNavigator, createSwitchNavigator, createStackNavigator } from 'react-navigation';
+import { Speech } from 'expo';
 
 //import { AppLoading } from 'expo';
 import Slides from '../components/Slides';
@@ -46,6 +47,7 @@ class WelcomeScreen extends Component {
     // }
   };
   render() {
+    Speech.speak('Welcome to the SpotMeSolutions Application, the parking solution for you!');
     return (
       <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#EAF3FE' }}>
         <Image
@@ -56,6 +58,7 @@ class WelcomeScreen extends Component {
         <View style={{ alignSelf: 'stretch', flexDirection:'row', justifyContent: 'space-around', margin: 30}} >
           {/* <Button title="Sign In" onPress={() => this.props.navigation.navigate('Signin')} />
           <Button title="Get Started" onPress={() => this.props.navigation.navigate('Signup')} /> */}
+          
           <Button 
             onPress={() => this.props.navigation.navigate('App')}
             bordered dark

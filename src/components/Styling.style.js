@@ -257,7 +257,7 @@ const styles = {
         imageStyle: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
         },
         headerText: {
             fontSize: 30,
@@ -316,6 +316,11 @@ const styles = {
             width: 150,
             overflow: "hidden",
             lineHeight: 100,
+        },
+        button: {
+        alignItems: 'center',
+        backgroundColor: '#DDDDDD',
+        padding: 10
         }
     },
 
@@ -325,7 +330,7 @@ const styles = {
 
     googleSearchResults: { //GoogleSearchResults.js
         input: {
-            
+
             // top: 30,
             height: 50,
             backgroundColor: "white",

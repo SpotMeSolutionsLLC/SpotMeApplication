@@ -1,26 +1,12 @@
 import React, { Component } from 'react';
 import {
     Dimensions,
-    StyleSheet,
-    View,
-    Text,
-    TouchableHighlight,
-    Image,
-    Platform,
-    Animated
 } from 'react-native';
 
-import {
-    focusClick,
-    blurClick,
-    sendLocData,
-} from "../actions/searchActions"
 
 import { connect } from "react-redux";
 
 import GoogleSearchResults from "./GoogleSearchResults";
-
-import styles from "./Styling.style";
 
 import PubSub from "pubsub-js";
 
@@ -56,7 +42,12 @@ class SearchBar extends Component {
     }
 
     onResultPress = (details) => {
-        console.log("onPress");
+        console.log("onpress");
+        PubSub.publish("changeLocation", {
+            lat: details.lat,
+            lng: details.lng
+        });
+
     }
 
     render() {

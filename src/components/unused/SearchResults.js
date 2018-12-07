@@ -72,4 +72,72 @@ const styles = {
 };
 
 export default SearchResults;
+<<<<<<< HEAD:src/components/SearchResults.js
+<<<<<<< HEAD
+*/
+/*
+=======
+*//*
+>>>>>>> upstream/master
+import React, { Component } from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+import { Constants } from 'expo';
+import axios from 'axios';
 
+export default class Testing extends Component {
+  render() {
+  let data = axios.get('http://api.data.sanjoseca.gov/api/v2/datastreams/PARKI-GARAG-DATA/data.json/?auth_key=974e8db20c97825c8fe806dcbeaa3889c7b8c921&limit=50');
+  console.log(data);
+  //console.log(data.Promise._55._55.data.result);
+  data = JSON.stringify(data);
+    return (
+      <View style={styles.container}>
+        <Text style={styles.paragraph}>{data}</Text>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: '#ecf0f1',
+  },
+  paragraph: {
+    margin: 24,
+    fontSize: 18,
+    textAlign: 'center',
+  },
+});*/
+
+import React, { Component } from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+import { Constants } from 'expo';
+import GarList from './GarList.js';
+
+export default class Testing extends Component {
+  render() {
+    return(
+      <View>
+        <GarList />
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+  paddingTop: Constants.statusBarHeight,
+  backgroundColor: '#ecf0f1',
+  }
+});
+*/
+=======
+
+>>>>>>> faf956e999637964727eed583680f67a8e2b5976:src/components/unused/SearchResults.js

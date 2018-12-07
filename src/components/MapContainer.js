@@ -1,14 +1,15 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
     Dimensions,
     Image,
+    Platform,
+} from 'react-native';
 
-} from "react-native";
+import { connect } from 'react-redux';
 
-import { connect } from "react-redux";
-
+import { Speech, Constants, Location, Permissions } from 'expo';
 
 import MapView, {
     PROVIDER_GOOGLE,
@@ -16,40 +17,37 @@ import MapView, {
     AnimatedRegion,
     Animated,
     Callout
-} from "react-native-maps";
+} from 'react-native-maps';
 
 import {
     slideUp,
     slideDown,
     sendKey
-} from "../actions/slideActions";
+} from '../actions/slideActions';
 
 import {
     focusClick,
     blurClick,
     sendLocData,
-} from "../actions/searchActions"
+} from '../actions/searchActions'
 
 import {
     getMarkerColor
-} from "../actions/speechActions"
+} from '../actions/speechActions'
 
-// import carMarker from '../images/car.png';
-// import banana from '../images/banana.png';
-import garageMarker from '../images/garage.png';
-// import GarList from "./GarList";
 
-import MidnightCommander from "../mapstyles/MidnightCommander";
+import MidnightCommander from '../mapstyles/MidnightCommander';
 
-import styles from "./Styling.style.js";
-import Axios from "axios";
-import reducers from "../reducers";
+import styles from './Styling.style.js';
+import Axios from 'axios';
+import reducers from '../reducers';
 
-import { Speech } from "expo";
+import { store } from '../App';
 
-import { store } from "../App";
+import carMarker from '../images/car_icon.png';
+import banana from '../images/banana.png';
+import spotMarker from '../images/spotmarker.png';
 
-import PubSub from "pubsub-js";
 
 class MapContainer extends Component {
     constructor(props) {
@@ -57,43 +55,78 @@ class MapContainer extends Component {
         this.state = {
             markers: [],
             coordinate: {
-                latitude: 37.339222,
-                longitude: -121.880724
+                latitude: 0,
+                longitude: 0
             },
-        }
-        Axios.get("https://project-one-203604.appspot.com/garages/getMarkers").then((res) => {
+            currentLoc: {
+                latitude: 0,
+                longitude: 0
+            }
+        };
+        Axios.get('https://project-one-203604.appspot.com/garages/getMarkers').then((res) => {
             console.log(res.data);
             this.setState({
                 markers: res.data
             });
         });
-        //Array of objects with keys: lat, lng, name, key
 
         this.initialLocation = {
-            latitude: 37.339222,
-            longitude: -121.880724,
+            latitude: 0,
+            longitude: 0,
             latitudeDelta: 0.00112,
             longitudeDelta: 0.001412
-        }
-    
-        PubSub.subscribe("test", () => {
-            return "asdf";
-        })
+        };
+        this.changeLocation = this.changeLocation.bind(this);
+        
+        PubSub.subscribe("changeLocation", this.changeLocation);
+        PubSub.subscribe("sendBack", () => {
+            PubSub.publish("getReferences", {
+                references: this
+            });
+        });
+        this.setLoc();
+    }
 
-        console.log("PubSub Test " + PubSub.publish("test",null,() => {
-        }));
+
+    testFunc(){
+        console.log("testFunc has been fired");
+    }
+
+    //Gets the current location and changes the state of current location
+    getLocationAsync = async () => {
+        const { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+            this.setState({
+                errorMessage: 'Permission to access location was denied',
+            });
+        }
+
+        //Changes the location to be current location
+        const location = await Location.getCurrentPositionAsync();
+        // console.log(location);
+
+        //Needed for current location marker to get updated
+
+        return location;
+    }
+
+    setLoc = async () => {
+        const location = await this.getLocationAsync();
+        this.changeLocation(null, {
+            lat: location.coords.latitude,
+            lng: location.coords.longitude
+        });
     }
 
     getMarkers() {
-
         return this.state.markers.map(markerInstance => (
-
             <Marker
                 coordinate={{ latitude: markerInstance.lat, longitude: markerInstance.lng }}
                 //Can later pull coord, title, descrip from API when implemented
                 title={markerInstance.name}
                 // description={markerInstance.description}
                 style={styles.MapContainer.markerStyle}
+                image={spotMarker}
                 key={markerInstance.key}
                 onPress={(e) => {
                     e.stopPropagation();
@@ -108,19 +141,20 @@ class MapContainer extends Component {
                     source={garageMarker}
                     style={styles.MapContainer.markerStyleImage}
                 >
+
                 </Image> */}
             </Marker>
         ));
-
     }
 
-    changeLocation(lat, lng) {
-        // console.log("MapContainer changeLocation() called");
+    changeLocation(context, data) {
+        // console.log('MapContainer changeLocation() called');
         // this.startingLoc.timing({
         //     latitude: lat,
         //     longitude: lng,
         // }, duration).start();
-
+        lat = parseFloat(data.lat);
+        lng = parseFloat(data.lng);
         this.setState({
             coordinate: {
                 latitude: lat,
@@ -132,7 +166,6 @@ class MapContainer extends Component {
             latitude: lat,
             longitude: lng,
         });
-
     }
 
     render() {
@@ -164,10 +197,23 @@ class MapContainer extends Component {
                         ref={marker => {
                             this.marker = marker;
                         }}
+                        image={banana}
                     />
 
+
                 </View>
-                {this.state.markers.length != 0 && this.getMarkers()}
+
+                <Marker
+                    coordinate={{ latitude: this.state.currentLoc.latitude, longitude: this.state.currentLoc.longitude }}
+                    description={'Current Location'}
+                    //Current location being called multiple times, may affect rendering
+                    //onPress={Speech.speak('This is your current location.')}
+                    //image={carMarker}
+                    style={styles.locationStyle}
+                    image={carMarker}
+                />
+
+                {this.state.markers.length !== 0 && this.getMarkers()}
 
             </MapView.Animated>
 

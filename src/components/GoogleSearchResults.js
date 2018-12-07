@@ -27,13 +27,28 @@ class GoogleSearchResults extends Component {
             },
             displayScroll: false,
             data: [],
+            currentLocation: {
+                lat: 0,
+                lng: 0
+            }
         }
         this.animations = {
             inputTop: new Animated.Value(30),
             inputWidth: new Animated.Value(windowWidth * 0.7),
         }
+        this.getReference = this.getReference.bind(this);
+        PubSub.subscribe("getReferences", this.getReference);
+        PubSub.publish("sendBack");
+
 
     }
+
+    getReference(context, data){
+        this.setState({
+            ref: data.references
+        });
+    }
+
 
 
     getScrollView() {
@@ -50,6 +65,7 @@ class GoogleSearchResults extends Component {
     }
 
     getScrollViewData() {
+        
         return this.state.data.map(dataInstance => (
             <View
                 style={styles.listView}
@@ -120,14 +136,15 @@ class GoogleSearchResults extends Component {
         });
     }
 
-    onChangeText = (newText) => {
+    onChangeText = async (newText) => {
+        const currentLoc = await this.state.ref.getLocationAsync();
         axios.get("https://maps.googleapis.com/maps/api/place/autocomplete/json", {
             params: {
                 key: "AIzaSyAknyin7pzbkZ89IRg6QeQ0gC2sVjSKRpY",
                 input: newText,
                 offset: 3,
                 types: "geocode",
-                
+                location: currentLoc.coords.latitude + "," + currentLoc.coords.longitude
             }
         }).then((placesAutocomplete) => {
             console.log(placesAutocomplete.data);
