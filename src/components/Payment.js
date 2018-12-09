@@ -3,6 +3,7 @@ import { Text, View, Image, Button, Dimensions } from 'react-native';
 
 import styles from "./Styling.style.js";
 
+//Payments page 
 class Payment extends Component {
     render() {
         return (

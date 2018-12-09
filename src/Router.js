@@ -1,5 +1,4 @@
 import { createDrawerNavigator } from 'react-navigation';
-
 import Payment from './components/Payment';
 import Favorite from './components/Favorite';
 import History from './components/History';
@@ -7,6 +6,7 @@ import MapScreen from './components/MapScreen';
 import MenuScreen from './components/MenuScreen';
 import Welcome from '../screens/Welcome';
 
+//Allows users to navigate between different screens
 const RouterComponent = createDrawerNavigator({
     Home: {
         path: '/',

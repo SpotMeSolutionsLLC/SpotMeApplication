@@ -16,13 +16,14 @@ import { Speech } from "expo";
 
 import PubSub from "pubsub-js";
 
+//The table for a garage, displays information on garage
 class PerGarageInfo extends React.Component {
     constructor(props) {
         super(props);
-
     }
 
 
+    //Determines color of a garage
     getColor(percentage) {
         if (percentage < 25) {
             return "green";
@@ -38,15 +39,16 @@ class PerGarageInfo extends React.Component {
         }
     }
 
+    //Sends color of garage (color based on garage parking spaces)
     sendColor() {
         console.log("Color Sent");
         this.props.sendColor(this.getColor(this.props.spotsNum / this.props.garageMax * 100))
     }
 
-    shouldComponentUpdate(){
-
+    shouldComponentUpdate() {
     }
 
+    //Renders table/chart containing information on a marker
     render() {
         return (
             <View style={styles.perGarageInfo.containerStyle}>
@@ -116,7 +118,6 @@ class PerGarageInfo extends React.Component {
                             {Math.floor((this.props.spotsNum / this.props.garageMax * 100))}%
                         </Text>
                     </View>
-                
 
                 </View>
             </View>
@@ -124,6 +125,7 @@ class PerGarageInfo extends React.Component {
     }
 }
 
+//Able to dispatch colors to props, enables access of garage colors
 const mapDispatchToProps = (dispatch) => {
     return {
         sendColor: (color) => {

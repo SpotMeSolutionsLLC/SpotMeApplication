@@ -1,53 +1,27 @@
 import React, { Component } from 'react';
 import {
-    StyleSheet,
     View,
-    Dimensions,
-    Image,
     Platform,
 } from 'react-native';
 
 import { connect } from 'react-redux';
-
 import { Speech, Constants, Location, Permissions } from 'expo';
-
-import MapView, {
-    PROVIDER_GOOGLE,
-    Marker,
-    AnimatedRegion,
-    Animated,
-    Callout
-} from 'react-native-maps';
-
-import {
-    slideUp,
-    slideDown,
-    sendKey
-} from '../actions/slideActions';
-
+import Axios from 'axios';
+import MapView, { PROVIDER_GOOGLE, Marker, } from 'react-native-maps';
+import { slideUp, slideDown, sendKey } from '../actions/slideActions';
 import {
     focusClick,
     blurClick,
     sendLocData,
-} from '../actions/searchActions'
-
-import {
-    getMarkerColor
-} from '../actions/speechActions'
-
-
+} from '../actions/searchActions';
+import { getMarkerColor } from '../actions/speechActions';
 import MidnightCommander from '../mapstyles/MidnightCommander';
-
 import styles from './Styling.style.js';
-import Axios from 'axios';
-import reducers from '../reducers';
-
-import { store } from '../App';
-
 import carMarker from '../images/car_icon.png';
 import banana from '../images/banana.png';
 import spotMarker from '../images/spotmarker.png';
 
+//Container for the map, used to load stuff onto map such as markers
 class MapContainer extends Component {
     constructor(props) {
         super(props);
@@ -113,6 +87,7 @@ class MapContainer extends Component {
 
     }
 
+    //Used to get information on markers from API
     getMarkers() {
         return this.state.markers.map(markerInstance => (
             <Marker
@@ -140,6 +115,7 @@ class MapContainer extends Component {
         ));
     }
 
+    //Changes view location
     changeLocation(lat, lng) {
         // console.log('MapContainer changeLocation() called');
         // this.startingLoc.timing({
@@ -161,6 +137,7 @@ class MapContainer extends Component {
         });
     }
 
+    //Updates component based on certain state
     shouldComponentUpdate(newProps, newState) {
         if (newProps.currentMarkerColor !== this.props.currentMarkerColor && newProps.currentMarkerColor != ''){
             Speech.speak('The status of the garage is ' + newProps.currentMarkerColor);
@@ -180,6 +157,7 @@ class MapContainer extends Component {
         return true;
     }
 
+    //If component was updated, changes location shown on map
     componentDidUpdate() {
         // console.log('componentDidUpdate fired');
         // console.log(nextProps);
@@ -191,6 +169,7 @@ class MapContainer extends Component {
     }
 
 
+    //Renders current location, garage, and destination marker
     render() {
         let longitude = 0;
         let latitude = 0;
