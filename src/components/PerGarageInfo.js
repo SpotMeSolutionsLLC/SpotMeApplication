@@ -85,7 +85,7 @@ class PerGarageInfo extends React.Component {
                           longitude: -121.880684,
                          // sourceLatitude: -8.0870631,  // optionally specify starting location for directions
                          // sourceLongitude: -34.8941619,  // not optional if sourceLatitude is specified
-                          title: "SJSU garage",  // optional
+                          title: this.props.garageName,  // optional
                           //googleForceLatLon: false,  // optionally force GoogleMaps to use the latlon for the query instead of the title
                           googlePlaceId: 'ChIJGVtI4by3t4kRr51d_Qm_x58',  // optionally specify the google-place-id
                           dialogTitle: 'Opening in Maps', // optional (default: 'Open in Maps')

@@ -73,11 +73,11 @@ class MapContainer extends Component {
             errorMessage: 'Permission to access location was denied',
           });
         }
-  
+
         //Changes the location to be current location
         const location = await Location.getCurrentPositionAsync();
         console.log(location);
-    
+
         this.changeLocation(location.coords.latitude, location.coords.longitude);
         //Needed for current location marker to get updated
         this.setState({ location });
@@ -130,7 +130,7 @@ class MapContainer extends Component {
                 longitude: lng
             }
         });
-        
+
         this.mapRef._component.animateToCoordinate({
             latitude: lat,
             longitude: lng,
@@ -171,6 +171,7 @@ class MapContainer extends Component {
 
     //Renders current location, garage, and destination marker
     render() {
+      
         let longitude = 0;
         let latitude = 0;
         if (this.state.errorMessage) {
@@ -225,9 +226,9 @@ class MapContainer extends Component {
                         style={styles.locationStyle}
                         image={carMarker}
                         zIndex={99}
-                    /> 
+                    />
                 </View>
-                
+
                 {this.state.markers.length !== 0 && this.getMarkers()}
 
             </MapView.Animated>
