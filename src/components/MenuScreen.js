@@ -3,6 +3,7 @@ import { Text, View, Button } from 'react-native';
 
 import styles from "./Styling.style.js";
 
+//Menu screen page
 export default class MenuScreen extends Component {
     render() {
         return (

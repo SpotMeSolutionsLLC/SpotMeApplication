@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import {
     View,
-    Text,
-    Button,
-    Dimensions,
     Animated,
     Image,
     Platform
@@ -12,18 +9,17 @@ import axios from 'axios';
 
 import { 
     slideUp,
-    sendKey,
     slideDown
-} from "../actions/slideActions"
+} from '../actions/slideActions'
 
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
 import PerGarageInfo from './PerGarageInfo';
-import loadingImage from "../images/loading.gif";
+import loadingImage from '../images/loading.gif';
 
-import styles from "./Styling.style.js";
+import styles from './Styling.style.js';
 
-
+//List of garages, gets information on garages (name, parking spaces, etc)
 class GarList extends Component {
 
     constructor(props) {
@@ -39,8 +35,9 @@ class GarList extends Component {
         this.slideDown = this.slideDown.bind(this);
     }
 
+    //Updates the information for a garage
     updateData(searchName) {
-        console.log("Currently fetching data: " + searchName);
+        console.log('Currently fetching data: ' + searchName);
         this.setState({
             status: 1
         }, () => {
@@ -50,25 +47,24 @@ class GarList extends Component {
 
                 console.log('Found Garage Data: ' + searchName);
 
-
                 this.setState({
                     parkingsName: res.data.name,
                     parkingsMax: res.data.max,
                     parkingsCurrent: res.data.current,
                     status: 2
                 }, function () {
-                    console.log("State has changed");
+                    console.log('State has changed');
                 });
-
             });
         });
-
     }
 
+
+    //When loading is finished, garage information is returned
     whenDoneLoading() {
-        console.log("WhenDoneLoading");
+        console.log('WhenDoneLoading');
         if (this.state.status == 2) {
-            console.log("PerGarageInfo Loaded, Status: " + this.state.status);
+            console.log('PerGarageInfo Loaded, Status: ' + this.state.status);
             return (
                 <PerGarageInfo
                     spotsNum={this.state.parkingsCurrent}
@@ -80,8 +76,8 @@ class GarList extends Component {
         else {
             return (
                 <View style={{
-                    alignItems: "center",
-                    justifyContent: "center",
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     height: styles.garList.height
                 }}>
                     <Image style={{
@@ -92,11 +88,12 @@ class GarList extends Component {
                 </View>
             )
         }
-
     }
 
+    //Upon execution of chart table
+    // styling is changed for the garage information container based on platform
     slideUp() {
-        if (Platform.OS == "android") {
+        if (Platform.OS === 'android') {
             Animated.timing(this.state.bottom, {
                 toValue: -(styles.garList.containerStyle.height - styles.garList.height),
                 duration: 100
@@ -107,11 +104,12 @@ class GarList extends Component {
                 bottom: -(styles.garList.containerStyle.height - styles.garList.height)
             });
         }
-
     }
 
+    //Upon execution of closing chart table/clicking off of it
+    //Styling is changed for the garage info container based on platform
     slideDown() {
-        if (Platform.OS == "android") {
+        if (Platform.OS === 'android') {
             Animated.timing(this.state.bottom, {
                 toValue: -(styles.garList.containerStyle.height),
                 duration: 100
@@ -128,11 +126,14 @@ class GarList extends Component {
         }
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         this.props.Up(false);
         this.props.Down(false);
     }
 
+
+    //Updates the view of the garage info chart based on where user clicks
+    //If user clicks off the chart then the chart is not displayed
     shouldComponentUpdate(newProps, newState) {
         if (newProps.upClicked) {
             this.slideUp();
@@ -147,19 +148,18 @@ class GarList extends Component {
     }
 
 
+    //Renders garage information/loads garage information upon rendering
     render() {
         return (
             <Animated.View style={[styles.garList.containerStyle, { bottom: this.state.bottom }]}>
                 <View style={styles.garList.garageStyle}>
                     {this.whenDoneLoading()}
-
-
                 </View>
             </Animated.View>
-        )
-
+        );
     }
 }
+
 
 const mapStateToProps = (state) => {
     return {
@@ -168,6 +168,7 @@ const mapStateToProps = (state) => {
         downClicked: state.mapPress.downClicked
     };
 }
+
 
 const mapDispatchToProps = (dispatch) => {
     return {

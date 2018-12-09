@@ -15,7 +15,7 @@ class HomeScreen extends Component {
     <View>
         <Text>HomeScreen</Text>
     </View>
-    )
+    );
   }
 }
 

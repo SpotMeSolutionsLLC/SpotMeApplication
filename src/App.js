@@ -9,10 +9,10 @@ import reducers from './reducers';
 import thunk from 'redux-thunk';
 
 //Components
-import Payment from './components/Payment';
-import Favorite from './components/Favorite';
-import History from './components/History';
-import MapScreen from './components/MapScreen';
+//  import Payment from './components/Payment';
+//  import Favorite from './components/Favorite';
+//  import History from './components/History';
+//  import MapScreen from './components/MapScreen';
 
 //Router for navigating screens
 import Router from './Router';
@@ -60,6 +60,7 @@ class App extends Component {
 
     }
 
+    //Renders the application
     render() {
         if (!this.state.isLoaded) {
             return (

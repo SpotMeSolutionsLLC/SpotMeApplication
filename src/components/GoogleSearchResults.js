@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
     View,
     Text,
@@ -6,15 +6,17 @@ import {
     ScrollView,
     Animated,
     Dimensions
-} from "react-native";
+} from 'react-native';
 
-import axios from "axios";
+import axios from 'axios';
 
-import styleSheet from "./Styling.style";
+import styleSheet from './Styling.style';
 
 const styles = styleSheet.googleSearchResults;
 
-const windowWidth = Dimensions.get("window").width
+const windowWidth = Dimensions.get('window').width;
+
+//Google places autocomplete, used for searching up locations
 class GoogleSearchResults extends Component {
     constructor(props) {
         
@@ -33,9 +35,8 @@ class GoogleSearchResults extends Component {
 
     }
 
-
+    //Displays scroll view, user able to look 
     getScrollView() {
-
         if (this.state.displayScroll) {
             return (
                 <ScrollView
@@ -47,21 +48,21 @@ class GoogleSearchResults extends Component {
         }
     }
 
+    //Displays scroll view data 
     getScrollViewData() {
         return this.state.data.map(dataInstance => (
             <View
                 style={styles.listView}
                 key={dataInstance.place_id}
-
             >
                 <Text
                     style={styles.listViewText}
                     onPress={() => {
                         this.onBlur();
                         this.refs.textInput.clear();
-                        axios.get("https://maps.googleapis.com/maps/api/geocode/json", {
+                        axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
                             params: {
-                                key: "AIzaSyAknyin7pzbkZ89IRg6QeQ0gC2sVjSKRpY",
+                                key: 'AIzaSyAknyin7pzbkZ89IRg6QeQ0gC2sVjSKRpY',
                                 place_id: dataInstance.place_id
                             }
                         }).then((geoCode) => {
@@ -117,13 +118,15 @@ class GoogleSearchResults extends Component {
         });
     }
 
+    //When text is changed, google place autocomplete api called 
+    //to find locations based on what user types
     onChangeText = (newText) => {
-        axios.get("https://maps.googleapis.com/maps/api/place/autocomplete/json", {
+        axios.get('https://maps.googleapis.com/maps/api/place/autocomplete/json', {
             params: {
-                key: "AIzaSyAknyin7pzbkZ89IRg6QeQ0gC2sVjSKRpY",
+                key: 'AIzaSyAknyin7pzbkZ89IRg6QeQ0gC2sVjSKRpY',
                 input: newText,
                 offset: 3,
-                types: "geocode",
+                types: 'geocode',
                 
             }
         }).then((placesAutocomplete) => {
@@ -131,10 +134,11 @@ class GoogleSearchResults extends Component {
             this.setState({
                 data: placesAutocomplete.data.predictions
             });
-        })
+        });
     }
 
-
+    //Renders search bar components, 
+    //such as the drop down list when typing in a location
     render() {
         return (
             <React.Fragment>
@@ -145,26 +149,22 @@ class GoogleSearchResults extends Component {
                     }]}
                 >
                     <TextInput
-                        ref="textInput"
-                        placeholder="Search a location or garage!"
+                        ref='textInput'
+                        placeholder='Search a location or garage!'
                         style={[styles.input, {
                             opacity: this.state.style.opacity,
                         }]}
-                        underlineColorAndroid="white"
+                        underlineColorAndroid='white'
                         // onBlur={this.onBlur}
                         onFocus={this.onFocus}
                         onChangeText={this.onChangeText}
-                    >
-
-                    </TextInput>
+                    />
                     {this.getScrollView()}
                 </Animated.View>
 
             </React.Fragment>
-        )
+        );
     }
 }
-
-
 
 export default GoogleSearchResults;
