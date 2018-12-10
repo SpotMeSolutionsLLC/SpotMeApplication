@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, Button } from 'react-native';
+import { View, Text, Image, Button, Alert } from 'react-native';
 import { showLocation } from 'react-native-map-link'
 // import { colors } from 'react-native-elements';
 
@@ -16,6 +16,7 @@ import { Speech } from "expo";
 
 import PubSub from "pubsub-js";
 
+//The table for a garage, displays information on garage
 class PerGarageInfo extends React.Component {
     constructor(props) {
         super(props);
@@ -24,6 +25,7 @@ class PerGarageInfo extends React.Component {
     }
 
 
+    //Determines color of a garage
     getColor(percentage) {
         let toReturn = "";
         if (percentage < 25) {
@@ -42,12 +44,21 @@ class PerGarageInfo extends React.Component {
         return toReturn;
     }
 
+    //Renders table/chart containing information on a marker
     render() {
         return (
             <View style={styles.perGarageInfo.containerStyle}>
 
                 <View style={styles.perGarageInfo.leftSectionStyle}>
                     <View style={styles.perGarageInfo.generalStyle}>
+                        <Button 
+                            style={styles.perGarageInfo.favoButton}
+                            title={'Favorite this Garage'}
+                            color={'purple'}
+                            onPress={() => {
+                                Alert.alert('This feature is under development.');
+                            }}
+                        />
                         <Text style={{ fontSize: 40, color: 'blue' }}>
                             {this.props.garageName}
                         </Text>
@@ -108,6 +119,7 @@ class PerGarageInfo extends React.Component {
     }
 }
 
+//Able to dispatch colors to props, enables access of garage colors
 const mapDispatchToProps = (dispatch) => {
     return {
 

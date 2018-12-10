@@ -1,54 +1,27 @@
 import React, { Component } from 'react';
 import {
-    StyleSheet,
     View,
-    Dimensions,
-    Image,
     Platform,
 } from 'react-native';
 
 import { connect } from 'react-redux';
-
 import { Speech, Constants, Location, Permissions } from 'expo';
-
-import MapView, {
-    PROVIDER_GOOGLE,
-    Marker,
-    AnimatedRegion,
-    Animated,
-    Callout
-} from 'react-native-maps';
-
-import {
-    slideUp,
-    slideDown,
-    sendKey
-} from '../actions/slideActions';
-
+import Axios from 'axios';
+import MapView, { PROVIDER_GOOGLE, Marker, } from 'react-native-maps';
+import { slideUp, slideDown, sendKey } from '../actions/slideActions';
 import {
     focusClick,
     blurClick,
     sendLocData,
-} from '../actions/searchActions'
-
-import {
-    getMarkerColor
-} from '../actions/speechActions'
-
-
+} from '../actions/searchActions';
+import { getMarkerColor } from '../actions/speechActions';
 import MidnightCommander from '../mapstyles/MidnightCommander';
-
 import styles from './Styling.style.js';
-import Axios from 'axios';
-import reducers from '../reducers';
-
-import { store } from '../App';
-
 import carMarker from '../images/car_icon.png';
 import banana from '../images/banana.png';
 import spotMarker from '../images/spotmarker.png';
 
-
+//Container for the map, used to load stuff onto map such as markers
 class MapContainer extends Component {
     constructor(props) {
         super(props);
@@ -118,6 +91,7 @@ class MapContainer extends Component {
         });
     }
 
+    //Used to get information on markers from API
     getMarkers() {
         return this.state.markers.map(markerInstance => (
             <Marker

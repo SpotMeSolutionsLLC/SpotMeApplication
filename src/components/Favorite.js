@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, Image, Button, Dimensions } from 'react-native';
+import { Text, View, Image, Button } from 'react-native';
 
-import styles from "./Styling.style.js";
+import styles from './Styling.style.js';
 
+//Favorites page
 class Favorite extends Component {
     render() {
         return (

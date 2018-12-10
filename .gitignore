@@ -1,7 +1,8 @@
 node_modules/**/*
 npm-debug.*
 /node_modules
+/.expo/*
 /.expo
 /.idea
 /.eslintrc
-/.packager-info.json
+/package-lock.json

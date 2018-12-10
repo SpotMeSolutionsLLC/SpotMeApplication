@@ -11,27 +11,15 @@ import {
     BackHandler,
     Keyboard
 } from 'react-native';
-import { connect } from 'react-redux';
-import {
-    locationChanged,
-    getCurrentLocation,
-    getInputData,
-    getAddressPredictions,
-    getSelectedAddress,
-    fetchSanJoseAPI
-} from '../actions';
-
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+import MapContainer from './MapContainer';
+import DataTable from './DataTable';
+import GarList from './GarList';
+import SearchBar from './SearchBar';
+import styles from './Styling.style.js';
+import PubSub from 'pubsub-js';
 
-import MapContainer from "./MapContainer";
-import DataTable from "./DataTable";
-import GarList from "./GarList";
-import SearchBar from "./SearchBar";
-
-import styles from "./Styling.style.js";
-
-import PubSub from "pubsub-js";
-
+//Overall map screen, used to display map onto application
 class MapScreen extends Component {
     constructor(props) {
         super(props);
@@ -47,6 +35,7 @@ class MapScreen extends Component {
         });
     }
 
+    //Displays navigation menu to open when user swipes right
     onSwipeRight = (state) => {
         if(state.x0 < 40){
             this.props.navigation.openDrawer();
@@ -54,8 +43,9 @@ class MapScreen extends Component {
     }
 
 
+    //Renders the map, markers, garage info, etc.
+    //Styles to make sure the map isnt messed up
     render() {
-
         return (
             <SafeAreaView style={[styles.mapScreen.outerContainer, styles.safeAreaViewAndroid]}>
                 <GestureRecognizer
@@ -78,11 +68,11 @@ class MapScreen extends Component {
                         />
                         <View
                             style = {{
-                                position: "absolute",
-                                backgroundColor: "transparent",
+                                position: 'absolute',
+                                backgroundColor: 'transparent',
                                 left: 0,
                                 width: 40,
-                                height: Dimensions.get("window").height
+                                height: Dimensions.get('window').height
                             }}
                         >
 

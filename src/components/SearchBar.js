@@ -10,7 +10,10 @@ import GoogleSearchResults from "./GoogleSearchResults";
 
 import PubSub from "pubsub-js";
 
+//import styles from './Styling.style';
 
+//The search bar for finding a location
+//Used to send user to a different location view on the map and let them find garages
 class SearchBar extends Component {
     constructor(props) {
         super(props);
@@ -41,6 +44,8 @@ class SearchBar extends Component {
         // })
     }
 
+    //If a location is selected, the latitude and longitude of the
+    //location is sent
     onResultPress = (details) => {
         console.log("onpress");
         PubSub.publish("changeLocation", {
@@ -50,6 +55,7 @@ class SearchBar extends Component {
 
     }
 
+    //Renders the search bar and search results view
     render() {
         return (
             <GoogleSearchResults
