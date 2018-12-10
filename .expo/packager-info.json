@@ -1,9 +1,9 @@
 {
-  "expoServerPort": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://9f-kp6.noirlime.spotmereact.exp.direct",
+  "packagerNgrokUrl": "https://packager.9f-kp6.noirlime.spotmereact.exp.direct",
+  "ngrokPid": 13092,
   "devToolsPort": 19002,
-  "packagerPort": null,
-  "packagerPid": null
+  "packagerPort": 19001,
+  "packagerPid": 4556
 }
