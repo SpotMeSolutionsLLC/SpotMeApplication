@@ -4,3 +4,4 @@ export const getMarkerColor = (color) => {
         color: color
     }
 }
+

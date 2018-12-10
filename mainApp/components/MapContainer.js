@@ -67,13 +67,13 @@ class MapContainer extends Component {
 
     //Gets the current location and changes the state of current location
     getLocationAsync = async () => {
+        console.log("getLoc Async Fired");
         const { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
             this.setState({
                 errorMessage: 'Permission to access location was denied',
             });
         }
-
         //Changes the location to be current location
         const location = await Location.getCurrentPositionAsync();
         // console.log(location);

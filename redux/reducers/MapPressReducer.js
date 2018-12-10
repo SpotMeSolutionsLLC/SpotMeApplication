@@ -1,5 +1,3 @@
-import styles from "../components/Styling.style"
-
 const INITIAL_STATE = {
     upClicked: false,
     downClicked: false,
