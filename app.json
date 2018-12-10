@@ -25,7 +25,7 @@
       "bundleIdentifier": "com.spotmellc.spotmesolutions"
     },
     "android": {
-      
+      "package": "com.spomtellc.spotmesolutions"
     }
   }
 }

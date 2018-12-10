@@ -3,3 +3,4 @@ npm-debug.*
 /node_modules
 /.expo
 /.idea
+/.eslintrc
