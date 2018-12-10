@@ -4,3 +4,4 @@ npm-debug.*
 /.expo
 /.idea
 /.eslintrc
+/.packager-info.json
