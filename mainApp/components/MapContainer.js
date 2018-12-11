@@ -8,18 +8,10 @@ import { connect } from 'react-redux';
 import { Speech, Constants, Location, Permissions } from 'expo';
 import Axios from 'axios';
 import MapView, { PROVIDER_GOOGLE, Marker, } from 'react-native-maps';
-import { slideUp, slideDown, sendKey } from '../actions/slideActions';
-import {
-    focusClick,
-    blurClick,
-    sendLocData,
-} from '../actions/searchActions';
 import { getMarkerColor } from '../actions/speechActions';
 import MidnightCommander from '../mapstyles/MidnightCommander';
 import styles from './Styling.style.js';
-import carMarker from '../images/car_icon.png';
-import banana from '../images/banana.png';
-import spotMarker from '../images/spotmarker.png';
+import store from "../../redux";
 
 //Container for the map, used to load stuff onto map such as markers
 class MapContainer extends Component {
@@ -43,55 +35,33 @@ class MapContainer extends Component {
             });
         });
 
+        Location.watchPositionAsync({
+            enableHighAccuracy: true,
+        }, (data) => {
+            console.log("loc updated");
+            this.setState({
+                currentLoc: {
+                    latitude: data.coords.latitude,
+                    longitude: data.coords.longitude
+                }
+            })
+        })
+
         this.initialLocation = {
-            latitude: 0,
-            longitude: 0,
-            latitudeDelta: 0.00112,
-            longitudeDelta: 0.001412
+            latitude: 37.333088,
+            longitude: -121.880797,
+            latitudeDelta: 0.00212,
+            longitudeDelta: 0.002412
         };
         this.changeLocation = this.changeLocation.bind(this);
-        
+
         PubSub.subscribe("changeLocation", this.changeLocation);
         PubSub.subscribe("sendBack", (data) => {
             PubSub.publish(data.publishLoc, {
                 references: this
             });
         });
-        this.setLoc();
     }
-
-
-    testFunc(){
-        console.log("testFunc has been fired");
-    }
-
-    //Gets the current location and changes the state of current location
-    getLocationAsync = async () => {
-        console.log("getLoc Async Fired");
-        const { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-            this.setState({
-                errorMessage: 'Permission to access location was denied',
-            });
-        }
-        //Changes the location to be current location
-        const location = await Location.getCurrentPositionAsync();
-        // console.log(location);
-
-        //Needed for current location marker to get updated
-
-        return location;
-    }
-
-    setLoc = async () => {
-        const location = await this.getLocationAsync();
-        this.changeLocation(null, {
-            lat: location.coords.latitude,
-            lng: location.coords.longitude
-        });
-    }
-
-    //Used to get information on markers from API
     getMarkers() {
         return this.state.markers.map(markerInstance => (
             <Marker
@@ -100,7 +70,7 @@ class MapContainer extends Component {
                 title={markerInstance.name}
                 // description={markerInstance.description}
                 style={styles.MapContainer.markerStyle}
-                image={spotMarker}
+                image={require('../images/spotmarker.png')}
                 key={markerInstance.key}
                 onPress={(e) => {
                     e.stopPropagation();
@@ -110,23 +80,11 @@ class MapContainer extends Component {
                     });
                     PubSub.publish("onBlur");
                 }}
-            >
-                {/* <Image
-                    source={garageMarker}
-                    style={styles.MapContainer.markerStyleImage}
-                >
-
-                </Image> */}
-            </Marker>
+            />
         ));
     }
 
     changeLocation(context, data) {
-        // console.log('MapContainer changeLocation() called');
-        // this.startingLoc.timing({
-        //     latitude: lat,
-        //     longitude: lng,
-        // }, duration).start();
         lat = parseFloat(data.lat);
         lng = parseFloat(data.lng);
         this.setState({
@@ -159,6 +117,7 @@ class MapContainer extends Component {
                 customMapStyle={MidnightCommander}
 
                 onPress={() => {
+                    console.log(this.props);
                     PubSub.publish("onBlur");
                     PubSub.publish("slideDown");
                 }}
@@ -171,7 +130,7 @@ class MapContainer extends Component {
                         ref={marker => {
                             this.marker = marker;
                         }}
-                        image={banana}
+                        image={require('../images/banana.png')}
                     />
 
 
@@ -184,7 +143,7 @@ class MapContainer extends Component {
                     //onPress={Speech.speak('This is your current location.')}
                     //image={carMarker}
                     style={styles.locationStyle}
-                    image={carMarker}
+                    image={require('../images/car_icon.png')}
                 />
 
                 {this.state.markers.length !== 0 && this.getMarkers()}
@@ -195,20 +154,24 @@ class MapContainer extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
+// const mapStateToProps = (state) => {
+//     console.log(state);
+//     return {
+//         lat: state.loc.location.latitude,
+//         lng: state.loc.location.longitude
+//     }
+// }
 
-    }
-}
 
 
 
 
+// const mapDispatchToProps = (dispatch) => {
+//     return {
 
-const mapDispatchToProps = (dispatch) => {
-    return {
+//     }
+// };
 
-    }
-};
+// export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);
 
-export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);
+export default MapContainer;

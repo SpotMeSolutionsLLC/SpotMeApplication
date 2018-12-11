@@ -3,7 +3,7 @@ import {
     AppRegistry
 } from "react-native";
 import { createSwitchNavigator } from 'react-navigation';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import store from './redux';
 import WelcomeScreen from './welcomePage/Welcome';
 // import Signup from './Welcome Page/Signup';
@@ -12,6 +12,8 @@ import WelcomeScreen from './welcomePage/Welcome';
 import MapApp from './mainApp/App';
 
 import { AppLoading, Asset, Font } from "expo";
+
+import { getCurrentLocation } from "./mainApp/actions/LocationAction";
 
 //Used to switch between different screens
 const AppSwitchNavigator = createSwitchNavigator({
@@ -22,6 +24,17 @@ const AppSwitchNavigator = createSwitchNavigator({
     // Signup,
 });
 
+cacheImages = (images) => {
+    return images.map((image) => {
+        if (typeof image === "string") {
+            return Image.prefetch(image);
+        }
+        else {
+            console.log("image cached");
+            return Asset.fromModule(image).downloadAsync();
+        }
+    });
+}
 
 class App extends React.Component {
 
@@ -31,22 +44,14 @@ class App extends React.Component {
         this.state = {
             isLoaded: false
         }
+        getCurrentLocation();
     }
 
 
-    cacheImages(images) {
-        return images.map(image => {
-            if (typeof image === "string") {
-                return Image.prefetch(image);
-            }
-            else {
-                return Asset.fromModule(image).downloadAsync();
-            }
-        });
-    }
+    
 
     cacheRoutine = async () => {
-        const imageAssets = this.cacheImages([
+        const imageAssets = cacheImages([
             require("./mainApp/images/car.png"),
             require("./mainApp/images/car_icon.png"),
             require("./mainApp/images/banana.png"),
@@ -57,8 +62,17 @@ class App extends React.Component {
 
         ]);
 
+        imageAssets[0].then((result) => {
+            console.log(result);
+        }, (error) => {
+            console.log(error);
+        });
+
         console.log("Cache Routine Ran");
-        await Promise.all([...imageAssets]);
+
+        
+        
+        await Promise.all(...imageAssets);
     }
     render() {
         if (!this.state.isLoaded) {

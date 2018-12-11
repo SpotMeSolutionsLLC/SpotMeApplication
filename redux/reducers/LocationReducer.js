@@ -1,14 +1,20 @@
 const INITIAL_STATE = {
-  location: '',
-  currentLocation: {},
-  inputData: '',
-  predictions: {},
-  sanjose: {},
+    location: {
+        latitude: 0,
+        longitude: 0
+    }
 };
 
 export default (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-    default:
-      return {...state}
-  }
+    switch (action.type) {
+        case "getLoc":
+            return {
+                ...state, location: {
+                    latitude: action.lat,
+                    longitude: action.lng
+                }
+            }
+        default:
+            return { ...state }
+    }
 };
