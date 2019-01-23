@@ -1,38 +1,39 @@
 {
-  "expo": {
-    "name": "Spot Me",
-    "description": "A live parking solution for you",
-    "slug": "SpotMe",
-    "privacy": "public",
-    "sdkVersion": "31.0.0",
-    "platforms": [
-      "ios",
-      "android"
-    ],
-    "version": "2",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#EBEEF5"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.spotmellc.spotmesolutions"
-    },
-    "android": {
-      "package": "com.spotmellc.spotmesolutions",
-      "permissions": [
-        "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION"
-      ]
+    "expo": {
+        "name": "Spot Me",
+        "description": "A live parking solution for you",
+        "slug": "SpotMe",
+        "privacy": "public",
+        "sdkVersion": "31.0.0",
+        "platforms": [
+            "ios",
+            "android"
+        ],
+        "version": "2",
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#EBEEF5"
+        },
+        "updates": {
+            "fallbackToCacheTimeout": 0
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.spotmellc.spotmesolutions"
+        },
+        "android": {
+            "package": "com.spotmellc.spotmesolutions",
+            "permissions": [
+                "ACCESS_COARSE_LOCATION",
+                "ACCESS_FINE_LOCATION"
+            ],
+            "versionCode": 2
+        }
     }
-  }
 }

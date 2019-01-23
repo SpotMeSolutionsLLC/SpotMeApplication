@@ -50,7 +50,7 @@ class MapContainer extends Component {
             longitudeDelta: 0.001412
         };
         this.changeLocation = this.changeLocation.bind(this);
-        
+
         PubSub.subscribe("changeLocation", this.changeLocation);
         PubSub.subscribe("sendBack", (data) => {
             PubSub.publish(data.publishLoc, {
@@ -61,7 +61,7 @@ class MapContainer extends Component {
     }
 
 
-    testFunc(){
+    testFunc() {
         console.log("testFunc has been fired");
     }
 
