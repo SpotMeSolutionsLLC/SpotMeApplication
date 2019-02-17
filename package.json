@@ -1,12 +1,11 @@
 {
-  "name": "empty-project-template",
+  "name": "spotmesolutions",
   "main": "node_modules/expo/AppEntry.js",
   "private": true,
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "eject": "expo eject",
     "buildIOS": "expo build:ios"
   },
   "dependencies": {
@@ -30,7 +29,8 @@
     "react-navigation": "^3.0.9",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "schedule": "^0.4.0"
   },
   "devDependencies": {
     "eslint-config-rallycoding": "^3.2.0"

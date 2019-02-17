@@ -5,4 +5,3 @@ npm-debug.*
 /.expo
 /.idea
 /.eslintrc
-/package-lock.json
