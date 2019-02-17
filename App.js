@@ -2,25 +2,26 @@ import React from 'react';
 import {
     AppRegistry
 } from "react-native";
-import { createSwitchNavigator } from 'react-navigation';
+import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { Provider } from 'react-redux';
 import store from './redux';
 import WelcomeScreen from './welcomePage/Welcome';
 // import Signup from './Welcome Page/Signup';
 // import Signin from './Welcome Page/Signin';
 // import History from './Welcome Page/History';
-import MapApp from './mainApp/App';
+import MapApp from './src/App';
 
 import { AppLoading, Asset, Font } from "expo";
+
+AppRegistry.registerComponent("Spotme", () => MapApp);
 
 //Used to switch between different screens
 const AppSwitchNavigator = createSwitchNavigator({
     Welcome: WelcomeScreen,
     App: MapApp,
-    // History,
-    // Signin,
-    // Signup,
 });
+
+const AppContainer = createAppContainer(AppSwitchNavigator);
 
 
 class App extends React.Component {
@@ -47,13 +48,13 @@ class App extends React.Component {
 
     cacheRoutine = async () => {
         const imageAssets = this.cacheImages([
-            require("./mainApp/images/car.png"),
-            require("./mainApp/images/car_icon.png"),
-            require("./mainApp/images/banana.png"),
-            require("./mainApp/images/garage.png"),
-            require("./mainApp/images/spotmarker.png"),
-            require("./mainApp/images/menu.png"),
-            require("./mainApp/images/loading.gif")
+            require("./src/images/car.png"),
+            require("./src/images/car_icon.png"),
+            require("./src/images/banana.png"),
+            require("./src/images/garage.png"),
+            require("./src/images/spotmarker.png"),
+            require("./src/images/menu.png"),
+            require("./src/images/loading.gif")
 
         ]);
 
@@ -78,7 +79,7 @@ class App extends React.Component {
         }
         return (
             <Provider store={store}>
-                <AppSwitchNavigator />
+                <AppContainer />
             </Provider>
         );
     }

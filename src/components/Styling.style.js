@@ -12,10 +12,9 @@ const markerSize = {
     width: 40
 };
 
-const styles = {
+const styles = new StyleSheet({
     dataTable: { //DataTable.js
         box: {
-
             position: 'absolute',
             height: 100,
             width: 100
@@ -357,6 +356,6 @@ const styles = {
             paddingRight: 20,
         }
     }
-};
+});
 
 export default styles;

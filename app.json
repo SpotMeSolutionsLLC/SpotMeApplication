@@ -4,7 +4,7 @@
         "description": "A live parking solution for you",
         "slug": "SpotMe",
         "privacy": "public",
-        "sdkVersion": "31.0.0",
+        "sdkVersion": "32.0.0",
         "platforms": [
             "ios",
             "android"

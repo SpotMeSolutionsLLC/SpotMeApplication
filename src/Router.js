@@ -1,4 +1,4 @@
-import { createDrawerNavigator } from 'react-navigation';
+import { createDrawerNavigator, createAppContainer } from 'react-navigation';
 import Favorite from './components/Favorite';
 import MapScreen from './components/MapScreen';
 import MenuScreen from './components/MenuScreen';
@@ -31,6 +31,9 @@ const RouterComponent = createDrawerNavigator({
         screen: Welcome
     },
 }, {
+        defaultNavigationOptions:{
+            
+        },
         initialRouteName: 'Home',
         drawerPosition: 'left',
         drawerWidth: 200,
@@ -38,6 +41,8 @@ const RouterComponent = createDrawerNavigator({
         contentOptions: {
             activeBackgroundColor: '#b2eae2',
         }
-    });
+});
 
-export default RouterComponent;
+const AppContainer = createAppContainer(RouterComponent);
+
+export default AppContainer;
