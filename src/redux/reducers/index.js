@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import LocationReducer from './LocationReducer';
-import MapPressReducer from "./MapPressReducer";
+import GarageInfoReducer from "./garageInfoReducer";
 import SearchBarReducer from "./SearchBarReducer";
 import speechReducer from "./speechReducer"
 
 export default combineReducers({
     loc: LocationReducer,
-    mapPress: MapPressReducer,
+    garageInfo: GarageInfoReducer,
     searchBar: SearchBarReducer,
     speech: speechReducer
 });

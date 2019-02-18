@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import MapContainer from './MapContainer';
-import GarList from './GarList';
+import GarInfoContainer from './GarageInfoContainer';
 import GoogleSearchResults from './GoogleSearchResults';
-import styles from './Styling.style.js';
+import { MapScreenStyles } from './Styling.style.js';
 import PubSub from 'pubsub-js';
 
 //Overall map screen, used to display map onto application
@@ -42,14 +42,14 @@ class MapScreen extends Component {
     //Styles to make sure the map isnt messed up
     render() {
         return (
-            <SafeAreaView style={[styles.mapScreen.outerContainer, styles.safeAreaViewAndroid]}>
+            <SafeAreaView style={MapScreenStyles.outerContainer}>
                 <GestureRecognizer
                     style = {{
                         flex: 1
                     }}
                     onSwipeRight = {this.onSwipeRight}
                 >
-                    <View style={styles.mapScreen.container}>
+                    <View style={MapScreenStyles.container}>
                         <MapContainer
                             ref={instance => {
                                 if (this.state.mapRef == null) {
@@ -59,31 +59,21 @@ class MapScreen extends Component {
                                 }
                             }}
                         />
-                        <View
-                            style = {{
-                                position: 'absolute',
-                                backgroundColor: 'transparent',
-                                left: 0,
-                                width: 40,
-                                height: Dimensions.get('window').height
-                            }}
+                        <View //Gesture Recognizer Zone
+                            style = {MapScreenStyles.gestureZone}
                         >
                         </View>
                         <GoogleSearchResults />
                         <TouchableHighlight
-                            style={styles.mapScreen.menuButton}
+                            style={MapScreenStyles.menuButton}
                             onPress={() => this.props.navigation.openDrawer()}
                             underlayColor={'white'}
                         >
                             <Image source={require('./images/menu.png')}
-                                style={{
-                                    height: 30,
-                                    width: 30,
-                                    opacity: .5
-                                }} />
+                                style={MapScreenStyles.menuButtonImage} />
 
                         </TouchableHighlight>
-                        <GarList/>
+                        <GarInfoContainer/>
                     </View>
                 </GestureRecognizer>
             </SafeAreaView>

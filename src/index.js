@@ -13,10 +13,12 @@ const RootNavigator = createSwitchNavigator({
     MainApp: MainApp
 })
 
-const RootNavigatorContainer = createAppContainer(RootNavigator)
+export const RootNavigatorContainer = createAppContainer(RootNavigator)
 
-class App extends Component {
-
+class Root extends Component {
+    constructor(props){
+        super(props)
+    }
     render() {
         return(
             <RootNavigatorContainer />
@@ -24,4 +26,4 @@ class App extends Component {
                 
     }
 }
-export default App;
+export default Root;

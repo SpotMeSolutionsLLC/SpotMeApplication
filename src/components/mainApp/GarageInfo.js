@@ -4,20 +4,15 @@ import { showLocation } from 'react-native-map-link'
 // import { colors } from 'react-native-elements';
 
 
-import styles from "./Styling.style.js";
-
-import { connect } from "react-redux";
+import { GarageInfoStyles } from "./Styling.style.js";
 
 import { Speech } from "expo";
 
-import PubSub from "pubsub-js";
-
 //The table for a garage, displays information on garage
-class PerGarageInfo extends React.Component {
+class GarageInfo extends React.Component {
     constructor(props) {
         super(props);
         this.getColor = this.getColor.bind(this);
-        PubSub.subscribe("getColor", this.getColor);
     }
 
 
@@ -43,18 +38,18 @@ class PerGarageInfo extends React.Component {
     //Renders table/chart containing information on a marker
     render() {
         return (
-            <View style={styles.perGarageInfo.containerStyle}>
+            <View style={GarageInfoStyles.containerStyle}>
 
-                <View style={styles.perGarageInfo.leftSectionStyle}>
-                    <View style={styles.perGarageInfo.generalStyle}>
-                        <Button 
-                            style={styles.perGarageInfo.favoButton}
+                <View style={GarageInfoStyles.leftSectionStyle}>
+                    <View style={GarageInfoStyles.generalStyle}>
+                        {/* <Button 
+                            style={GarageInfoStyles.favoButton}
                             title={'Favorite this Garage'}
                             color={'purple'}
                             onPress={() => {
                                 Alert.alert('This feature is under development.');
                             }}
-                        />
+                        /> */}
                         <Text style={{ fontSize: 40, color: 'blue' }}>
                             {this.props.garageName}
                         </Text>
@@ -66,19 +61,19 @@ class PerGarageInfo extends React.Component {
                     </Text>
                 </View>
 
-                <View style={[styles.perGarageInfo.rightSectionStyle, {
+                <View style={[GarageInfoStyles.rightSectionStyle, {
                     justifyContent: "center",
                     alignItems: "center",
                 }]}>
 
 
 
-                    <View style={[styles.perGarageInfo.generalStyle, {
+                    <View style={[GarageInfoStyles.generalStyle, {
                         alignItems: "center",
 
                     }]}>
                         <Text
-                            style={[styles.perGarageInfo.textStyle, {
+                            style={[GarageInfoStyles.textStyle, {
                                 backgroundColor: this.getColor(this.props.spotsNum / this.props.garageMax * 100)
                             }]}
                             ref={() => {
@@ -105,7 +100,7 @@ class PerGarageInfo extends React.Component {
                         })
 
                     }}
-                        style={styles.perGarageInfo.button}
+                        style={GarageInfoStyles.button}
                         title="Start Navigation"
                         color="blue"
                     />
@@ -116,12 +111,6 @@ class PerGarageInfo extends React.Component {
 }
 
 //Able to dispatch colors to props, enables access of garage colors
-const mapDispatchToProps = (dispatch) => {
-    return {
 
 
-    }
-}
-
-
-export default connect(null, mapDispatchToProps)(PerGarageInfo);
+export default GarageInfo;

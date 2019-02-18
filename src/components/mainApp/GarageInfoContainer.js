@@ -5,20 +5,19 @@ import {
     Image,
     Platform
 } from 'react-native';
-import axios from 'axios';
 
 import { connect } from 'react-redux';
 
-import PerGarageInfo from './PerGarageInfo';
+import GarageInfo from './GarageInfo';
 import loadingImage from './images/loading.gif';
 
-import PubSub from "pubsub-js";
+import { garList } from "./Styling.style";
 
-import styles from "./Styling.style";
+import { getGarageData } from "../../functions"
 
 
 //List of garages, gets information on garages (name, parking spaces, etc)
-class GarList extends Component {
+class GarInfoContainer extends Component {
 
     constructor(props) {
         super(props);
@@ -26,59 +25,41 @@ class GarList extends Component {
             parkingsName: '',
             parkingsMax: 0,
             parkingsCurrent: 0,
-            status: 0, //0 = not loaded, 1 = loading, 2 = loaded
-            bottom: new Animated.Value(-(styles.garList.containerStyle.height)),
+            dataLoaded: false,
+            bottom: new Animated.Value(-(garList.containerStyle.height)),
+            showInfo: false,
+            keyName: "",
         };
-        this.slideUp = this.slideUp.bind(this);
-        this.slideDown = this.slideDown.bind(this);
-        this.updateData = this.updateData.bind(this);
-        PubSub.subscribe("slideUp", this.slideUp);
-        PubSub.subscribe("slideDown", this.slideDown);
-        PubSub.subscribe("updateData", this.updateData);
     }
 
-    updateData(context,searchName) {
-        console.log("Currently fetching data: " + searchName.key);
+    updateData = async () => {
+        let data = await getGarageData(this.state.keyName);
         this.setState({
-            status: 1
-        }, () => {
-            axios.post('https://project-one-203604.appspot.com/garages/garage', {
-                name: searchName.key
-            }).then(res => {
-
-                console.log('Found Garage Data: ' + searchName.key);
-
-                this.setState({
-                    parkingsName: res.data.name,
-                    parkingsMax: res.data.max,
-                    parkingsCurrent: res.data.current,
-                    status: 2
-                }, function () {
-                    console.log('State has changed');
-                });
-            });
-        });
+            parkingsName: data.name,
+            parkingsMax: data.max,
+            parkingsCurrent: data.current,
+            dataLoaded: true,
+        })
     }
-
 
     //When loading is finished, garage information is returned
     whenDoneLoading() {
-        if (this.state.status == 2) {
-            console.log('PerGarageInfo Loaded, Status: ' + this.state.status);
+        if (this.state.dataLoaded) {
             return (
-                <PerGarageInfo
+                <GarageInfo
                     spotsNum={this.state.parkingsCurrent}
                     garageName={this.state.parkingsName}
                     garageMax={this.state.parkingsMax}
                 />
             );
         }
-        else {
+        else{
+            this.updateData();
             return (
                 <View style={{
                     alignItems: 'center',
                     justifyContent: 'center',
-                    height: styles.garList.height
+                    height: garList.height
                 }}>
                     <Image style={{
                         width: 50,
@@ -90,28 +71,52 @@ class GarList extends Component {
         }
     }
 
+    getGarageListInfo() {
+        return (this.state.showInfo) ? this.whenDoneLoading() : null;
+    }
+
+    componentWillReceiveProps(newProps){
+        (newProps.showInfo && newProps.keyName != this.state.keyName) ? this.setState({
+            keyName: newProps.keyName,
+            showInfo: newProps.showInfo,
+            dataLoaded: false,
+        }, () => {
+            this.slideUp();
+        }) : this.setState({
+            keyName: "",
+            showInfo: newProps.showInfo,
+            parkingsName: '',
+            parkingsMax: 0,
+            parkingsCurrent: 0,
+            dataLoaded: false,
+        }, () => {
+            this.slideDown();
+        });
+    }
+
     //Upon execution of chart table
     // styling is changed for the garage information container based on platform
     slideUp() {
         if (Platform.OS === 'android') {
             Animated.timing(this.state.bottom, {
-                toValue: -(styles.garList.containerStyle.height - styles.garList.height),
+                toValue: -(garList.containerStyle.height - garList.height),
                 duration: 100
             }).start();
         }
         else {
             this.setState({
-                bottom: -(styles.garList.containerStyle.height - styles.garList.height)
+                bottom: -(garList.containerStyle.height - garList.height)
             });
         }
     }
 
     //Upon execution of closing chart table/clicking off of it
     //Styling is changed for the garage info container based on platform
+
     slideDown() {
         if (Platform.OS === 'android') {
             Animated.timing(this.state.bottom, {
-                toValue: -(styles.garList.containerStyle.height),
+                toValue: -(garList.containerStyle.height),
                 duration: 100
             }).start();
             this.setState({
@@ -121,7 +126,7 @@ class GarList extends Component {
         else {
             this.setState({
                 status: 0,
-                bottom: -(styles.garList.containerStyle.height),
+                bottom: -(garList.containerStyle.height),
             });
         }
     }
@@ -130,29 +135,31 @@ class GarList extends Component {
     //Renders garage information/loads garage information upon rendering
     render() {
         return (
-            <Animated.View style={[styles.garList.containerStyle, { bottom: this.state.bottom }]}>
-                <View style={styles.garList.garageStyle}>
-                    {this.whenDoneLoading()}
+            <Animated.View style={[garList.containerStyle, { bottom: this.state.bottom }]}>
+                <View style={garList.garageStyle}>
+                    {this.getGarageListInfo()}
                 </View>
             </Animated.View>
         );
     }
+
 }
 
 
 const mapStateToProps = (state) => {
     return {
-        
+        showInfo: state.garageInfo.showInfo,
+        keyName: state.garageInfo.key
     }
 }
 
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        
+
     }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(GarList);
+export default connect(mapStateToProps, mapDispatchToProps)(GarInfoContainer);
 

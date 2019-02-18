@@ -1,22 +1,7 @@
-
-
-export const slideUp = (isClicked) => {
+export const showInfo = (showInfo, key = "") => {
     return {
-        type: "slideUp",
-        clicked: isClicked,
-    };
-};
-
-export const sendKey = (key) => {
-    return {
-        type: "sendKey",
-        key:key,
-    }
-}
-
-export const slideDown = (isClicked) => {
-    return {
-        type: "slideDown",
-        clicked: isClicked
+        type: "showInfo",
+        showInfo: showInfo,
+        key: key
     };
 };

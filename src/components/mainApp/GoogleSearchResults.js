@@ -10,16 +10,12 @@ import {
 
 import axios from 'axios';
 
-import styleSheet from './Styling.style';
+import { GoogleSearchStyles } from './Styling.style';
 
 import { connect } from "react-redux"
 
 import { changeLocation } from "../../redux/actions/LocationAction"
 import { setSearchIsFocused } from "../../redux/actions/searchActions"
-
-
-
-const styles = styleSheet.googleSearchResults;
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -53,7 +49,7 @@ class GoogleSearchResults extends Component {
         if (this.state.displayScroll) {
             return (
                 <ScrollView
-                    style={styles.scroll}
+                    style={GoogleSearchStyles.scroll}
                 >
                     {this.getScrollViewData()}
                 </ScrollView>
@@ -66,11 +62,11 @@ class GoogleSearchResults extends Component {
         
         return this.state.data.map(dataInstance => (
             <View
-                style={styles.listView}
+                style={GoogleSearchStyles.listView}
                 key={dataInstance.place_id}
             >
                 <Text
-                    style={styles.listViewText}
+                    style={GoogleSearchStyles.listViewText}
                     onPress={() => {
                         this.onBlur();
                         this.refs.textInput.clear();
@@ -161,7 +157,7 @@ class GoogleSearchResults extends Component {
         return (
             <>
                 <Animated.View
-                    style={[styles.inputContainer, {
+                    style={[GoogleSearchStyles.inputContainer, {
                         top: this.animations.inputTop,
                         width: this.animations.inputWidth
                     }]}
@@ -169,7 +165,7 @@ class GoogleSearchResults extends Component {
                     <TextInput
                         ref='textInput'
                         placeholder='Search a location or garage!'
-                        style={[styles.input, {
+                        style={[GoogleSearchStyles.input, {
                             opacity: this.state.style.opacity,
                         }]}
                         underlineColorAndroid='white'
