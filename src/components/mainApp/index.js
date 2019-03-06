@@ -6,7 +6,6 @@ import {
 
 import MapScreen from "./MapScreen"
 import Favorite from "./Favorite"
-import App from "../../index";
 
 
 const MainAppNavigator = createDrawerNavigator({

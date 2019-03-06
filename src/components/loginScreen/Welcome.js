@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Image, View, Text, AsyncStorage, SafeAreaView } from 'react-native';
+import { Image, View, Text, SafeAreaView } from 'react-native';
 import { Button } from 'native-base';
-import { Speech } from 'expo';
 import Slides from './Slides';
 
 
@@ -33,7 +32,6 @@ class WelcomeScreen extends Component {
     }
 
     render() {
-        Speech.speak('Welcome to the SpotMeSolutions Application, the parking solution for you!');
         return (
             <SafeAreaView
                 style={{

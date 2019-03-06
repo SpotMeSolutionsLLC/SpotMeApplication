@@ -1,13 +1,11 @@
 import React from 'react';
+import { Font } from "expo";
 import { Provider } from 'react-redux';
 import store from './src/redux/index';
 import MainApp from './src';
+import OpenSans from "./assets/fonts/OpenSans.ttf"
 
 class App extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return(
@@ -16,9 +14,14 @@ class App extends React.Component {
             </Provider>
         );
     }
+
+    componentDidMount(){
+        Font.loadAsync({
+            OpenSans: OpenSans
+        })
+    }
 }
 
 //remote the yellow // WARNING:
-console.disableYellowBox = true;
 
 export default App;

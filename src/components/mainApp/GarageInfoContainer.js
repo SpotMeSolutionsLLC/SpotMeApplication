@@ -3,7 +3,9 @@ import {
     View,
     Animated,
     Image,
-    Platform
+    Platform,
+    StyleSheet,
+    Dimensions
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -11,9 +13,35 @@ import { connect } from 'react-redux';
 import GarageInfo from './GarageInfo';
 import loadingImage from './images/loading.gif';
 
-import { garList } from "./Styling.style";
+import { getGarageData } from "../../functions";
 
-import { getGarageData } from "../../functions"
+const garListHeight = 300;
+
+const garList = StyleSheet.create({
+    height: garListHeight,
+
+    garageStyle: {
+        borderBottomColor: 'blue',
+        borderBottomWidth: 0.75,
+        marginLeft: 25,
+        marginRight: 25,
+        marginTop: 5,
+        marginBottom: 5 + 20,
+        height: garListHeight
+    },
+    headerContentStyles: {
+        flexDirection: 'column',
+        justifyContent: 'space-around'
+    },
+    containerStyle: {
+        backgroundColor: '#cae5f4',
+        height: Dimensions.get('window').height,
+        width: Dimensions.get('window').width,
+        justifyContent: 'flex-start',
+        position: 'absolute',
+        left: 0,
+    },
+});
 
 
 //List of garages, gets information on garages (name, parking spaces, etc)
@@ -53,7 +81,7 @@ class GarInfoContainer extends Component {
                 />
             );
         }
-        else{
+        else {
             this.updateData();
             return (
                 <View style={{
@@ -75,7 +103,7 @@ class GarInfoContainer extends Component {
         return (this.state.showInfo) ? this.whenDoneLoading() : null;
     }
 
-    componentWillReceiveProps(newProps){
+    componentWillReceiveProps(newProps) {
         (newProps.showInfo && newProps.keyName != this.state.keyName) ? this.setState({
             keyName: newProps.keyName,
             showInfo: newProps.showInfo,

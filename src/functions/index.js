@@ -1,27 +1,31 @@
-import { Permissions, Location } from "expo";
 import axios from "axios";
 
-export const getLocationAsync = async () => {
-    const { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== 'granted') {
-        this.setState({
-            errorMessage: 'Permission to access location was denied',
-        });
-    }
-    //Changes the location to be current location
-    const location = await Location.getCurrentPositionAsync();
-
-    //Needed for current location marker to get updated
-
-    return location;
+export const getMarkers = async () => {
+    let result = await axios.get("http://192.168.42.93:3000/garages/getMarkers");
+    return result;
 }
 
 export const getGarageData = async (searchName) => {
     let result = await axios.get('https://spotmeapi.herokuapp.com/garages/garage', {
         params: {
-            name: searchName
+            keyName: searchName
         }
     });
 
     return result.data;
+}
+
+export const getColor = (percentage) => {
+    if (percentage < 25) {
+        return "#90ee90"; //green
+    }
+    else if (percentage < 50) {
+        return "#ffff4d"; //yellow
+    }
+    else if (percentage < 75) {
+        return "#ffa07a"; //orange
+    }
+    else {
+        return "#f08080"; //red
+    }
 }
