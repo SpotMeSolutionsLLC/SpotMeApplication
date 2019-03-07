@@ -12,56 +12,59 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         width: "100%",
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
     },
     titleName: {
         fontSize: 25,
         fontWeight: "bold",
-        color: 'black',
+        color: 'white',
         textAlign: "center",
         fontFamily: "OpenSans",
     },
-    titleWrapper:{
-        height:"35%",
+    titleWrapper: {
+        height: "35%",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        backgroundColor: "#00bdfb",
+    },
+    currentValueContainer: {
+        height: "30%",
+        width: "100%",
         justifyContent: "center",
         alignItems: "center",
     },
-    currentValueContainer:{
-        height: "15%",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    currentValue:{
+    currentValue: {
+        fontFamily: "OpenSans",
         fontSize: 25,
-        color: 'white'
+        color: '#00bdfb',
+        fontWeight: "bold",
     },
-    barContainerWrapper:{
+    barContainerWrapper: {
         width: "80%",
-        height: "50%",
         justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row",
+    },
+    barIndicatorText: {
+        fontFamily: "OpenSans",
+        fontWeight: "bold",
+        fontSize: 35,
+        width: "25%",
+        textAlign: "center",
     },
     barContainer: {
-        width: "100%",
+        width: "75%",
         height: 50,
         borderWidth: 2,
-        borderColor: "black",
         backgroundColor: "white",
         justifyContent: "center",
+        borderRadius: 50,
+        overflow: "hidden",
     },
-    barLeft:{
+    barLeft: {
         height: "100%",
     },
-    barIndicatorText:{
-        fontFamily: "OpenSans",
-        fontSize: 30
-    },
-    barIndicatorWrapper:{
-        position: "absolute",
-        height: "100%",
-        width: "100%",
-        justifyContent: "center",
-        alignItems: "center",
-    }
 })
 
 class GarageInfo extends React.Component {
@@ -69,37 +72,39 @@ class GarageInfo extends React.Component {
         super(props);
     }
 
-    
     render() {
         return (
             <View style={styles.containerStyle}>
-                <View style={styles.titleWrapper}>
+                <View style={[styles.titleWrapper, {
+                    backgroundColor: getColor(this.props.spotsNum / this.props.garageMax * 100)
+                }]}>
                     <Text style={styles.titleName}>
                         {this.props.garageName}
                     </Text>
                 </View>
 
                 <View style={styles.currentValueContainer}>
-                    <Text style={styles.currentValue}>
+                    <Text style={[styles.currentValue, {
+                        color: getColor(this.props.spotsNum / this.props.garageMax * 100),
+                    }]}>
                         {this.props.spotsNum + " / " + this.props.garageMax}
                     </Text>
                 </View>
                 <View style={styles.barContainerWrapper}>
-                    <View style={styles.barContainer}>
-                        <View style={[styles.barLeft,{
+
+                    <Text style={[styles.barIndicatorText,{
+                        color: getColor(this.props.spotsNum / this.props.garageMax * 100)
+                    }]}>
+                        {Math.floor((this.props.spotsNum / this.props.garageMax * 100))}%
+                    </Text>
+
+                    <View style={[styles.barContainer, {
+                        borderColor: getColor(this.props.spotsNum / this.props.garageMax * 100)
+                    }]}>
+                        <View style={[styles.barLeft, {
                             backgroundColor: getColor(this.props.spotsNum / this.props.garageMax * 100),
-                            width: `${this.props.spotsNum/this.props.garageMax * 100}%`
-                        }]}>
-
-                        </View>
-                        <View style={styles.barIndicatorWrapper}>
-                            <Text
-                                style={styles.barIndicatorText}
-                            >
-                                {Math.floor((this.props.spotsNum / this.props.garageMax * 100))}%
-                            </Text>
-                        </View>
-
+                            width: `${this.props.spotsNum / this.props.garageMax * 100}%`
+                        }]}/>
                     </View>
                 </View>
             </View>

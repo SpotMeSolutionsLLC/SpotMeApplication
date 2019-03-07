@@ -21,18 +21,17 @@ const MapContainerStyles = StyleSheet.create({
         borderTopRightRadius: 13,
         borderTopLeftRadius: 13,
         borderBottomLeftRadius: 13,
-        borderWidth: 2,
-        height: 60,
-        width: 75,
+        height: 40,
+        width: 55,
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+
     },
     markerText: {
         fontFamily: "OpenSans",
+        fontWeight: "bold",
         color: "white",
-        textShadowColor: "black",
-        textShadowOffset: { width: 1, height: 1 },
-        fontSize: 24
+        fontSize: 20
     },
     locationStyle: {
         zIndex: 99
@@ -75,12 +74,6 @@ class MapContainer extends Component {
                 markers: res.data
             });
         });
-        // Axios.get('http://192.168.42.93:3000/garages/getMarkers').then((res) => {
-        //     console.log("Data has been returned");
-        //     this.setState({
-        //         markers: res.data
-        //     });
-        // });
     }
 
     //Used to get information on markers from API

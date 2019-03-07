@@ -15,18 +15,14 @@ import loadingImage from './images/loading.gif';
 
 import { getGarageData } from "../../functions";
 
-const garListHeight = 200;
+const garListHeight = 180;
 
 const garList = StyleSheet.create({
     height: garListHeight,
 
     garageStyle: {
-        borderBottomColor: 'blue',
         borderBottomWidth: 0.75,
-        marginLeft: 25,
-        marginRight: 25,
-        marginTop: 5,
-        marginBottom: 5 + 20,
+        paddingBottom: 5 + 20,
         height: garListHeight
     },
     headerContentStyles: {
@@ -34,12 +30,14 @@ const garList = StyleSheet.create({
         justifyContent: 'space-around'
     },
     containerStyle: {
-        backgroundColor: '#cae5f4',
+        //backgroundColor: '#def1fc',
+        backgroundColor: "white",
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
         justifyContent: 'flex-start',
         position: 'absolute',
         left: 0,
+        elevation: 5,
     },
 });
 
