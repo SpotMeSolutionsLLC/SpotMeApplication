@@ -15,7 +15,7 @@ import loadingImage from './images/loading.gif';
 
 import { getGarageData } from "../../functions";
 
-const garListHeight = 300;
+const garListHeight = 200;
 
 const garList = StyleSheet.create({
     height: garListHeight,

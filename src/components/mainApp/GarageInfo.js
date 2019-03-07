@@ -15,18 +15,38 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     titleName: {
-        fontSize: 30,
+        fontSize: 25,
+        fontWeight: "bold",
         color: 'black',
         textAlign: "center",
         fontFamily: "OpenSans",
-        height:"50%",
+    },
+    titleWrapper:{
+        height:"35%",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    currentValueContainer:{
+        height: "15%",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    currentValue:{
+        fontSize: 25,
+        color: 'white'
+    },
+    barContainerWrapper:{
+        width: "80%",
+        height: "50%",
+        justifyContent: "center",
     },
     barContainer: {
-        width: "80%",
+        width: "100%",
         height: 50,
         borderWidth: 2,
         borderColor: "black",
         backgroundColor: "white",
+        justifyContent: "center",
     },
     barLeft:{
         height: "100%",
@@ -53,32 +73,34 @@ class GarageInfo extends React.Component {
     render() {
         return (
             <View style={styles.containerStyle}>
-
-                <Text style={styles.titleName}>
-                    {this.props.garageName}
-                </Text>
-
-                <View style={styles.currentValues}>
-                    <Text style={{ fontSize: 23, color: 'white' }}>
-                        {this.props.spotsNum + " / " + this.props.garageMax}
+                <View style={styles.titleWrapper}>
+                    <Text style={styles.titleName}>
+                        {this.props.garageName}
                     </Text>
                 </View>
 
-                <View style={styles.barContainer}>
-                    <View style={[styles.barLeft,{
-                        backgroundColor: getColor(this.props.spotsNum / this.props.garageMax * 100),
-                        width: `${this.props.spotsNum/this.props.garageMax * 100}%`
-                    }]}>
+                <View style={styles.currentValueContainer}>
+                    <Text style={styles.currentValue}>
+                        {this.props.spotsNum + " / " + this.props.garageMax}
+                    </Text>
+                </View>
+                <View style={styles.barContainerWrapper}>
+                    <View style={styles.barContainer}>
+                        <View style={[styles.barLeft,{
+                            backgroundColor: getColor(this.props.spotsNum / this.props.garageMax * 100),
+                            width: `${this.props.spotsNum/this.props.garageMax * 100}%`
+                        }]}>
+
+                        </View>
+                        <View style={styles.barIndicatorWrapper}>
+                            <Text
+                                style={styles.barIndicatorText}
+                            >
+                                {Math.floor((this.props.spotsNum / this.props.garageMax * 100))}%
+                            </Text>
+                        </View>
 
                     </View>
-                    <View style={styles.barIndicatorWrapper}>
-                        <Text
-                            style={styles.barIndicatorText}
-                        >
-                            {Math.floor((this.props.spotsNum / this.props.garageMax * 100))}%
-                        </Text>
-                    </View>
-
                 </View>
             </View>
         )

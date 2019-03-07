@@ -1,15 +1,11 @@
 import _ from "lodash";
-import React, { Component } from 'react';
-import {
-    StyleSheet,
-    Text,
-    View
-} from "react-native";
+import React, { Component } from "react";
+import { StyleSheet, Text, View } from "react-native";
 
-import { connect } from 'react-redux';
-import Axios from 'axios';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import MidnightCommander from './mapstyles/MidnightCommander';
+import { connect } from "react-redux";
+import Axios from "axios";
+import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import MidnightCommander from "./mapstyles/MidnightCommander";
 
 import { changeLocation } from "../../redux/actions/LocationAction";
 import { setSearchIsFocused } from "../../redux/actions/searchActions";
@@ -17,10 +13,9 @@ import { showInfo } from "../../redux/actions/slideActions";
 
 import { getColor, getMarkers } from "../../functions";
 
-
 const MapContainerStyles = StyleSheet.create({
     map: {
-        ...StyleSheet.absoluteFillObject,
+        ...StyleSheet.absoluteFillObject
     },
     customMarker: {
         borderTopRightRadius: 13,
@@ -30,7 +25,7 @@ const MapContainerStyles = StyleSheet.create({
         height: 60,
         width: 75,
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "center"
     },
     markerText: {
         fontFamily: "OpenSans",
@@ -43,43 +38,43 @@ const MapContainerStyles = StyleSheet.create({
         zIndex: 99
     },
     callOut: {
-        justifyContent: 'flex-start',
-    },
-})
+        justifyContent: "flex-start"
+    }
+});
 
 class CustomMarker extends Component {
     render() {
         return (
-                <View
-                    style={[MapContainerStyles.customMarker,{
+            <View
+                style={[
+                    MapContainerStyles.customMarker,
+                    {
                         backgroundColor: getColor(this.props.percent)
-                    }]}
-                >
-                    <Text
-                        style={MapContainerStyles.markerText}
-                    >
-                        {Math.trunc(this.props.percent) + "%"}
-                    </Text>
-                </View>
-        )
+                    }
+                ]}
+            >
+                <Text style={MapContainerStyles.markerText}>
+                    {Math.trunc(this.props.percent) + "%"}
+                </Text>
+            </View>
+        );
     }
 }
-
 
 //Container for the map, used to load stuff onto map such as markers
 class MapContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            markers: [],
+            markers: []
         };
 
-        getMarkers().then((res) => {
+        getMarkers().then(res => {
             console.log("Data has been returned");
             this.setState({
                 markers: res.data
-            })
-        })
+            });
+        });
         // Axios.get('http://192.168.42.93:3000/garages/getMarkers').then((res) => {
         //     console.log("Data has been returned");
         //     this.setState({
@@ -92,18 +87,21 @@ class MapContainer extends Component {
     getMarkers() {
         return this.state.markers.map(markerInstance => (
             <Marker
-                coordinate={{ latitude: markerInstance.lat, longitude: markerInstance.lng }}
+                coordinate={{
+                    latitude: markerInstance.lat,
+                    longitude: markerInstance.lng
+                }}
                 //Can later pull coord, title, descrip from API when implemented
                 // title={markerInstance.name}
                 // description={markerInstance.description}
                 key={markerInstance.keyName}
-                onPress={(e) => {
+                onPress={e => {
                     e.stopPropagation();
                     this.props.showGarageInfo(markerInstance.keyName);
                 }}
                 anchor={{
                     x: 1,
-                    y: 1,
+                    y: 1
                 }}
                 calloutAnchor={{
                     x: 0,
@@ -112,7 +110,9 @@ class MapContainer extends Component {
                 callout
             >
                 <CustomMarker
-                    percent={markerInstance.current / markerInstance.max * 100}
+                    percent={
+                        (markerInstance.current / markerInstance.max) * 100
+                    }
                 />
             </Marker>
         ));
@@ -124,46 +124,45 @@ class MapContainer extends Component {
                 provider={PROVIDER_GOOGLE}
                 style={MapContainerStyles.map}
                 initialRegion={this.props.coordinates}
-                ref={(instance) => {
+                ref={instance => {
                     this.mapRef = instance;
                 }}
-
                 customMapStyle={MidnightCommander}
-
-                onPress={(e) => {
+                onPress={e => {
                     this.props.blurText();
                     this.props.hideGarageInfo();
                 }}
             >
-
                 {this.getMarkers()}
-
             </MapView>
         );
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     return {
-        coordinates: state.loc.coordinates,
-    }
-}
+        coordinates: state.loc.coordinates
+    };
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
     return {
-        changeLocation: (coordinates) => {
+        changeLocation: coordinates => {
             dispatch(changeLocation(coordinates));
         },
         blurText: () => {
             dispatch(setSearchIsFocused(false));
         },
-        showGarageInfo: (keyName) => {
+        showGarageInfo: keyName => {
             dispatch(showInfo(true, keyName));
         },
         hideGarageInfo: () => {
             dispatch(showInfo(false));
         }
-    }
+    };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MapContainer);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(MapContainer);
