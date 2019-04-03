@@ -11,7 +11,7 @@ import {
 import { connect } from 'react-redux';
 
 import GarageInfo from './GarageInfo';
-import loadingImage from './images/loading.gif';
+import loadingImage from 'spotmesolutions/assets/images/loading.gif';
 
 import { getGarageData } from "../../functions";
 

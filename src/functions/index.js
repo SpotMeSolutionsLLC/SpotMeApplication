@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const getMarkers = async () => {
-    let result = await axios.get("http://192.168.42.93:3000/garages/getMarkers");
+    let result = await axios.get("https://spotmeapi.herokuapp.com/garages/getMarkers");
     return result;
 }
 

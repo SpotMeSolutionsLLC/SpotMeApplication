@@ -1,16 +1,14 @@
 import React, { Component } from 'react'
 import {
-    createDrawerNavigator,
-    createAppContainer
+    createAppContainer,
+    createSwitchNavigator
 } from "react-navigation";
 
 import MapScreen from "./MapScreen"
-import Favorite from "./Favorite"
 
 
-const MainAppNavigator = createDrawerNavigator({
+const MainAppNavigator = createSwitchNavigator({
     Map: MapScreen,
-    Favorite: Favorite,
 });
 
 

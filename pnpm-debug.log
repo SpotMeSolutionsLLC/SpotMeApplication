@@ -1,0 +1,15 @@
+---
+  0 debug pnpm:scope: 
+    selected: 1
+    workspacePrefix: null
+  1 error pnpm: 
+    message: 
+      errno: -4058
+      code: "ENOENT"
+      syscall: "open"
+      path: "C:\\Users\\James Zhao\\AppData\\Roaming\\npm\\pnpm-global\\2\\package.json"
+    err: 
+      name: "Error"
+      message: "ENOENT: no such file or directory, open 'C:\\Users\\James Zhao\\AppData\\Roaming\\npm\\pnpm-global\\2\\package.json'"
+      code: "ENOENT"
+      stack: "Error: ENOENT: no such file or directory, open 'C:\\Users\\James Zhao\\AppData\\Roaming\\npm\\pnpm-global\\2\\package.json'"

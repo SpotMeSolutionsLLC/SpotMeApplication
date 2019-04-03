@@ -1,9 +1,8 @@
 import _ from "lodash";
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import { connect } from "react-redux";
-import Axios from "axios";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import MidnightCommander from "./mapstyles/MidnightCommander";
 
@@ -68,8 +67,15 @@ class MapContainer extends Component {
             markers: []
         };
 
+
+    }
+
+    componentDidMount() {
+        this.reloadMarkers();
+    }
+
+    reloadMarkers() {
         getMarkers().then(res => {
-            console.log("Data has been returned");
             this.setState({
                 markers: res.data
             });
@@ -77,7 +83,7 @@ class MapContainer extends Component {
     }
 
     //Used to get information on markers from API
-    getMarkers() {
+    generateMarkers() {
         return this.state.markers.map(markerInstance => (
             <Marker
                 coordinate={{
@@ -113,21 +119,38 @@ class MapContainer extends Component {
 
     render() {
         return (
-            <MapView
-                provider={PROVIDER_GOOGLE}
-                style={MapContainerStyles.map}
-                initialRegion={this.props.coordinates}
-                ref={instance => {
-                    this.mapRef = instance;
-                }}
-                customMapStyle={MidnightCommander}
-                onPress={e => {
-                    this.props.blurText();
-                    this.props.hideGarageInfo();
-                }}
-            >
-                {this.getMarkers()}
-            </MapView>
+            <>
+                <MapView
+                    provider={PROVIDER_GOOGLE}
+                    style={MapContainerStyles.map}
+                    initialRegion={this.props.coordinates}
+                    ref={instance => {
+                        this.mapRef = instance;
+                    }}
+                    customMapStyle={MidnightCommander}
+                    onPress={e => {
+                        this.props.blurText();
+                        this.props.hideGarageInfo();
+                    }}
+                >
+                    {this.generateMarkers()}
+                </MapView>
+                <TouchableOpacity
+                    onPress={() => {
+                        this.reloadMarkers();
+                    }}
+                    style={{
+                        right: 30,
+                        bottom: 50,
+                        height: 40,
+                        width: 40,
+                        backgroundColor: "red",
+                        position: "absolute"
+                    }}
+                >
+
+                </TouchableOpacity>
+            </>
         );
     }
 }

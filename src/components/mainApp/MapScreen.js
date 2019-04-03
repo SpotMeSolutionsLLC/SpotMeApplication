@@ -3,12 +3,10 @@ import {
     View,
     Image,
     Dimensions,
-    Platform,
     StyleSheet,
     Text,
     TouchableOpacity
 } from 'react-native';
-import GestureRecognizer from 'react-native-swipe-gestures';
 import MapContainer from './MapContainer';
 import GarInfoContainer from './GarageInfoContainer';
 
@@ -18,17 +16,11 @@ const MapScreenStyles = StyleSheet.create({
         height: Dimensions.get("screen").height,
         width: Dimensions.get("screen").width,
         flex: 1,
-        justifyContent: 'center',
+        // justifyContent: 'center',
         alignItems: 'center',
     },
-    gestureZone: {
-        position: 'absolute',
-        backgroundColor: 'transparent',
-        left: 0,
-        width: 40,
-        height: Dimensions.get('window').height
-    },
     logoArea: {
+        top: 0,
         height: 60,
         width: "100%",
         backgroundColor: "#00b7ff",
@@ -79,16 +71,9 @@ class MapScreen extends Component {
             garageListLoaded: false,
             mapRef: null
         }
-        console.log(Dimensions.get("screen").height);
-        console.log(Dimensions.get("window").height);
     }
 
     //Displays navigation menu to open when user swipes right
-    onSwipeRight = (state) => {
-        if (state.x0 < 40) {
-            this.props.navigation.openDrawer();
-        }
-    }
 
     //Renders the map, markers, garage info, etc.
     //Styles to make sure the map isnt messed up
@@ -96,14 +81,6 @@ class MapScreen extends Component {
         return (
             <View style={MapScreenStyles.container}>
                 <View style={MapScreenStyles.logoArea}>
-                    <TouchableOpacity
-                        style={MapScreenStyles.menuButton}
-                        onPress={() => this.props.navigation.openDrawer()}
-                    >
-                        <Image source={require('./images/menu.png')}
-                            style={MapScreenStyles.menuButtonImage} />
-
-                    </TouchableOpacity>
                     <View style={MapScreenStyles.logoTextWrapper}>
                         <Text style={MapScreenStyles.logoText}>
                             {"SpotMe"}
@@ -114,36 +91,20 @@ class MapScreen extends Component {
                     </View>
                 </View>
 
-                <GestureRecognizer
-                    style={{
-                        flex: 1,
-                        width: "100%",
-                        height: "100%",
-                    }}
-                    onSwipeRight={this.onSwipeRight}
-                >
-                    <View style={{
-                        height: Dimensions.get("window").height - 60,
-                        width: "100%",
-                    }}>
-                        <MapContainer
-                            ref={instance => {
-                                if (this.state.mapRef == null) {
-                                    this.setState({
-                                        mapRef: instance
-                                    });
-                                }
-                            }}
-                        />
-                    </View>
-                    <View //Gesture Recognizer Zone
-                        style={MapScreenStyles.gestureZone}
-                        onTouchStart={(event) => {
-                            event.stopPropagation();
+                <View style={{
+                    height: Dimensions.get("window").height - 60,
+                    width: "100%",
+                }}>
+                    <MapContainer
+                        ref={instance => {
+                            if (this.state.mapRef == null) {
+                                this.setState({
+                                    mapRef: instance
+                                });
+                            }
                         }}
                     />
-                </GestureRecognizer>
-
+                </View>
 
                 <GarInfoContainer />
 

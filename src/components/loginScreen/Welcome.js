@@ -8,19 +8,19 @@ const SLIDE_DATA = [
     {
         text: 'What is SpotMe',
         subText: 'A parking app that tells you where parking is available in real-time',
-        image: require('./images/what.png'),
+        image: require('spotmesolutions/assets/images/what.png'),
         color: '#EAF3FE'
     },
     {
         text: 'How it Works',
         subText: 'Sensors in garages count traffic flow and stream live data to the app',
-        image: require('./images/real_time.png'),
+        image: require('spotmesolutions/assets/images/real_time.png'),
         color: '#EAF3FE'
     },
     {
         text: 'Our Mission',
         subText: 'Making parking easier for everyone',
-        image: require('./images/mission.png'),
+        image: require('spotmesolutions/assets/images/mission.png'),
         color: '#EAF3FE'
     }
 ];
@@ -44,7 +44,7 @@ class WelcomeScreen extends Component {
 
                 <Image
                     source={
-                        require('./images/SpotMe_Logo.png')
+                        require('spotmesolutions/assets/images/SpotMe_Logo.png')
                     }
                     style={{
                         width: 201,
