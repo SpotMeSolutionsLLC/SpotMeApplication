@@ -4,8 +4,6 @@ import {
     Image,
     Dimensions,
     StyleSheet,
-    Text,
-    TouchableOpacity
 } from 'react-native';
 import MapContainer from './MapContainer';
 import GarInfoContainer from './GarageInfoContainer';
@@ -14,8 +12,8 @@ import Logo from "spotmesolutions/assets/images/SpotMeLogo.png"
 const MapScreenStyles = StyleSheet.create({
 
     container: {
-        height: Dimensions.get("screen").height,
-        width: Dimensions.get("screen").width,
+        height: Dimensions.get("window").height,
+        width: Dimensions.get("window").width,
         flex: 1,
         // justifyContent: 'center',
         alignItems: 'center',
@@ -69,11 +67,6 @@ const MapScreenStyles = StyleSheet.create({
 class MapScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            garageList: null,
-            garageListLoaded: false,
-            mapRef: null
-        }
     }
 
     //Displays navigation menu to open when user swipes right
@@ -84,31 +77,14 @@ class MapScreen extends Component {
         return (
             <View style={MapScreenStyles.container}>
 
-
                 <View style={{
                     height: Dimensions.get("window").height,
                     width: Dimensions.get("window").width,
                 }}>
-                    <MapContainer
-                        ref={instance => {
-                            if (this.state.mapRef == null) {
-                                this.setState({
-                                    mapRef: instance
-                                });
-                            }
-                        }}
-                    />
+                    <MapContainer/>
                 </View>
 
                 <View style={MapScreenStyles.logoArea}>
-                    {/* <View style={MapScreenStyles.logoTextWrapper}>
-                        <Text style={MapScreenStyles.logoText}>
-                            {"SpotMe"}
-                        </Text>
-                        <Text style={MapScreenStyles.logoText2}>
-                            {" solutions"}
-                        </Text>
-                    </View> */}
                     <View
                         style={{
                             height: Dimensions.get("window").width * 2,
