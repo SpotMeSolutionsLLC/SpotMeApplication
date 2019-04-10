@@ -1,10 +1,14 @@
 import React from 'react';
-import { StatusBar } from "react-native";
+import { 
+    StatusBar,
+    Image
+} from "react-native";
 import { Provider } from 'react-redux';
 import store from './src/redux/index';
 import MainApp from './src';
 import OpenSans from "./assets/fonts/OpenSans.ttf";
-import { AppLoading, Asset, Font} from "expo";
+import Alleyn from "spotmesolutions/assets/fonts/Alleyn.ttf"
+import { AppLoading, Asset, Font, SplashScreen} from "expo";
 
 class App extends React.Component {
     constructor(props){
@@ -25,6 +29,7 @@ class App extends React.Component {
                 startAsync = {this._cacheResources}
                 onFinish = {() => this.setState({ isReady: true })}
                 onError = {console.warn}
+                autoHideSplash = {false}
             />
         )
     }
@@ -36,11 +41,14 @@ class App extends React.Component {
             require('./assets/images/mission.png'),
             require("./assets/images/SpotMe_Logo.png"),
             require("./assets/images/menu.png"),
-            require("./assets/images/loading.gif")
+            require("./assets/images/loading.gif"),
+            require("./assets/splash.png"),
+            require("./assets/images/refreshIcon.png")
         ]
 
         const cacheFont = Font.loadAsync({
-            OpenSans: OpenSans
+            OpenSans: OpenSans,
+            Alleyn: Alleyn
         })
 
         const cacheImages = images.map((image) => {

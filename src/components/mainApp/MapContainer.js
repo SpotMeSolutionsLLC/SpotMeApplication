@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 
 import { connect } from "react-redux";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
@@ -11,6 +11,8 @@ import { setSearchIsFocused } from "../../redux/actions/searchActions";
 import { showInfo } from "../../redux/actions/slideActions";
 
 import { getColor, getMarkers } from "../../functions";
+
+import refreshIcon from "spotmesolutions/assets/images/refreshIcon.png"
 
 const MapContainerStyles = StyleSheet.create({
     map: {
@@ -144,11 +146,17 @@ class MapContainer extends Component {
                         bottom: 50,
                         height: 40,
                         width: 40,
-                        backgroundColor: "red",
-                        position: "absolute"
+                        position: "absolute",
                     }}
                 >
-
+                    <Image
+                        source = {refreshIcon}
+                        resizeMode = "contain"
+                        style = {{
+                            height: "100%",
+                            width: "100%"
+                        }}
+                    />
                 </TouchableOpacity>
             </>
         );

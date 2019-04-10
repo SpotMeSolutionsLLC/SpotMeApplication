@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import MapContainer from './MapContainer';
 import GarInfoContainer from './GarageInfoContainer';
+import Logo from "spotmesolutions/assets/images/SpotMeLogo.png"
 
 const MapScreenStyles = StyleSheet.create({
 
@@ -23,7 +24,9 @@ const MapScreenStyles = StyleSheet.create({
         top: 0,
         height: 60,
         width: "100%",
-        backgroundColor: "#00b7ff",
+        position: "absolute",
+        alignItems: "center",
+        justifyContent: "center"
     },
     logoTextWrapper: {
         height: 60,
@@ -80,20 +83,11 @@ class MapScreen extends Component {
     render() {
         return (
             <View style={MapScreenStyles.container}>
-                <View style={MapScreenStyles.logoArea}>
-                    <View style={MapScreenStyles.logoTextWrapper}>
-                        <Text style={MapScreenStyles.logoText}>
-                            {"SpotMe"}
-                        </Text>
-                        <Text style={MapScreenStyles.logoText2}>
-                            {" solutions"}
-                        </Text>
-                    </View>
-                </View>
+
 
                 <View style={{
-                    height: Dimensions.get("window").height - 60,
-                    width: "100%",
+                    height: Dimensions.get("window").height,
+                    width: Dimensions.get("window").width,
                 }}>
                     <MapContainer
                         ref={instance => {
@@ -102,6 +96,37 @@ class MapScreen extends Component {
                                     mapRef: instance
                                 });
                             }
+                        }}
+                    />
+                </View>
+
+                <View style={MapScreenStyles.logoArea}>
+                    {/* <View style={MapScreenStyles.logoTextWrapper}>
+                        <Text style={MapScreenStyles.logoText}>
+                            {"SpotMe"}
+                        </Text>
+                        <Text style={MapScreenStyles.logoText2}>
+                            {" solutions"}
+                        </Text>
+                    </View> */}
+                    <View
+                        style={{
+                            height: Dimensions.get("window").width * 2,
+                            width: Dimensions.get("window").width * 2,
+                            borderBottomLeftRadius: Dimensions.get("window").width * 2,
+                            borderBottomRightRadius: Dimensions.get("window").width * 2,
+                            backgroundColor: "#054CE4",
+                            position: "absolute",
+                            overflow: "hidden",
+                            bottom: 0
+                        }}
+                    />
+                    <Image
+                        source = {Logo}
+                        resizeMode = "contain"
+                        style = {{
+                            height: 50,
+                            width: 50
                         }}
                     />
                 </View>

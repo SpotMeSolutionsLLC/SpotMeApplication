@@ -1,5 +1,3 @@
-import React, { Component } from 'react';
-
 import LoginScreen from "./components/loginScreen";
 import MainApp from "./components/mainApp";
 
@@ -13,17 +11,4 @@ const RootNavigator = createSwitchNavigator({
     MainApp: MainApp
 })
 
-export const RootNavigatorContainer = createAppContainer(RootNavigator)
-
-class Root extends Component {
-    constructor(props){
-        super(props)
-    }
-    render() {
-        return(
-            <RootNavigatorContainer />
-        )
-                
-    }
-}
-export default Root;
+export default createAppContainer(RootNavigator);

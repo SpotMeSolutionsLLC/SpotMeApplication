@@ -13,18 +13,4 @@ const MainAppNavigator = createSwitchNavigator({
 
 
 
-const MainAppNavigatorContainer = createAppContainer(MainAppNavigator);
-
-class MainApp extends Component{
-    constructor(props){
-        super(props);
-    }
-
-    render(){
-        return(
-            <MainAppNavigatorContainer/>
-        )
-    }
-}
-
-export default MainApp;
+export default createAppContainer(MainAppNavigator);

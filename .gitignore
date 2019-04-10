@@ -4,4 +4,8 @@ npm-debug.*
 /.expo/*
 /.expo
 /.idea
-/.eslintrc
+/.eslintrc.js
+/.eslintrc.json
+/yarn.lock
+/pnpm-debug.log
+/.watchmanconfig
