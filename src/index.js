@@ -1,5 +1,5 @@
 import LoginScreen from "./components/loginScreen";
-import MainApp from "./components/mainApp";
+import MainApp from "./components/mainApp/index.js";
 
 import {
     createAppContainer,

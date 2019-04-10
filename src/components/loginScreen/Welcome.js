@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Image, View, Text, SafeAreaView, Animated, Dimensions } from 'react-native';
+import { Image, View, Text, SafeAreaView, Animated, Dimensions, TouchableOpacity } from 'react-native';
 import {
     SplashScreen
 } from "expo"
 
-import { Button } from 'native-base';
 import Slides from './Slides';
 
 import SplashScreenImage from "spotmesolutions/assets/splash.png"
@@ -143,16 +142,17 @@ class WelcomeScreen extends Component {
                         }}
                     >
 
-                        <Button
+                        <TouchableOpacity
                             onPress={() => {
                                 this.props.navigation.navigate('MainApp')
                             }}
-                            bordered
-                            dark
                             style={{
                                 width: 240,
+                                height: 40,
                                 justifyContent: 'center',
-                                backgroundColor: "#054CE4"
+                                backgroundColor: "#054CE4",
+                                alignItems: "center",
+                                borderRadius: 10
                             }}
                         >
                             <Text
@@ -164,7 +164,7 @@ class WelcomeScreen extends Component {
                             >
                                 Continue
                             </Text>
-                        </Button>
+                        </TouchableOpacity>
 
                     </View>
 
