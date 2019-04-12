@@ -1,40 +1,47 @@
 import React from 'react';
-import { 
-    StatusBar,
-    Image
-} from "react-native";
 import { Provider } from 'react-redux';
 import store from './src/redux/index';
 import MainApp from './src';
 import OpenSans from "./assets/fonts/OpenSans.ttf";
-import Alleyn from "spotmesolutions/assets/fonts/Alleyn.ttf"
-import { AppLoading, Asset, Font, SplashScreen} from "expo";
+import Alleyn from "spotmesolutions/assets/fonts/Alleyn.ttf";
+import { Asset, Font, AppLoading } from "expo";
 
 class App extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        StatusBar.setHidden(true);
         this.state = {
-            isReady: false,
+            isReady: false
         }
     }
 
     render() {
-        return (this.state.isReady) ? (
-            <Provider store={store}>
-                <MainApp />
-            </Provider>
-        ) : (
-            <AppLoading
-                startAsync = {this._cacheResources}
-                onFinish = {() => this.setState({ isReady: true })}
-                onError = {console.warn}
-                autoHideSplash = {false}
-            />
-        )
+
+        if (!this.state.isReady) {
+            return (
+                <AppLoading
+                    startAsync={this._cacheResources}
+                    onFinish={() => {
+                        console.log("Apploading completed");
+                        this.setState({
+                            isReady: true
+                        })
+                    }}
+                    onError={console.warn}
+                    autoHideSplash={false}
+                />
+            )
+        }
+        else {
+            console.log("asdf");
+            return (
+                <Provider store={store}>
+                    <MainApp />
+                </Provider >
+            )
+        }
     }
 
-    async _cacheResources(){
+    _cacheResources = async () => {
         const images = [
             require('./assets/images/what.png'),
             require('./assets/images/real_time.png'),
@@ -47,8 +54,8 @@ class App extends React.Component {
         ]
 
         const cacheFont = Font.loadAsync({
-            OpenSans: OpenSans,
-            Alleyn: Alleyn
+            OpenSans,
+            "alleynFont": Alleyn
         })
 
         const cacheImages = images.map((image) => {
@@ -56,14 +63,13 @@ class App extends React.Component {
         });
 
         let cacheAll = [];
+
         cacheAll.push(cacheFont);
         cacheAll.concat(cacheImages);
-        
+
 
         return Promise.all(cacheAll);
     }
 }
-
-//remote the yellow // WARNING:
 
 export default App;

@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     titleName: {
-        fontSize: 25,
+        fontSize: 22,
         fontWeight: "bold",
         color: 'white',
         textAlign: "center",
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     barIndicatorText: {
         fontFamily: "OpenSans",
         fontWeight: "bold",
-        fontSize: 35,
+        fontSize: 25,
         width: "25%",
         textAlign: "center",
     },

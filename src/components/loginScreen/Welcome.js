@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Image, View, Text, SafeAreaView, Animated, Dimensions, TouchableOpacity } from 'react-native';
+import { Image, View, Text, Animated, Dimensions, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from "react-navigation"
 import {
     SplashScreen
 } from "expo"
@@ -33,7 +34,7 @@ const SLIDE_DATA = [
 class WelcomeScreen extends Component {
     constructor(props) {
         super(props);
-
+        console.log("Welcome loaded");
         this.animations = {
             splashPos: new Animated.Value(0)
         }
@@ -44,10 +45,14 @@ class WelcomeScreen extends Component {
             <>
                 <SafeAreaView
                     style={{
-                        flex: 1,
+                        
+                        height: "100%",
+                        width: "100%",
+                        paddingTop: 200,
                         justifyContent: 'center',
                         alignItems: 'center',
                         backgroundColor: '#EAF3FE',
+                        position: "relative"
                     }}
                 >
                     <Animated.View
@@ -62,7 +67,6 @@ class WelcomeScreen extends Component {
                                     translateY: this.animations.splashPos
                                 }
                             ],
-                            borderRadius: 20,
                             flexDirection: "column",
                             alignItems: "center"
                         }}
@@ -86,13 +90,12 @@ class WelcomeScreen extends Component {
                         />
                         <View
                             style={{
-                                height: 400,
+                                height: 200,
                                 width: Dimensions.get("window").width,
                                 // backgroundColor: "red",
                                 alignItems: "center",
                                 position: "relative",
                                 overflow: "hidden",
-                                top: -200
                             }}
                         >
                             <View
@@ -108,7 +111,7 @@ class WelcomeScreen extends Component {
                             />
                             <Text
                                 style={{
-                                    fontFamily: "Alleyn",
+                                    fontFamily: "alleynFont",
                                     fontSize: 40,
                                     color: "white",
                                     position: "absolute",
@@ -122,23 +125,18 @@ class WelcomeScreen extends Component {
                         </View>
                     </Animated.View>
 
-                    <View
-                        style = {{
-                            height: 200,
-                            width: "100%"
-                        }}
-                    />
-
                     <Slides
                         data={SLIDE_DATA}
                     />
 
                     <View
                         style={{
-                            alignSelf: 'stretch',
+                            width: "100%",
                             flexDirection: 'row',
-                            justifyContent: 'space-around',
-                            margin: 30,
+                            padding: 40,
+                            height: 80,
+                            justifyContent: "center",
+                            alignItems: "center"
                         }}
                     >
 
@@ -156,8 +154,8 @@ class WelcomeScreen extends Component {
                             }}
                         >
                             <Text
-                                style = {{
-                                    fontFamily: "Alleyn",
+                                style={{
+                                    fontFamily: "alleynFont",
                                     fontSize: 20,
                                     color: "white"
                                 }}

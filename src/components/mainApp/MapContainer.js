@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 
 import { connect } from "react-redux";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import MidnightCommander from "./mapstyles/MidnightCommander";
 
 import { changeLocation } from "../../redux/actions/LocationAction";
@@ -123,6 +123,7 @@ class MapContainer extends Component {
         return (
             <>
                 <MapView
+                    provider = {PROVIDER_GOOGLE}
                     style={MapContainerStyles.map}
                     initialRegion={this.props.coordinates}
                     ref={instance => {

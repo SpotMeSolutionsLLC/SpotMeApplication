@@ -5,6 +5,15 @@ import {
     Dimensions,
     StyleSheet,
 } from 'react-native';
+
+import {
+    SafeAreaView
+} from "react-navigation"
+
+import {
+    Constants
+} from "expo";
+
 import MapContainer from './MapContainer';
 import GarInfoContainer from './GarageInfoContainer';
 import Logo from "spotmesolutions/assets/images/SpotMeLogo.png"
@@ -12,17 +21,18 @@ import Logo from "spotmesolutions/assets/images/SpotMeLogo.png"
 const MapScreenStyles = StyleSheet.create({
 
     container: {
+        paddingTop: Constants.statusBarHeight,
         height: Dimensions.get("window").height,
         width: Dimensions.get("window").width,
         flex: 1,
         // justifyContent: 'center',
+        position: "relative",
         alignItems: 'center',
     },
     logoArea: {
-        top: 0,
         height: 60,
         width: "100%",
-        position: "absolute",
+        position: "relative",
         alignItems: "center",
         justifyContent: "center"
     },
@@ -67,6 +77,7 @@ const MapScreenStyles = StyleSheet.create({
 class MapScreen extends Component {
     constructor(props) {
         super(props);
+        console.log(Constants.statusBarHeight);
     }
 
     //Displays navigation menu to open when user swipes right
@@ -75,11 +86,13 @@ class MapScreen extends Component {
     //Styles to make sure the map isnt messed up
     render() {
         return (
-            <View style={MapScreenStyles.container}>
+            <SafeAreaView style={MapScreenStyles.container}>
 
                 <View style={{
+                    top: Constants.statusBarHeight,
                     height: Dimensions.get("window").height,
                     width: Dimensions.get("window").width,
+                    position: "absolute"
                 }}>
                     <MapContainer/>
                 </View>
@@ -109,7 +122,7 @@ class MapScreen extends Component {
 
                 <GarInfoContainer />
 
-            </View>
+            </SafeAreaView>
         );
     }
 }

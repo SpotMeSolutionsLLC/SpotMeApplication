@@ -80,7 +80,7 @@ const styles = {
         textAlign: 'center',
         color: '#054CE4',
         marginTop: 20,
-        fontFamily: "Alleyn"
+        fontFamily: "alleynFont"
     },
     subTextStyle: {
         fontSize: 18,

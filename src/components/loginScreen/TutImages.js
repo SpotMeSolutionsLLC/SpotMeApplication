@@ -6,7 +6,7 @@ const TutImages = (props) => {
         <Image
         //   source={require('../images/real_time.png')}
           source={props.image}
-          style={{ width: 250, height: 250, marginTop: 50 }}
+          style={{ width: 200, height: 200, marginTop: 50 }}
         />
       ); 
   };
