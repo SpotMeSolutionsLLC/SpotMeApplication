@@ -89,7 +89,7 @@ class MapScreen extends Component {
             <SafeAreaView style={MapScreenStyles.container}>
 
                 <View style={{
-                    top: Constants.statusBarHeight,
+                    bottom: 0,
                     height: Dimensions.get("window").height,
                     width: Dimensions.get("window").width,
                     position: "absolute"
