@@ -34,6 +34,7 @@ const garList = StyleSheet.create({
         backgroundColor: "white",
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
+        bottom: -Dimensions.get('window').height,
         justifyContent: 'flex-start',
         position: 'absolute',
         left: 0,
@@ -52,7 +53,7 @@ class GarInfoContainer extends Component {
             parkingsMax: 0,
             parkingsCurrent: 0,
             dataLoaded: false,
-            bottom: new Animated.Value(-(garList.containerStyle.height)),
+            bottomTransform: new Animated.Value(0),
             showInfo: false,
             keyName: "",
         };
@@ -123,45 +124,40 @@ class GarInfoContainer extends Component {
     //Upon execution of chart table
     // styling is changed for the garage information container based on platform
     slideUp() {
-        if (Platform.OS === 'android') {
-            Animated.timing(this.state.bottom, {
-                toValue: -(garList.containerStyle.height - garList.height),
-                duration: 100
-            }).start();
-        }
-        else {
-            this.setState({
-                bottom: -(garList.containerStyle.height - garList.height)
-            });
-        }
+        Animated.timing(this.state.bottomTransform, {
+            toValue: -garList.height,
+            duration: 100,
+            useNativeDriver: true
+        }).start();
     }
 
     //Upon execution of closing chart table/clicking off of it
     //Styling is changed for the garage info container based on platform
 
     slideDown() {
-        if (Platform.OS === 'android') {
-            Animated.timing(this.state.bottom, {
-                toValue: -(garList.containerStyle.height),
-                duration: 100
-            }).start();
-            this.setState({
-                status: 0
-            });
-        }
-        else {
-            this.setState({
-                status: 0,
-                bottom: -(garList.containerStyle.height),
-            });
-        }
+        Animated.timing(this.state.bottomTransform, {
+            toValue: 0,
+            duration: 100,
+            useNativeDriver: true
+        }).start();
+        this.setState({
+            status: 0
+        });
     }
 
 
     //Renders garage information/loads garage information upon rendering
     render() {
         return (
-            <Animated.View style={[garList.containerStyle, { bottom: this.state.bottom }]}>
+            <Animated.View
+                style={[garList.containerStyle, {
+                    transform: [
+                        {
+                            translateY: this.state.bottomTransform
+                        }
+                    ]
+                }]}
+            >
                 <View style={garList.garageStyle}>
                     {this.getGarageListInfo()}
                 </View>

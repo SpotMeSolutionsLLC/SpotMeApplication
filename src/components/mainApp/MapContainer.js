@@ -1,9 +1,11 @@
 import _ from "lodash";
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, Animated } from "react-native";
 
 import { connect } from "react-redux";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+
+import { MapView } from "expo";
+
 import MidnightCommander from "./mapstyles/MidnightCommander";
 
 import { changeLocation } from "../../redux/actions/LocationAction";
@@ -69,6 +71,9 @@ class MapContainer extends Component {
             markers: []
         };
 
+        this.animations = {
+            refresh: new Animated.Value(0),
+        }
 
     }
 
@@ -87,7 +92,7 @@ class MapContainer extends Component {
     //Used to get information on markers from API
     generateMarkers() {
         return this.state.markers.map(markerInstance => (
-            <Marker
+            <MapView.Marker
                 coordinate={{
                     latitude: markerInstance.lat,
                     longitude: markerInstance.lng
@@ -115,7 +120,7 @@ class MapContainer extends Component {
                         (markerInstance.current / markerInstance.max) * 100
                     }
                 />
-            </Marker>
+            </MapView.Marker>
         ));
     }
 
@@ -123,12 +128,11 @@ class MapContainer extends Component {
         return (
             <>
                 <MapView
-                    provider = {PROVIDER_GOOGLE}
+                    pitchEnabled = {false}
+                    showsCompass={false}
+                    provider={"google"}
                     style={MapContainerStyles.map}
                     initialRegion={this.props.coordinates}
-                    ref={instance => {
-                        this.mapRef = instance;
-                    }}
                     customMapStyle={MidnightCommander}
                     onPress={e => {
                         this.props.blurText();
@@ -140,6 +144,13 @@ class MapContainer extends Component {
                 <TouchableOpacity
                     onPress={() => {
                         this.reloadMarkers();
+                        Animated.timing(this.animations.refresh, {
+                            toValue: 180,
+                            duration: 250,
+                            useNativeDriver: true
+                        }).start(() => {
+                            this.animations.refresh.setValue(0);
+                        });
                     }}
                     style={{
                         right: 30,
@@ -149,12 +160,21 @@ class MapContainer extends Component {
                         position: "absolute",
                     }}
                 >
-                    <Image
-                        source = {refreshIcon}
-                        resizeMode = "contain"
-                        style = {{
+                    {}
+                    <Animated.Image
+                        source={refreshIcon}
+                        resizeMode="contain"
+                        style={{
                             height: "100%",
-                            width: "100%"
+                            width: "100%",
+                            transform: [
+                                {
+                                    rotate: this.animations.refresh.interpolate({
+                                        inputRange: [0, 360],
+                                        outputRange: ["0deg", "360deg"]
+                                    })
+                                }
+                            ]
                         }}
                     />
                 </TouchableOpacity>

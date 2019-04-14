@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, Text, Animated, Dimensions, TouchableOpacity } from 'react-native';
+import { Image, View, Text, Animated, Dimensions, TouchableOpacity, AsyncStorage } from 'react-native';
 import { SafeAreaView } from "react-navigation"
 import {
     SplashScreen
@@ -36,7 +36,31 @@ class WelcomeScreen extends Component {
         super(props);
         console.log("Welcome loaded");
         this.animations = {
-            splashPos: new Animated.Value(0)
+            splashPos: new Animated.Value(0),
+        }
+        
+        this.state = {
+            firstTime: true,
+        }
+    }
+
+    componentDidMount = async () => {
+        let key;
+        try{
+            key = await AsyncStorage.getItem("FirstTime");
+            if(key == "false"){
+                this.setState({
+                    firstTime: false
+                })
+            }else {
+                await AsyncStorage.setItem("FirstTime", "false")
+            }
+            
+        }
+        catch(error){
+        }
+        finally{
+            console.log(this.state.firstTime);
         }
     }
 
