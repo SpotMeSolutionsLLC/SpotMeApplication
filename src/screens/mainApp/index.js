@@ -1,12 +1,11 @@
 // React dependencies
 import React from "react";
 import {
-    View,
     Dimensions,
 } from "react-native"
 
 // Native modules
-import MapView,{
+import MapView, {
     Marker
 } from "react-native-maps"
 
@@ -19,28 +18,44 @@ import {
 } from "react-redux"
 
 // Local assets and dependencies
+
 import {
-    changeLocation
+    changeLocation,
+    refreshMarkers
 } from "SpotmeDetached/src/redux/actions/MapActions"
 
-class MainApp extends React.Component{
-    constructor(props){
+class MainApp extends React.Component {
+    constructor(props) {
         super(props);
     }
 
-    test = () => {
-        console.log("asdf");
+    componentDidMount = () => {
+        this.props.updateMarkers();
     }
 
-    render(){
-        return(
+    generateMarkers = () => {
+        return this.props.markers.map((marker) => {
+            return (
+                <Marker
+                    key = {marker.keyName}
+                    coordinate = {{
+                        latitude: marker.lat,
+                        longitude: marker.lng
+                    }}
+                />
+            )
+        })
+    }
+
+    render() {
+        return (
             <SafeAreaView>
                 <MapView
-                    pitchEnabled = {false}
-                    showsCompass = {false}
-                    provider = "google"
-                    initialRegion = {this.props.coordinates}
-                    style = {{
+                    pitchEnabled={false}
+                    showsCompass={false}
+                    provider="google"
+                    initialRegion={this.props.startCoordinates}
+                    style={{
                         height: Dimensions.get("screen").height,
                         width: Dimensions.get("screen").width,
                         top: 0,
@@ -48,6 +63,7 @@ class MainApp extends React.Component{
                         zIndex: 99
                     }}
                 >
+                    {this.generateMarkers()}
                 </MapView>
             </SafeAreaView>
         )
@@ -56,7 +72,8 @@ class MainApp extends React.Component{
 
 const mapStateToProps = state => {
     return {
-        coordinates: state.MapReducer.coordinates
+        startCoordinates: state.MapReducer.coordinates,
+        markers: state.MapReducer.markers
     }
 }
 
@@ -64,6 +81,9 @@ const mapDispatchToProps = dispatch => {
     return {
         changeLocation: coordinates => {
             dispatch(changeLocation(coordinates));
+        },
+        updateMarkers: async () => {
+            dispatch(await refreshMarkers());
         }
     }
 }
