@@ -28,6 +28,7 @@ class App extends Component {
         this.state = {
             isReady: false
         }
+        console.log("got here");
     }
 
     loadAssets = async () => {

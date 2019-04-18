@@ -4,3 +4,7 @@ export const changeLocation = (coordinates) => {
         coordinates: coordinates
     }
 }
+
+export const refreshMarkers = () => {
+    
+}

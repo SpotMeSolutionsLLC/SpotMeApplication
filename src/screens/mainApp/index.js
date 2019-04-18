@@ -28,6 +28,10 @@ class MainApp extends React.Component{
         super(props);
     }
 
+    test = () => {
+        console.log("asdf");
+    }
+
     render(){
         return(
             <SafeAreaView>
@@ -39,9 +43,9 @@ class MainApp extends React.Component{
                     style = {{
                         height: Dimensions.get("screen").height,
                         width: Dimensions.get("screen").width,
-                        position: "absolute",
                         top: 0,
-                        left: 0
+                        left: 0,
+                        zIndex: 99
                     }}
                 >
                 </MapView>
