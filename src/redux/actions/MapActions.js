@@ -15,3 +15,10 @@ export const refreshMarkers = async () => {
         markers: data
     };
 }
+
+export const selectMarker = (marker) => {
+    return {
+        type: "SelectMarker",
+        selected: marker,
+    }
+}

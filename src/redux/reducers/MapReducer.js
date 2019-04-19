@@ -5,7 +5,8 @@ const INITIAL_STATE = {
         latitudeDelta: 0.02,
         longitudeDelta: 0.02
     },
-    markers: []
+    markers: [],
+    selectedMarker: null
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -19,6 +20,11 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 markers: action.markers
+            }
+        case "SelectMarker":
+            return {
+                ...state,
+                selectedMarker: action.selected
             }
         default:
             return {
