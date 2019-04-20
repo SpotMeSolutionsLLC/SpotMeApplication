@@ -22,19 +22,27 @@ class MainScreen extends React.Component {
 
     render() {
         return (
-            <SafeAreaView>
+            <View
+                style = {{
+                    height: Dimensions.get("screen").height,
+                    width: Dimensions.get("screen").width,
+                    top: 0
+                }}
+            >
                 <MapScreen />
 
                 <View
                     style = {{
-                        height: Dimensions.get("window").height,
-                        width: Dimensions.get("window").width,
+                        height: Dimensions.get("screen").height,
+                        width: Dimensions.get("screen").width,
+                        position: "absolute",
+                        top: 0
                     }}
                 >
                     <InfoPopup />
                 </View>
 
-            </SafeAreaView>
+            </View>
         )
     }
 }

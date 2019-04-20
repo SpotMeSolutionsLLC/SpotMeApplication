@@ -4,12 +4,14 @@ import {
     View,
     Animated,
     Text,
-    Dimensions
+    Dimensions,
+    StatusBar
 } from "react-native"
 
 // Native modules
 import {
-    PanGestureHandler
+    PanGestureHandler,
+    State
 } from "react-native-gesture-handler"
 
 // Other modules
@@ -17,28 +19,42 @@ import {
     connect
 } from "react-redux"
 
+// Local modules
+import {
+    selectMarker
+} from "SpotmeDetached/src/redux/actions/MapActions";
+
 class InfoPopup extends React.Component {
     constructor(props) {
         super(props);
         this.animations = {
-            popupTranslationY: new Animated.Value(300)
+            popupTranslationY: new Animated.Value(Dimensions.get("window").height)
         }
     }
 
+    slideUp = (callback = null) => {
+        Animated.timing(this.animations.popupTranslationY, {
+            toValue: Dimensions.get("window").height - 300,
+            useNativeDriver: true,
+            duration: 250
+        }).start((callback) ? callback() : null);
+    }
+
+    slideDown = (callback = null) => {
+        Animated.timing(this.animations.popupTranslationY, {
+            toValue: Dimensions.get("window").height,
+            useNativeDriver: true,
+            duration: 250
+        }).start((callback) ? callback() : null);
+    }
+    
+
     componentDidUpdate = () => {
         if (this.props.selectedMarker == null) {
-            Animated.timing(this.animations.popupTranslationY, {
-                toValue: 300,
-                duration: 250,
-                useNativeDriver: true
-            }).start();
+            this.slideDown();
         }
         else {
-            Animated.timing(this.animations.popupTranslationY, {
-                toValue: 0,
-                duration: 250,
-                useNativeDriver: true
-            }).start();
+            this.slideUp();
         }
     }
 
@@ -47,9 +63,9 @@ class InfoPopup extends React.Component {
             <Animated.View
                 style={{
                     width: "100%",
-                    height: 300,
+                    height: Dimensions.get("window").height,
                     position: "absolute",
-                    bottom: 0,
+                    top: 0,
                     backgroundColor: "blue",
                     transform: [
                         {
@@ -60,16 +76,42 @@ class InfoPopup extends React.Component {
                 }}
             >
                 <PanGestureHandler
-                    onGestureEvent={(event) => {
-                        console.log(event.nativeEvent.y);
-                        this.animations.popupTranslationY.setValue(event.nativeEvent.absoluteY - Dimensions.get("window").height + 300);
+                    onGestureEvent={({nativeEvent}) => {
+                        // Gets position relative to the display, taking into consideration the statusbar
+                        let realPosition = nativeEvent.absoluteY - StatusBar.currentHeight;
+
+                        // Doesn't allow the menu to be dragged up past a certain point
+                        if(realPosition > Dimensions.get("window").height - 450)
+                            this.animations.popupTranslationY.setValue(realPosition);
+                    }}
+                    onHandlerStateChange = {({nativeEvent}) => {
+                        // Gets position relative to the display, taking into consideration the statusbar
+                        let realPosition = nativeEvent.absoluteY - StatusBar.currentHeight;
+
+                        // When you release tap
+                        if(nativeEvent.state == State.END ){ 
+
+                            // Detects when someone slides down on the menu
+                            if(realPosition > (Dimensions.get("window").height - 150)){
+                                
+                                // Deselects current marker when menu is swiped down
+                                this.slideDown(this.props.deselectMarker); 
+
+                            }
+                            else{
+                                
+                                // Resets to regular position when neither slide up or down is detected
+                                this.slideUp();
+                            }
+                        }
+                            
                     }}
                 >
                     <View
                         style = {{
-                            backgroundColor: "red",
+                            backgroundColor: (this.props.selectedMarker) ? "green" : "red",
                             width: "100%",
-                            height: 20
+                            height: 60
                         }}
                     />
                 </PanGestureHandler>
@@ -87,5 +129,13 @@ const mapStateToProps = state => {
     }
 }
 
+const mapDispatchToProps = dispatch => {
+    return {
+        deselectMarker: () => {
+            dispatch(selectMarker(null));
+        }
+    }
+}
 
-export default connect(mapStateToProps, null)(InfoPopup);
+
+export default connect(mapStateToProps, mapDispatchToProps)(InfoPopup);

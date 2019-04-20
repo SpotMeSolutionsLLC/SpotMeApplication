@@ -1,6 +1,10 @@
 // React dependencies
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { 
+    StyleSheet,
+    StatusBar,
+    Text
+} from 'react-native';
 
 // Native modules
 import { Asset } from "expo-asset";
@@ -28,7 +32,7 @@ class App extends Component {
         this.state = {
             isReady: false
         }
-        console.log("got here");
+        StatusBar.setHidden(true);
     }
 
     loadAssets = async () => {

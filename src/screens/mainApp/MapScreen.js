@@ -81,7 +81,8 @@ class MapScreen extends React.Component {
                 provider="google"
                 initialRegion={this.props.startCoordinates}
                 style={{
-                    ...StyleSheet.absoluteFillObject,
+                    height: "100%",
+                    width: "100%",
                     top: 0,
                     left: 0,
                     zIndex: 10
