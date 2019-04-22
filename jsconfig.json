@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "jsx":"react-native",
+        "baseUrl": "./index.js"
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}

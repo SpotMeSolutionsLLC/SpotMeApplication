@@ -1,14 +1,11 @@
 // React dependencies
 import React from "react";
-import {
-    Dimensions,
-    StyleSheet
-} from "react-native"
 
 // Native modules
 import MapView, {
     Marker
 } from "react-native-maps"
+import SplashScreen from "react-native-splash-screen"
 
 // Other modules
 import {
@@ -60,7 +57,7 @@ class MapScreen extends React.Component {
                     }}
                 >
                     <CustomMarker
-                        text = {Math.floor(100 * marker.current / marker.max)}
+                        percentage = {Math.floor(100 * marker.current / marker.max)}
                         color = {getColor(marker.current / marker.max)}
                         keyName = {marker.keyName}
                     />
@@ -72,7 +69,6 @@ class MapScreen extends React.Component {
     render() {
         return (
             <MapView
-
                 ref={(instance) => {
                     this.mapRef = instance;
                 }}
@@ -90,6 +86,7 @@ class MapScreen extends React.Component {
                 onPress={() => {
                     this.props.selectMarker(null);
                 }}
+                onMapReady = {SplashScreen.hide}
             >
                 {this.generateMarkers()}
             </MapView>

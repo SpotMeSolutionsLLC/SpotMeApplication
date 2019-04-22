@@ -14,7 +14,7 @@ import {
 const CONFIG = {
     height: 60,
     width: 60,
-    fontSize: 24
+    fontSize: 20
 }
 
 class CustomMarker extends React.Component{
@@ -81,22 +81,27 @@ class CustomMarker extends React.Component{
             >
                 <View
                     style = {{
+                        top: 5,
+
                         height: "80%",
-                        width: "100%",
-                        borderRadius: 10,
+                        width: "80%",
+
+                        borderRadius: 40,
+
                         backgroundColor: this.props.color,
+
                         alignItems: "center",
                         justifyContent: "center"
                     }}
                 >
-                    <Text
+                    <Text // Got this check mark from in built ascii character set
                         style = {{
                             color: "white",
                             fontSize: CONFIG.fontSize,
                             fontFamily: "Alleyn"
                         }}
                     >
-                        {this.props.text}
+                        {(this.props.percentage < 50) ? "✔" : "X"}
                     </Text>
                 </View>
 
@@ -106,9 +111,9 @@ class CustomMarker extends React.Component{
                         height: "20%",
                         width: 20,
                         borderStyle: "solid",
-                        borderLeftWidth: 10,
-                        borderRightWidth: 10,
-                        borderTopWidth: CONFIG.height * .2,
+                        borderLeftWidth: 15,
+                        borderRightWidth: 15,
+                        borderTopWidth: CONFIG.height * 0.2,
                         borderLeftColor: "transparent",
                         borderRightColor: "transparent",
                         borderTopColor: this.props.color,

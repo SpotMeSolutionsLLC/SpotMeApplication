@@ -1,15 +1,13 @@
 // React dependencies
 import React, { Component } from 'react';
-import { 
+import {
     StyleSheet,
-    StatusBar,
-    Text
 } from 'react-native';
 
 // Native modules
 import { Asset } from "expo-asset";
 import * as Font from 'expo-font';
-import SplashScreen from 'react-native-splash-screen';
+import AsyncStorage from "@react-native-community/async-storage";
 
 // JS modules
 import {
@@ -21,27 +19,41 @@ import reduxStore from "./src/redux"
 import RootNavigator from "./src/index.js";
 
 // Imported assets
+import {
+    MISSION,
+    WHO_ARE_WE,
+    WHAT_WE_DELIVER
+} from "SpotmeDetached/assets/IntroImages";
 import Splash from "SpotmeDetached/assets/splash.png";
+
 import Alleyn from "SpotmeDetached/assets/fonts/Alleyn.ttf";
+import Alleyn_Light from "SpotmeDetached/assets/fonts/Alleyn_Light.ttf"
 
 StyleSheet.setStyleAttributePreprocessor('fontFamily', Font.processFontFamily);
 
 class App extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            isReady: false
+            isReady: false,
         }
-        StatusBar.setHidden(true);
+    }
+
+    test = async () => {
+        await AsyncStorage.clear();
     }
 
     loadAssets = async () => {
         const images = [
-            Splash
+            Splash,
+            MISSION,
+            WHO_ARE_WE,
+            WHAT_WE_DELIVER
         ];
-        
+
         const cacheFonts = Font.loadAsync({
-            Alleyn: Alleyn
+            Alleyn: Alleyn,
+            Alleyn_Light: Alleyn_Light
         })
 
         const cacheImages = images.map(image => {
@@ -49,7 +61,6 @@ class App extends Component {
         });
 
         let cacheAll = [];
-
         cacheAll.concat(cacheImages);
         cacheAll.push(cacheFonts);
 
@@ -60,23 +71,21 @@ class App extends Component {
     componentDidMount = async () => {
         await this.loadAssets();
         this.setState({
-            isReady: true
-        }, () => {
-            SplashScreen.hide();
+            isReady: true,
         });
     }
 
     render() {
         return (this.state.isReady) ? (
             <Provider
-                store = {reduxStore}
+                store={reduxStore}
             >
                 <RootNavigator/>
             </Provider>
         ) : (
-            <>
-            </>
-        )
+                <>
+                </>
+            )
     }
 }
 

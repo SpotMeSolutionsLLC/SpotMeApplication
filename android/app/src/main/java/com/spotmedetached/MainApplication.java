@@ -3,6 +3,9 @@ package com.spotmedetached;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
+import com.horcrux.svg.SvgPackage; // React Native SVG
+
 import com.airbnb.android.react.maps.MapsPackage; // React native maps
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -47,6 +50,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new AsyncStoragePackage(),
+            new SvgPackage(),
           new MapsPackage(),
           new ModuleRegistryAdapter(mModuleRegistryProvider),
           new RNGestureHandlerPackage(),

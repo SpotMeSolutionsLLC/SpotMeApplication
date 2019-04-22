@@ -7,13 +7,11 @@ import {
 } from "react-native";
 
 // Other modules
-import {
-    SafeAreaView
-} from "react-navigation"
 
 // Local assets and dependencies
+import TopLogoArea from "./TopLogoArea"
 import MapScreen from "./MapScreen";
-import InfoPopup from "./InfoPopup";
+import InfoPopup from "./InfoPopupContainer";
 
 class MainScreen extends React.Component {
     constructor(props) {
@@ -23,7 +21,7 @@ class MainScreen extends React.Component {
     render() {
         return (
             <View
-                style = {{
+                style={{
                     height: Dimensions.get("screen").height,
                     width: Dimensions.get("screen").width,
                     top: 0
@@ -31,16 +29,9 @@ class MainScreen extends React.Component {
             >
                 <MapScreen />
 
-                <View
-                    style = {{
-                        height: Dimensions.get("screen").height,
-                        width: Dimensions.get("screen").width,
-                        position: "absolute",
-                        top: 0
-                    }}
-                >
-                    <InfoPopup />
-                </View>
+                <TopLogoArea/>
+
+                <InfoPopup />
 
             </View>
         )
