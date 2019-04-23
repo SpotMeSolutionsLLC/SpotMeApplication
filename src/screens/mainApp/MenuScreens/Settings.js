@@ -6,7 +6,6 @@ import {
     SafeAreaView,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    Platform,
     StyleSheet
 } from "react-native";
 
@@ -127,7 +126,7 @@ class Settings extends React.Component {
                 </Text>
 
                 <View // Reset Storage Cache
-                    style = {{
+                    style={{
                         height: 50,
                         width: "100%",
                         justifyContent: "center",
@@ -136,7 +135,7 @@ class Settings extends React.Component {
                     }}
                 >
                     <TouchableOpacity
-                        style = {{
+                        style={{
                             backgroundColor: MAIN_COLORS.BASE,
 
                             height: "100%",
@@ -148,12 +147,12 @@ class Settings extends React.Component {
                             overflow: "hidden",
                             borderRadius: 10,
                         }}
-                        onPress = {() => {
+                        onPress={() => {
                             AsyncStorage.clear();
                         }}
                     >
                         <Text
-                            style = {{
+                            style={{
                                 textAlign: "center",
                                 fontFamily: "Alleyn",
                                 width: "100%",
@@ -171,52 +170,74 @@ class Settings extends React.Component {
 
     render() {
         return (
-            <SafeAreaView>
-                <TopLogoArea
-                    onPress={() => {
-                        this.props.navigation.openDrawer();
-                    }}
-                    color="white"
-                />
-                <View // Header
+            <SafeAreaView
+                style={{
+                    flex: 1,
+                }}
+            >
+                <View // Wrapper so that the abosolutely positioned "TopLogoArea" will work on both Android and IOS
                     style={{
+                        height: "100%",
                         width: "100%",
-                        height: (Platform.OS == "android") ? 50 : 50 + 20,
-
-                        backgroundColor: MAIN_COLORS.BASE,
-
-                        justifyContent: "center",
-                        alignItems: "center",
-
-                        position: "absolute",
-                        top: 0,
-
-                        zIndex: 5
+                        zIndex: 40
                     }}
                 >
-                    <Text
+                    <View // Header
                         style={{
-                            fontFamily: "Alleyn",
-                            fontSize: 18,
-                            color: "white",
-                            letterSpacing: 1
+                            width: "100%",
+
+                            // This part makes it so that the statusbar area will be the same color as the header, works on iPhoneX
+                            height: 100,
+                            paddingTop: 50,
+                            transform: [
+                                {
+                                    translateY: -50
+                                }
+                            ],
+
+                            backgroundColor: MAIN_COLORS.BASE,
+
+                            justifyContent: "center",
+                            alignItems: "center",
+
+                            position: "absolute",
+                            top: 0,
+
+                            zIndex: 5
                         }}
                     >
-                        SETTINGS
-                    </Text>
-                </View>
-                <View // Settings Body
-                    style={{
-                        marginTop: 50, // Space out the header
-                        padding: 10,
-                        width: "100%",
+                        <Text
+                            style={{
+                                fontFamily: "Alleyn",
+                                fontSize: 18,
+                                color: "white",
+                                letterSpacing: 1
+                            }}
+                        >
+                            SETTINGS
+                        </Text>
+                    </View>
 
-                        // This must be set to counteract SafeAreaView's background color of blue
-                        backgroundColor: "white"
-                    }}
-                >
-                    {this._generateMarkerSettings()}
-                    {this._generateStorageReset()}
+                    <TopLogoArea
+                        onPress={() => {
+                            this.props.navigation.openDrawer();
+                        }}
+                        color="white"
+                    />
+
+                    <View // Settings Body
+                        style={{
+                            marginTop: 50, // Space out the header
+                            padding: 10,
+                            width: "100%",
+
+                            // This must be set to counteract SafeAreaView's background color of blue
+                            backgroundColor: "white"
+                        }}
+                    >
+                        {this._generateMarkerSettings()}
+                        {this._generateStorageReset()}
+                    </View>
                 </View>
             </SafeAreaView>
         )

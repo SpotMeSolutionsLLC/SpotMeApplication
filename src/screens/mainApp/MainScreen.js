@@ -2,8 +2,8 @@
 // React base dependencies
 import React from "react";
 import {
-    Dimensions,
-    View
+    View,
+    SafeAreaView
 } from "react-native";
 
 // Local assets and dependencies
@@ -22,29 +22,28 @@ class MainScreen extends React.Component {
 
     render() {
         return (
-            <View
+            <SafeAreaView
                 style={{
-                    height: Dimensions.get("screen").height,
-                    width: Dimensions.get("screen").width,
-                    top: 0
+                    flex: 1,
                 }}
             >
                 <MapScreen />
 
-                <TopLogoArea
-                    onPress = {() => {
-                        this.props.navigation.openDrawer();
+                <View // This is added so the menu button is properly positioned
+                    style = {{
+                        zIndex: 40
                     }}
-                    color = {MAIN_COLORS.BASE}
-                />
-
-                
+                >
+                    <TopLogoArea
+                        onPress={() => {
+                            this.props.navigation.openDrawer();
+                        }}
+                        color={MAIN_COLORS.BASE}
+                    />
+                </View>
 
                 <InfoPopup />
-
-
-
-            </View>
+            </SafeAreaView>
         )
     }
 }

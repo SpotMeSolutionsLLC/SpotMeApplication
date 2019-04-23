@@ -1,5 +1,8 @@
 // React dependencies
 import React from "react";
+import {
+    StyleSheet
+} from "react-native"
 
 // Native modules
 import MapView, {
@@ -78,8 +81,7 @@ class MapScreen extends React.Component {
                 provider="google"
                 initialRegion={this.props.startCoordinates}
                 style={{
-                    height: "100%",
-                    width: "100%",
+                    ...StyleSheet.absoluteFillObject,
                     top: 0,
                     left: 0,
                     zIndex: 10

@@ -2,7 +2,6 @@
 // React base dependencies
 import React from "react";
 import {
-    Platform,
     TouchableOpacity
 } from "react-native";
 
@@ -36,7 +35,7 @@ class TopLogoArea extends React.Component {
 
                     position: "absolute",
 
-                    top: (Platform.OS == "android") ? 10 : 10 + 20,
+                    top: 10,
                     left: 10,
 
                     height: 30,
