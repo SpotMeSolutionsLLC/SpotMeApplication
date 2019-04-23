@@ -11,6 +11,11 @@ import {
     connect
 } from "react-redux"
 
+// Local modules
+import {
+    MARKER_TYPES
+} from "SpotmeDetached/src/helpers/settingHelpers"
+
 const CONFIG = {
     height: 60,
     width: 60,
@@ -23,6 +28,24 @@ class CustomMarker extends React.Component{
         this.animations = {
             scale: new Animated.Value(0.8),
             positionY: new Animated.Value(CONFIG.height * 0.1)
+        }
+    }
+
+    getMarkerInnerIcon = () => { // Returns markers depending on settings
+        if(this.props.currentSettings.markerType == MARKER_TYPES.CHECKMARKS){
+            return (this.props.percentage < 50) ? "✓" : "X";
+        }
+        else{
+            return this.props.percentage;
+        }
+    }
+
+    _getFontSize = () => { // Jank solution to get correct marker formatting depending on settings
+        if(this.props.currentSettings.markerType == MARKER_TYPES.CHECKMARKS){
+            return (this.props.percentage < 50) ? CONFIG.fontSize + 10 : CONFIG.fontSize;
+        }
+        else{
+            return CONFIG.fontSize;
         }
     }
 
@@ -94,14 +117,15 @@ class CustomMarker extends React.Component{
                         justifyContent: "center"
                     }}
                 >
-                    <Text // Got this check mark from in built ascii character set
+                    <Text // Replace Jank solution with SVG files later
                         style = {{
                             color: "white",
-                            fontSize: CONFIG.fontSize,
-                            fontFamily: "Alleyn"
+                            fontSize: this._getFontSize(),
+                            fontFamily: (this.props.percentage < 50 && this.props.currentSettings.markerType == MARKER_TYPES.CHECKMARKS) ? null : "Alleyn",
+                            fontWeight: "bold"
                         }}
                     >
-                        {(this.props.percentage < 50) ? "✔" : "X"}
+                        {this.getMarkerInnerIcon()}
                     </Text>
                 </View>
 
@@ -127,7 +151,8 @@ class CustomMarker extends React.Component{
 
 const mapStateToProps = state => {
     return {
-        selectedMarker: state.MapReducer.selectedMarker
+        selectedMarker: state.MapReducer.selectedMarker,
+        currentSettings: state.Settings
     }
 }
 

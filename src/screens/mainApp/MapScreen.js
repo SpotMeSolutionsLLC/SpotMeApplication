@@ -45,7 +45,7 @@ class MapScreen extends React.Component {
                         latitude: marker.lat,
                         longitude: marker.lng
                     }}
-                    onPress={() => {
+                    onPress={(e) => {
                         this.props.selectMarker(marker);
                         this.mapRef.animateCamera({
                             center: {
@@ -54,6 +54,7 @@ class MapScreen extends React.Component {
                             },
                             zoom: 16
                         })
+                        e.stopPropagation();
                     }}
                 >
                     <CustomMarker
@@ -86,7 +87,9 @@ class MapScreen extends React.Component {
                 onPress={() => {
                     this.props.selectMarker(null);
                 }}
-                onMapReady = {SplashScreen.hide}
+                onMapReady = {() => {
+                    SplashScreen.hide();
+                }}
             >
                 {this.generateMarkers()}
             </MapView>

@@ -6,9 +6,11 @@ import {
     View
 } from "react-native";
 
-// Other modules
-
 // Local assets and dependencies
+import {
+    MAIN_COLORS
+} from "SpotmeDetached/src/helpers"
+
 import TopLogoArea from "./TopLogoArea"
 import MapScreen from "./MapScreen";
 import InfoPopup from "./InfoPopupContainer";
@@ -29,9 +31,18 @@ class MainScreen extends React.Component {
             >
                 <MapScreen />
 
-                <TopLogoArea/>
+                <TopLogoArea
+                    onPress = {() => {
+                        this.props.navigation.openDrawer();
+                    }}
+                    color = {MAIN_COLORS.BASE}
+                />
+
+                
 
                 <InfoPopup />
+
+
 
             </View>
         )

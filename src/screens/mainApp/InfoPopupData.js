@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     },
     entryTitle: {
         fontSize: 14,
-        fontFamily: "Alleyn_Light",
+        // fontFamily: "Alleyn_Light",
         fontWeight: "bold",
     },
     entryValue: {

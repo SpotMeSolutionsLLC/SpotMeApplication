@@ -5,7 +5,8 @@ import {
     Animated,
     Text,
     Dimensions,
-    StatusBar
+    StatusBar,
+    Platform
 } from "react-native"
 
 // Native modules
@@ -110,17 +111,23 @@ class InfoPopupContainer extends React.Component {
             >
                 <PanGestureHandler
                     onGestureEvent={({nativeEvent}) => {
+                        
                         // Gets position relative to the display, taking into consideration the statusbar and Gesture area height
-                        let realPosition = nativeEvent.absoluteY - StatusBar.currentHeight - CONFIG.GESTURE_AREA_HEIGHT / 2;
+                        let realPosition = nativeEvent.absoluteY - CONFIG.GESTURE_AREA_HEIGHT / 2 - parseInt((Platform.OS == "android") ? StatusBar.currentHeight : 20);
 
                         // Doesn't allow the menu to be dragged up past a certain point
                         if( realPosition > Dimensions.get("window").height - CONFIG.ENTIRE_AREA_HEIGHT - CONFIG.DRAG_UP_MAX_HEIGHT)
 
                             this.animations.popupTranslationY.setValue(realPosition);
+                        else{
+                            // If tap goes above certain point, then it'll just set to max height
+                            this.animations.popupTranslationY.setValue(Dimensions.get("window").height - CONFIG.ENTIRE_AREA_HEIGHT - CONFIG.DRAG_UP_MAX_HEIGHT);
+                        }
                     }}
                     onHandlerStateChange = {({nativeEvent}) => {
+
                         // Gets position relative to the display, taking into consideration the statusbar
-                        let realPosition = nativeEvent.absoluteY - StatusBar.currentHeight - CONFIG.GESTURE_AREA_HEIGHT / 2;
+                        let realPosition = nativeEvent.absoluteY - CONFIG.GESTURE_AREA_HEIGHT / 2 - parseInt((Platform.OS == "android") ? StatusBar.currentHeight : 20);
 
                         // When you release tap
                         if(nativeEvent.state == State.END ){ 

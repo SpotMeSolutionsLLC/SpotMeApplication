@@ -2,22 +2,24 @@
 // React base dependencies
 import React from "react";
 import {
-    View,
-    Dimensions
+    Platform,
+    TouchableOpacity
 } from "react-native";
+
+// Redux Dependencies
+import {
+    connect
+} from "react-redux"
 
 // Native modules
 import SVG, {
-    Circle
+    Rect
 } from "react-native-svg";
-import SplashScreen from "react-native-splash-screen";
 
 // Local dependencies
 import {
-    MAIN_COLORS
-} from "SpotmeDetached/src/helpers";
-
-import IconSVG from "SpotmeDetached/assets/Icon.svg";
+    selectMarker
+} from "SpotmeDetached/src/redux/actions/MapActions";
 
 
 class TopLogoArea extends React.Component {
@@ -27,59 +29,65 @@ class TopLogoArea extends React.Component {
 
     render() {
         return (
-            <View // Component Wrapper
+            <TouchableOpacity // Component Wrapper
                 style={{
                     // overflow: "hidden",
                     zIndex: 30,
 
                     position: "absolute",
-                    top: 0,
 
-                    height: 75,
-                    width: Dimensions.get("window").width,
+                    top: (Platform.OS == "android") ? 10 : 10 + 20,
+                    left: 10,
 
+                    height: 30,
+                    width: 30,
+
+                    backgroundColor: "transparent"
+                }}
+
+                onPress = {() => {
+                    this.props.deselectMarker();
+                    this.props.onPress();
                 }}
             >
-                <View
-                    style = {{
-                        zIndex: 10
-                    }}
+                <SVG
+                    width = "100%"
+                    height = "100%"
                 >
-                    <SVG
-                        width="100%"
-                        height="100%"
-                    >
-                        <Circle
-                            cx={Dimensions.get("window").width / 2}
-                            cy={-(Dimensions.get("window").width * 2) + 75}
-                            r={Dimensions.get("window").width * 2}
-                            fill={MAIN_COLORS.BASE}
-                        />
-                    </SVG>
-                </View>
-
-                <View
-                    style={{
-                        zIndex: 99,
-
-                        position: "absolute",
-
-                        width: "100%",
-                        height: "100%",
-
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                >
-                    <IconSVG
-                        width={60}
-                        height={60}
+                    <Rect
+                        x = "10%"
+                        y = "20%"
+                        width = "80%"
+                        height = "10%"
+                        fill = {this.props.color}
                     />
-                </View>
+                    <Rect
+                        x = "10%"
+                        y = "45%"
+                        width = "80%"
+                        height = "10%"
+                        fill = {this.props.color}
+                    />
+                    <Rect
+                        x = "10%"
+                        y = "70%"
+                        width = "80%"
+                        height = "10%"
+                        fill = {this.props.color}
+                    />
+                </SVG>
 
-            </View>
+            </TouchableOpacity>
         )
     }
 }
 
-export default TopLogoArea;
+const mapDispatchToProps = dispatch => {
+    return {
+        deselectMarker: () => {
+            dispatch(selectMarker(null));
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(TopLogoArea);
