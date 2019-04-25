@@ -33,7 +33,7 @@ class CustomMarker extends React.Component{
 
     getMarkerInnerIcon = () => { // Returns markers depending on settings
         if(this.props.currentSettings.markerType == MARKER_TYPES.CHECKMARKS){
-            return (this.props.percentage < 50) ? "✓" : "X";
+            return (this.props.percentage < 50) ? "✓" : "✖";
         }
         else{
             return this.props.percentage;
@@ -121,7 +121,7 @@ class CustomMarker extends React.Component{
                         style = {{
                             color: "white",
                             fontSize: this._getFontSize(),
-                            fontFamily: (this.props.percentage < 50 && this.props.currentSettings.markerType == MARKER_TYPES.CHECKMARKS) ? null : "Alleyn",
+                            fontFamily: (this.props.percentage < 50 && this.props.currentSettings.markerType != MARKER_TYPES.CHECKMARKS) ? null : "Alleyn",
                             fontWeight: "bold"
                         }}
                     >

@@ -31,7 +31,7 @@ class TopLogoArea extends React.Component {
             <TouchableOpacity // Component Wrapper
                 style={{
                     // overflow: "hidden",
-                    zIndex: 30,
+                    zIndex: 40,
 
                     top: 0,
                     left: 0,

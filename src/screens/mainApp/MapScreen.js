@@ -29,6 +29,17 @@ import {
     getColor
 } from "SpotmeDetached/src/helpers"
 
+const INITIAL_CAMERA = {
+    center:{
+        latitude: 37.330318358466485,
+        longitude: -121.88207309693097
+    },
+    heading: 0,
+    pitch: 0,
+    zoom: 14.386643409729004,
+    altitude: 14.22858715057373
+}
+
 class MapScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -39,10 +50,15 @@ class MapScreen extends React.Component {
         this.props.updateMarkers();
     }
 
+    test = () => {
+        console.log(this.mapRef.getCamera());
+    }
+
     generateMarkers = () => {
         return this.props.markers.map((marker) => {
             return (
                 <Marker
+                    identifier = {marker.keyName}
                     key={marker.keyName}
                     coordinate={{
                         latitude: marker.lat,
@@ -77,9 +93,11 @@ class MapScreen extends React.Component {
                     this.mapRef = instance;
                 }}
                 pitchEnabled={false}
+                moveOnMarkerPress={false}
                 showsCompass={false}
+                toolbarEnabled={false}
                 provider="google"
-                initialRegion={this.props.startCoordinates}
+                initialCamera={INITIAL_CAMERA}
                 style={{
                     ...StyleSheet.absoluteFillObject,
                     top: 0,

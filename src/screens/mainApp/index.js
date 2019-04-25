@@ -7,7 +7,8 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
-    Image
+    Image,
+    SafeAreaView
 } from "react-native"
 
 
@@ -112,10 +113,10 @@ class DrawerComponent extends React.Component {
 
     render() {
         return (
-            <View // Root Container
+            <SafeAreaView // Root Container
                 style={{
                     // If on IOS, pads by 20px (default amount), if on android, pads by statusbar height
-                    borderTopWidth: (Platform.OS == "android") ? parseInt(StatusBar.currentHeight) : 20,
+                    borderTopWidth: (Platform.OS == "android") ? 0 : 20,
                     borderColor: MAIN_COLORS.BASE,
 
                     height: "100%",
@@ -176,7 +177,7 @@ class DrawerComponent extends React.Component {
                 >
                     {this.generateScreenOptions()}
                 </View>
-            </View>
+            </SafeAreaView>
         )
     }
 }
