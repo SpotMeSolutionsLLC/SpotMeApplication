@@ -7,17 +7,16 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
-    Dimensions
 } from 'react-native';
 
+// Native dependencies
+import AsyncStorage from "@react-native-community/async-storage";
 
 // Javascript Dependencies
 import Swiper from "react-native-swiper"
 
-
 // Local dependencies
 import SplashScreen from "react-native-splash-screen";
-import SplashScreenImage from "SpotmeDetached/assets/splash.png";
 
 import {
     MISSION,
@@ -34,16 +33,16 @@ class Login extends Component {
         super(props);
         this.slides = [
             {
-                text: "Our Mission is to make parking easier for everyone",
+                text: "Our mission is to make parking easier for everyone",
                 image: MISSION
 
             },
             {
-                text: "We Provide parking data to you to assist in finding parking",
+                text: "We provide parking data to you to assist in finding parking",
                 image: WHO_ARE_WE
             },
             {
-                text: "Real Time Data, Streamed Straight to You",
+                text: "Real time data, streamed straight to you",
                 image: WHAT_WE_DELIVER
             }
         ]
@@ -105,7 +104,8 @@ class Login extends Component {
                                     justifyContent: "center",
                                     alignItems: "center"
                                 }}
-                                onPress = {() => {
+                                onPress = {async () => {
+                                    AsyncStorage.setItem("hasLoggedIn", "true");
                                     this.props.navigation.navigate("MainApp");
                                 }}
                             >

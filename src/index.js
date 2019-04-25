@@ -17,20 +17,18 @@ import LoginScreen from "./screens/loginScreen";
 class RootNavigatorRouter extends React.Component{
     constructor(props){
         super(props);
+    }
+
+    componentDidMount = () => {
         this._bootstrapAsync();
     }
 
     _bootstrapAsync = async () => {
-        console.log("Bootstrap called");
         const token = await AsyncStorage.getItem("hasLoggedIn");
         if(token != "true"){
-            console.log("LoginScreen");
-            await AsyncStorage.setItem("hasLoggedIn","true")
-            
             this.props.navigation.navigate("LoginScreen")
         }
         else{
-            console.log("MainApp");
             this.props.navigation.navigate("MainApp");
         }
     }

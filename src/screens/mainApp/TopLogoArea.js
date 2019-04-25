@@ -33,13 +33,13 @@ class TopLogoArea extends React.Component {
                     // overflow: "hidden",
                     zIndex: 30,
 
-                    position: "absolute",
+                    top: 0,
+                    left: 0,
 
-                    top: 10,
-                    left: 10,
+                    height: 50,
+                    width: 50,
 
-                    height: 30,
-                    width: 30,
+                    padding: 10,
 
                     backgroundColor: "transparent"
                 }}

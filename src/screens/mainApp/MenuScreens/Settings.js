@@ -217,19 +217,28 @@ class Settings extends React.Component {
                             SETTINGS
                         </Text>
                     </View>
-
-                    <TopLogoArea
-                        onPress={() => {
-                            this.props.navigation.openDrawer();
+                    <View // Wrapper so menu button is positioned correctly on IOS
+                        style = {{
+                            position: "absolute",
+                            top: 0,
+                            left: 0
                         }}
-                        color="white"
-                    />
+                    >
+                        <TopLogoArea
+                            onPress={() => {
+                                this.props.navigation.openDrawer();
+                            }}
+                            color="white"
+                        />
+                    </View>
+
 
                     <View // Settings Body
                         style={{
-                            marginTop: 50, // Space out the header
+                            marginTop: 50, // Spacing out the header, also doesn't apply background color in margin zone
                             padding: 10,
                             width: "100%",
+                            height: "100%",
 
                             // This must be set to counteract SafeAreaView's background color of blue
                             backgroundColor: "white"

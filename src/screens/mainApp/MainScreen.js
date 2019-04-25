@@ -31,7 +31,10 @@ class MainScreen extends React.Component {
 
                 <View // This is added so the menu button is properly positioned
                     style = {{
-                        zIndex: 40
+                        zIndex: 40,
+                        position: "absolute",
+                        left: 0,
+                        top: 0,
                     }}
                 >
                     <TopLogoArea
