@@ -187,7 +187,7 @@ class Settings extends React.Component {
                             width: "100%",
 
                             // This part makes it so that the statusbar area will be the same color as the header, works on iPhoneX
-                            height: 100,
+                            height: 110,
                             paddingTop: 50,
                             transform: [
                                 {
@@ -209,7 +209,7 @@ class Settings extends React.Component {
                         <Text
                             style={{
                                 fontFamily: "Alleyn",
-                                fontSize: 18,
+                                fontSize: 20,
                                 color: "white",
                                 letterSpacing: 1
                             }}
@@ -260,7 +260,8 @@ const styles = StyleSheet.create({
         fontFamily: "Alleyn",
         textAlign: "center",
         color: MAIN_COLORS.BASE,
-        padding: 8
+        padding: 8,
+        fontSize: 16
     },
     MarkerContainer: {
         width: "50%",

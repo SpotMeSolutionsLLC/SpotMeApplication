@@ -50,7 +50,7 @@ class MainScreen extends React.Component {
                         height: "100%",
                         width: "100%"
                     }}
-                    pointerEvents = "box-none"
+                    pointerEvents="box-none"
                 >
                     <TopLogoArea
                         onPress={() => {
@@ -60,7 +60,7 @@ class MainScreen extends React.Component {
                     />
                     <RefreshButton />
                 </View>
-                
+
                 <InfoPopup />
             </SafeAreaView>
         )

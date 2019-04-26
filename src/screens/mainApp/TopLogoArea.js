@@ -36,43 +36,43 @@ class TopLogoArea extends React.Component {
                     top: 0,
                     left: 0,
 
-                    height: 50,
-                    width: 50,
+                    height: 60,
+                    width: 60,
 
                     padding: 10,
 
                     backgroundColor: "transparent"
                 }}
 
-                onPress = {() => {
+                onPress={() => {
                     this.props.deselectMarker();
                     this.props.onPress();
                 }}
             >
                 <SVG
-                    width = "100%"
-                    height = "100%"
+                    width="100%"
+                    height="100%"
                 >
                     <Rect
-                        x = "10%"
-                        y = "20%"
-                        width = "80%"
-                        height = "10%"
-                        fill = {this.props.color}
+                        x="10%"
+                        y="20%"
+                        width="80%"
+                        height="10%"
+                        fill={this.props.color}
                     />
                     <Rect
-                        x = "10%"
-                        y = "45%"
-                        width = "80%"
-                        height = "10%"
-                        fill = {this.props.color}
+                        x="10%"
+                        y="45%"
+                        width="80%"
+                        height="10%"
+                        fill={this.props.color}
                     />
                     <Rect
-                        x = "10%"
-                        y = "70%"
-                        width = "80%"
-                        height = "10%"
-                        fill = {this.props.color}
+                        x="10%"
+                        y="70%"
+                        width="80%"
+                        height="10%"
+                        fill={this.props.color}
                     />
                 </SVG>
 

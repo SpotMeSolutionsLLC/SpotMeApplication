@@ -23,25 +23,7 @@ class RefreshButton extends React.Component{
     constructor(props){
         super(props);
         this.animations = {
-            buttonY: new Animated.Value(0),
             buttonRotation: new Animated.Value(0),
-        }
-    }
-
-    componentWillReceiveProps = (newProps) => {
-        if (newProps.selectedMarker == null) { // Corresponds to action "deselectMarker"
-            Animated.timing(this.animations.buttonY, {
-                toValue: 0,
-                useNativeDriver: true,
-                duration: 250
-            }).start();
-        }
-        else {
-            Animated.timing(this.animations.buttonY, {
-                toValue: -200,
-                useNativeDriver: true,
-                duration: 250
-            }).start();
         }
     }
 
@@ -49,14 +31,12 @@ class RefreshButton extends React.Component{
         return(
             <Animated.View
                 style = {{
+                    // Positioning on Top right corner of screen
                     position: "absolute",
                     zIndex: 50,
-                    right: 20,
-                    bottom: 20,
+                    right: 10,
+                    top: 10,
                     transform: [
-                        {
-                            translateY: this.animations.buttonY
-                        },
                         {
                             rotate: this.animations.buttonRotation.interpolate({
                                 inputRange: [0, 180],

@@ -30,13 +30,13 @@ import {
 } from "SpotmeDetached/src/redux/actions/MapActions";
 
 let CONFIG = {
-    GESTURE_AREA_HEIGHT: 40,
-    DATA_CONTAINER_HEIGHT: 150,
+    GESTURE_AREA_HEIGHT: 50,
+    DATA_CONTAINER_HEIGHT: 130,
     DRAG_UP_MAX_HEIGHT: 0,
-    GAP_BOTTOM_HEIGHT: 10,
+    GAP_BOTTOM_HEIGHT: 20,
 }
 
-CONFIG.ENTIRE_AREA_HEIGHT = CONFIG.GESTURE_AREA_HEIGHT + CONFIG.DATA_CONTAINER_HEIGHT;
+CONFIG.ENTIRE_AREA_HEIGHT = CONFIG.DATA_CONTAINER_HEIGHT;
 
 
 class InfoPopupContainer extends React.Component {
@@ -53,7 +53,7 @@ class InfoPopupContainer extends React.Component {
     slideUp = (callback) => { // Animates menu up, with callback executing after animation ends
         Animated.timing(this.animations.popupTranslationY, {
             // This must be done to ensure the menu slides up to the correct position
-            toValue: Dimensions.get("window").height - CONFIG.ENTIRE_AREA_HEIGHT - CONFIG.GAP_BOTTOM_HEIGHT, 
+            toValue: Dimensions.get("window").height - CONFIG.ENTIRE_AREA_HEIGHT - CONFIG.GAP_BOTTOM_HEIGHT,
             useNativeDriver: true,
             duration: 250
         }).start(callback);
@@ -66,7 +66,7 @@ class InfoPopupContainer extends React.Component {
             duration: 250
         }).start(callback);
     }
-    
+
 
     componentWillReceiveProps = (newProps) => {
         if (newProps.selectedMarker == null) { // Corresponds to action "deselectMarker"
@@ -79,7 +79,7 @@ class InfoPopupContainer extends React.Component {
         else {
             this.setState({ // If global state is not null, update current display to correct data
                 currentMarker: newProps.selectedMarker
-            },this.slideUp);
+            }, this.slideUp);
         }
     }
 
@@ -88,15 +88,23 @@ class InfoPopupContainer extends React.Component {
             <Animated.View // Wraps entire display. Covers entire screen, then translates it Down right underneath the screen
                 style={{
                     width: Dimensions.get("window").width * .9,
-                    height: CONFIG.ENTIRE_AREA_HEIGHT + CONFIG.DRAG_UP_MAX_HEIGHT, 
+                    height: CONFIG.ENTIRE_AREA_HEIGHT + CONFIG.DRAG_UP_MAX_HEIGHT,
 
                     zIndex: 20,
 
                     borderRadius: 10,
 
-                    overflow: "hidden",
-
                     backgroundColor: "white",
+
+                    shadowColor: "#000",
+                    shadowOffset: {
+                        width: 0,
+                        height: 24,
+                    },
+                    shadowOpacity: 0.58,
+                    shadowRadius: 16.00,
+
+                    elevation: 24,
 
                     position: "absolute",
                     top: 0,
@@ -110,59 +118,62 @@ class InfoPopupContainer extends React.Component {
 
             >
                 <PanGestureHandler
-                    onGestureEvent={({nativeEvent}) => {
-                        
+                    onGestureEvent={({ nativeEvent }) => {
+
                         // Gets position relative to the display, taking into consideration the statusbar and Gesture area height
                         let realPosition = nativeEvent.absoluteY - CONFIG.GESTURE_AREA_HEIGHT / 2 - parseInt((Platform.OS == "android") ? StatusBar.currentHeight : 20);
 
                         // Doesn't allow the menu to be dragged up past a certain point
-                        if( realPosition > Dimensions.get("window").height - CONFIG.ENTIRE_AREA_HEIGHT - CONFIG.DRAG_UP_MAX_HEIGHT)
+                        if (realPosition > Dimensions.get("window").height - CONFIG.ENTIRE_AREA_HEIGHT - CONFIG.DRAG_UP_MAX_HEIGHT)
 
                             this.animations.popupTranslationY.setValue(realPosition);
-                        else{
+                        else {
                             // If tap goes above certain point, then it'll just set to max height
-                            this.animations.popupTranslationY.setValue(Dimensions.get("window").height - CONFIG.ENTIRE_AREA_HEIGHT - CONFIG.DRAG_UP_MAX_HEIGHT);
+                            this.animations.popupTranslationY.setValue(Dimensions.get("window").height - CONFIG.ENTIRE_AREA_HEIGHT - CONFIG.DRAG_UP_MAX_HEIGHT - CONFIG.GAP_BOTTOM_HEIGHT);
                         }
                     }}
-                    onHandlerStateChange = {({nativeEvent}) => {
+                    onHandlerStateChange={({ nativeEvent }) => {
 
                         // Gets position relative to the display, taking into consideration the statusbar
                         let realPosition = nativeEvent.absoluteY - CONFIG.GESTURE_AREA_HEIGHT / 2 - parseInt((Platform.OS == "android") ? StatusBar.currentHeight : 20);
 
                         // When you release tap
-                        if(nativeEvent.state == State.END ){ 
+                        if (nativeEvent.state == State.END) {
 
                             // Detects when someone slides down on the menu, when the touch ends underneath the lower half of the entire display container
-                            if(realPosition > (Dimensions.get("window").height - (CONFIG.ENTIRE_AREA_HEIGHT / 2))){
+                            if (realPosition > (Dimensions.get("window").height - (CONFIG.ENTIRE_AREA_HEIGHT * 3 / 4))) {
                                 // Deselects current marker when menu is swiped down
-                                this.props.deselectMarker(); 
+                                this.props.deselectMarker();
 
                             }
-                            else{
+                            else {
                                 // Resets to regular position when neither slide up or down is detected
                                 this.slideUp();
                             }
                         }
-                            
+
                     }}
                 >
                     <View
-                        style = {{
-                            backgroundColor: (this.state.currentMarker) ? getColor(this.state.currentMarker.current / this.state.currentMarker.max) : "red",
+                        style={{
+                            // backgroundColor: (this.state.currentMarker) ? getColor(this.state.currentMarker.current / this.state.currentMarker.max) : "red",
+                            backgroundColor: "transparent",
+                            zIndex: 70,
+                            position: "absolute",
                             width: "100%",
                             height: CONFIG.GESTURE_AREA_HEIGHT
                         }}
                     />
                 </PanGestureHandler>
 
-                { this.state.currentMarker && // Renders InfoPopupData only if currentMarker exists
+                {this.state.currentMarker && // Renders InfoPopupData only if currentMarker exists
                     <InfoPopupData
-                        name = {this.state.currentMarker.name}
-                        max = {this.state.currentMarker.max}
-                        current = {this.state.currentMarker.current}
+                        name={this.state.currentMarker.name}
+                        max={this.state.currentMarker.max}
+                        current={this.state.currentMarker.current}
                     />
                 }
-                
+
             </Animated.View>
         )
     }

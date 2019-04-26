@@ -33,7 +33,7 @@ class CustomMarker extends React.Component{
 
     getMarkerInnerIcon = () => { // Returns markers depending on settings
         if(this.props.currentSettings.markerType == MARKER_TYPES.CHECKMARKS){
-            return (this.props.percentage < 50) ? "✓" : "✖";
+            return (this.props.percentage < 50) ? "✓" : "X";
         }
         else{
             return this.props.percentage;
@@ -84,7 +84,14 @@ class CustomMarker extends React.Component{
         return(
             <Animated.View
                 style = {{
-                    overflow: "visible",
+                    
+                    // Shadow effect for markers to suggest depth
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2},
+                    shadowOpacity: 0.7,
+                    shadowRadius: 4,
+                    elevation: 20,
+                    
                     height: CONFIG.height,
                     width: CONFIG.width,
                     backgroundColor: "transparent",
@@ -121,7 +128,7 @@ class CustomMarker extends React.Component{
                         style = {{
                             color: "white",
                             fontSize: this._getFontSize(),
-                            fontFamily: (this.props.percentage < 50 && this.props.currentSettings.markerType != MARKER_TYPES.CHECKMARKS) ? null : "Alleyn",
+                            fontFamily: (this.props.percentage < 50 && this.props.currentSettings.markerType == MARKER_TYPES.CHECKMARKS) ? null : "Alleyn",
                             fontWeight: "bold"
                         }}
                     >

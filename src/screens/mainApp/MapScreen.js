@@ -6,7 +6,8 @@ import {
 
 // Native modules
 import MapView, {
-    Marker
+    Marker,
+    PROVIDER_DEFAULT,
 } from "react-native-maps"
 import SplashScreen from "react-native-splash-screen"
 
@@ -20,7 +21,6 @@ import {
 import CustomMarker from "./CustomMarker"
 
 import {
-    changeLocation,
     refreshMarkers,
     selectMarker
 } from "SpotmeDetached/src/redux/actions/MapActions"
@@ -37,7 +37,7 @@ const INITIAL_CAMERA = {
     heading: 0,
     pitch: 0,
     zoom: 14.386643409729004,
-    altitude: 14.22858715057373
+    altitude: 9427.311632147308
 }
 
 class MapScreen extends React.Component {
@@ -71,7 +71,8 @@ class MapScreen extends React.Component {
                                 latitude: marker.lat,
                                 longitude: marker.lng
                             },
-                            zoom: 16
+                            zoom: 16,
+                            altitude: 2500
                         })
                         e.stopPropagation();
                     }}
@@ -96,7 +97,7 @@ class MapScreen extends React.Component {
                 moveOnMarkerPress={false}
                 showsCompass={false}
                 toolbarEnabled={false}
-                provider="google"
+                provider={PROVIDER_DEFAULT}
                 initialCamera={INITIAL_CAMERA}
                 style={{
                     ...StyleSheet.absoluteFill,
@@ -119,16 +120,12 @@ class MapScreen extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        startCoordinates: state.MapReducer.coordinates,
         markers: state.MapReducer.markers
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        changeLocation: coordinates => {
-            dispatch(changeLocation(coordinates));
-        },
         updateMarkers: async () => {
             dispatch(await refreshMarkers());
         },

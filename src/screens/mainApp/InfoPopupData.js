@@ -13,23 +13,26 @@ import {
 } from "SpotmeDetached/src/helpers"
 
 const CONFIG = {
-    DATA_CONTAINER_HEIGHT: 150,
+    DATA_CONTAINER_HEIGHT: 130,
 }
 
 const styles = StyleSheet.create({
     nameContainer: {
         width: "100%",
-        height: 70,
+        height: 50,
 
-        justifyContent: "center",
+        justifyContent: "flex-end",
         alignItems: "center",
     },
     nameText: {
+        padding: 5,
         width: "100%",
 
         fontSize: 24,
         fontFamily: "Alleyn",
         fontWeight: "bold",
+
+        color: "white",
 
         textAlign: "center",
         textAlignVertical: "center",
@@ -51,11 +54,13 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     entryTitle: {
+        textAlign: "center",
         fontSize: 14,
         // fontFamily: "Alleyn_Light",
         fontWeight: "bold",
     },
     entryValue: {
+        textAlign: "center",
         fontSize: 25,
         fontFamily: "Alleyn",
     }
@@ -67,20 +72,31 @@ const InfoPopupData = ({ max, current, name }) => {
     return (
         <View
             style={{
+                borderRadius: 10,
+                overflow: "hidden",
                 height: CONFIG.DATA_CONTAINER_HEIGHT,
                 width: "100%",
 
                 backgroundColor: getColorType(current / max, COLOR_TYPES.BACKGROUND),
-
-                padding: 5,
             }}
         >
             <View //Container for displaying garage name
-                style={styles.nameContainer}
+                style={[styles.nameContainer,{
+                    backgroundColor: getColorType(current / max, COLOR_TYPES.MAIN)
+                }]}
             >
+                <View // View displaying the bar letting user know that it's draggable
+                    style = {{
+                        top: 5,
+                        position: "absolute",
+                        borderRadius: 10,
+                        height:5,
+                        width: "40%",
+                        backgroundColor: "rgba(255,255,255,0.5)"
+                    }}
+                />
                 <Text // Name text
                     style={[styles.nameText,{
-                        color: getColorType(current / max, COLOR_TYPES.TITLE)
                     }]}
                 >
                     {name}
