@@ -221,7 +221,8 @@ class Settings extends React.Component {
                         style = {{
                             position: "absolute",
                             top: 0,
-                            left: 0
+                            left: 0,
+                            zIndex: 70
                         }}
                     >
                         <TopLogoArea

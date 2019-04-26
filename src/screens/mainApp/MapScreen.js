@@ -99,10 +99,10 @@ class MapScreen extends React.Component {
                 provider="google"
                 initialCamera={INITIAL_CAMERA}
                 style={{
-                    ...StyleSheet.absoluteFillObject,
-                    top: 0,
-                    left: 0,
-                    zIndex: 10
+                    ...StyleSheet.absoluteFill,
+                    flex: 1,
+                    zIndex: 10,
+
                 }}
                 onPress={() => {
                     this.props.selectMarker(null);

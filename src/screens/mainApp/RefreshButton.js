@@ -50,6 +50,7 @@ class RefreshButton extends React.Component{
             <Animated.View
                 style = {{
                     position: "absolute",
+                    zIndex: 50,
                     right: 20,
                     bottom: 20,
                     transform: [

@@ -30,6 +30,7 @@ class MainScreen extends React.Component {
             >
                 <MapScreen />
 
+
                 <View // Hacky way to enable react-navigation drag in from left. MUST COME BEFORE MENU BUTTON
                     style={{
                         zIndex: 30,
@@ -46,10 +47,10 @@ class MainScreen extends React.Component {
                 <View // This is added so the menu button is properly positioned. MUST COME AFTER DRAWER DRAG-IN AREA
                     style={{
                         zIndex: 40,
-                        position: "absolute",
-                        left: 0,
-                        top: 0,
+                        height: "100%",
+                        width: "100%"
                     }}
+                    pointerEvents = "box-none"
                 >
                     <TopLogoArea
                         onPress={() => {
@@ -57,10 +58,9 @@ class MainScreen extends React.Component {
                         }}
                         color={MAIN_COLORS.BASE}
                     />
+                    <RefreshButton />
                 </View>
-
-                <RefreshButton/>
-
+                
                 <InfoPopup />
             </SafeAreaView>
         )

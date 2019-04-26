@@ -3,7 +3,6 @@ import React from "react";
 import {
     View,
     Platform,
-    StatusBar,
     Text,
     TouchableOpacity,
     StyleSheet,
@@ -35,7 +34,7 @@ const CONFIG = {
 }
 
 const styles = StyleSheet.create({
-    ScreenOption:{
+    ScreenOption: {
         paddingLeft: 20,
         height: 40,
         justifyContent: "center",
@@ -66,20 +65,20 @@ class DrawerComponent extends React.Component {
         return this.screens.map((value) => {
             return (
                 <View
-                    key = {value.keyName}
-                    style = {[styles.ScreenOption, {
+                    key={value.keyName}
+                    style={[styles.ScreenOption, {
                         backgroundColor: (this.state.currentScreen == value.keyName) ? "hsl(0, 0%, 90%)" : "white",
                     }]}
                 >
                     <TouchableOpacity
-                        onPress = {() => {
+                        onPress={() => {
                             this.props.navigation.navigate(value.keyName);
                             this.props.navigation.closeDrawer();
                             this.setState({
                                 currentScreen: value.keyName
                             })
                         }}
-                        style = {{
+                        style={{
                             height: "100%",
                             width: "100%",
 
@@ -89,15 +88,15 @@ class DrawerComponent extends React.Component {
                         }}
                     >
                         <Image
-                            style = {{
+                            style={{
                                 height: CONFIG.ICON_SIZE,
                                 width: CONFIG.ICON_SIZE
                             }}
-                            resizeMode = "contain"
-                            source = {value.icon}
+                            resizeMode="contain"
+                            source={value.icon}
                         />
                         <Text
-                            style = {{
+                            style={{
                                 paddingLeft: 20,
                                 letterSpacing: 1,
                                 fontFamily: "Alleyn"
@@ -115,64 +114,83 @@ class DrawerComponent extends React.Component {
         return (
             <SafeAreaView // Root Container
                 style={{
-                    // If on IOS, pads by 20px (default amount), if on android, pads by statusbar height
-                    borderTopWidth: (Platform.OS == "android") ? 0 : 20,
                     borderColor: MAIN_COLORS.BASE,
 
                     height: "100%",
                     width: "100%",
                 }}
             >
-                <View // Header
-                    style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-
-                        backgroundColor: MAIN_COLORS.BASE,
-
-                        height: 100,
-
-                        padding: 20,
-
-                        flexDirection: "column",
+                <View // Container to fix absolute positioning
+                    style = {{
+                        width: "100%",
                     }}
                 >
-                    <Text
+                    <View // Header
                         style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+
                             width: "100%",
-                            textAlign: "left",
-                            fontFamily: "Alleyn",
-                            color: "white",
-                            fontSize: 30
-                        }}
-                    >
-                        spotme
-                    </Text>
-                    <Text
-                        style={{
-                            width: "100%",
-                            textAlign: "left",
-                            fontFamily: "Alleyn",
-                            color: "white",
-                            fontSize: 18,
-                            transform: [
+
+                            alignItems: "center",
+                            justifyContent: "center",
+
+                            backgroundColor: MAIN_COLORS.BASE,
+
+                            height: 100 + 50, // Covers the top area on IOS and Android
+                            paddingTop: 20 + 50, // padding makes up the height difference
+                            padding: 20,
+
+                            flexDirection: "column",
+
+                            transform: [ //Translation up to cover the statusbar area
                                 {
-                                    translateY: -7
-                                },
-                                {
-                                    translateX: 5
+                                    translateY: -50
                                 }
                             ]
                         }}
                     >
-                        solutions
-                    </Text>
+                        <Text
+                            style={{
+                                width: "100%",
+                                textAlign: "left",
+                                fontFamily: "Alleyn",
+                                color: "white",
+                                fontSize: 30
+                            }}
+                        >
+                            spotme
+                        </Text>
+                        <Text
+                            style={{
+                                width: "100%",
+                                textAlign: "left",
+                                fontFamily: "Alleyn",
+                                color: "white",
+                                fontSize: 18,
+                                transform: [
+                                    {
+                                        translateY: -7
+                                    },
+                                    {
+                                        translateX: 5
+                                    }
+                                ]
+                            }}
+                        >
+                            solutions
+                        </Text>
+                    </View>
                 </View>
+
                 <View // Screen Selection Container
                     style={{
                         width: "100%",
 
                         justifyContent: "center",
+
+                        marginTop: 100
                     }}
                 >
                     {this.generateScreenOptions()}
@@ -185,8 +203,8 @@ class DrawerComponent extends React.Component {
 const MainDrawerNav = createDrawerNavigator({
     MainScreen,
     Settings
-},{
-    contentComponent: DrawerComponent
-});
+}, {
+        contentComponent: DrawerComponent
+    });
 
 export default createAppContainer(MainDrawerNav);
