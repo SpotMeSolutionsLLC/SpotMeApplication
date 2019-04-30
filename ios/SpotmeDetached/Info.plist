@@ -32,7 +32,17 @@
 		<dict/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>We don&apos;t actually use this info, the frameworks we use require it. Updates are coming</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We don&apos;t actually use this info, the frameworks we use require it. Updates are coming</string>
+	<key>NSContactsUsageDescription</key>
+	<string>We don&apos;t actually use this info, the frameworks we use require it. Updates are coming</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>We don&apos;t actually use this info, the frameworks we use require it. Updates are coming</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We don&apos;t actually use this info, the frameworks we use require it. Updates are coming</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We don&apos;t actually use this info, the frameworks we use require it. Updates are coming</string>
 	<key>NSMainNibFile</key>
 	<string>LaunchScreen</string>
 	<key>UILaunchStoryboardName</key>
